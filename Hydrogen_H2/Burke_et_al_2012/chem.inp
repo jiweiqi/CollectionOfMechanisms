@@ -1,0 +1,266 @@
+!<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>!
+!
+!                     ----- H2 Kinetic Mechanism -----
+!                     -----   Version 6-10-2011  -----
+!
+! (c) Burke, Chaos, Ju, Dryer, and Klippenstein; Princeton University, 2011.
+!
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+!  HOW TO USE THIS MECHANISM:
+!
+! (*) Due to limitations of CHEMKIN-II format (specifically, an inability to
+!     implement temperature-dependent collision efficiencies in falloff
+!     reactions) and the lack of fundamental understanding of the mixing rules
+!     for the falloff reactions with the bath gases that have different
+!     broadening factors, the present implementation represents a compromise
+!     (approximate) formulation.  As a consequence,
+!
+!     PRIOR TO ITS USE IN THE CALCULATIONS, THIS FILE HAS TO BE MODIFIED.
+!     DEPENDING ON WHAT BATH GAS (DILUTANT) IS MOST ABUNDANT IN YOUR SYSTEM
+!     (THE PRESENT CHOICES ARE N2, AR, OR HE),  YOU  SHOULD UNCOMMENT THE
+!     CORRESPONDING BLOCK FOR THE REACTION H+O2(+M)=HO2(+M), AND COMMENT THE
+!     BLOCK FOR OTHER DILUTANT(S).  AS GIVEN, THE MAIN DILUTANT IS SET TO BE N2.
+!
+!
+!  HOW TO REFERENCE THIS MECHANISM:
+!
+!     M.P. Burke, M. Chaos, Y. Ju, F.L. Dryer, S.J. Klippenstein
+!        "Comprehensive H2/O2 Kinetic Model for High-Pressure Combustion,"
+!        Int. J. Chem. Kinet. (2011).
+!
+!  FUTURE REVISIONS/UPDATES MAY BE FOUND ON THE FUELS AND COMBUSTION RESEARCH LABORATORY
+!  WEBSITE: < http://www.princeton.edu/mae/people/faculty/dryer/homepage/combustion_lab/ >
+!
+!
+!  HOW TO CONTACT THE AUTHORS:
+!
+!     Dr. Michael P. Burke
+!     R122 Building 200
+!     Chemical Sciences and Engineering Division
+!     Argonne National Laboratory
+!     Argonne, IL 60439
+!     Email: mpburke@anl.gov
+!
+!     Prof. Frederick L. Dryer
+!     D-329D Engineering Quadrangle
+!     Mechanical and Aerospace Engineering
+!     Princeton University
+!     Princeton, NJ 08544
+!     Phone: 609-258-5206
+!     Lab:   609-258-0316
+!     FAX:   609-258-1939
+!     Email: fldryer@princeton.edu
+!
+!
+!<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>!
+!
+ELEMENTS
+H O N AR HE C
+END
+
+SPECIES
+H        H2       O        OH
+H2O      O2       HO2      H2O2     
+N2       AR       HE       
+CO       CO2
+END
+
+!*********************************************************************************
+
+THERMO ALL
+0300.00  1000.00  5000.00
+H                 120186H   1               G  0300.00   5000.00  1000.00      1
+ 0.02500000E+02 0.00000000E+00 0.00000000E+00 0.00000000E+00 0.00000000E+00    2
+ 0.02547163E+06-0.04601176E+01 0.02500000E+02 0.00000000E+00 0.00000000E+00    3
+ 0.00000000E+00 0.00000000E+00 0.02547163E+06-0.04601176E+01                   4
+H2                121286H   2               G  0300.00   5000.00  1000.00      1
+ 0.02991423E+02 0.07000644E-02-0.05633829E-06-0.09231578E-10 0.01582752E-13    2
+-0.08350340E+04-0.01355110E+02 0.03298124E+02 0.08249442E-02-0.08143015E-05    3
+-0.09475434E-09 0.04134872E-11-0.01012521E+05-0.03294094E+02                   4
+O                 120186O   1               G  0300.00   5000.00  1000.00      1
+ 0.02542060E+02-0.02755062E-03-0.03102803E-07 0.04551067E-10-0.04368052E-14    2
+ 0.02923080E+06 0.04920308E+02 0.02946429E+02-0.01638166E-01 0.02421032E-04    3
+-0.01602843E-07 0.03890696E-11 0.02914764E+06 0.02963995E+02                   4
+OH                S 9/01O   1H   1    0    0G   200.000  6000.000 1000.        1
+ 2.86472886E+00 1.05650448E-03-2.59082758E-07 3.05218674E-11-1.33195876E-15    2
+ 3.68362875E+03 5.70164073E+00 4.12530561E+00-3.22544939E-03 6.52764691E-06    3
+-5.79853643E-09 2.06237379E-12 3.34630913E+03-6.90432960E-01 4.51532273E+03    4
+H2O                20387H   2O   1          G  0300.00   5000.00  1000.00      1
+ 0.02672146E+02 0.03056293E-01-0.08730260E-05 0.01200996E-08-0.06391618E-13    2
+-0.02989921E+06 0.06862817E+02 0.03386842E+02 0.03474982E-01-0.06354696E-04    3
+ 0.06968581E-07-0.02506588E-10-0.03020811E+06 0.02590233E+02                   4
+O2                121386O   2               G  0300.00   5000.00  1000.00      1
+ 0.03697578E+02 0.06135197E-02-0.01258842E-05 0.01775281E-09-0.01136435E-13    2
+-0.01233930E+05 0.03189166E+02 0.03212936E+02 0.01127486E-01-0.05756150E-05    3
+ 0.01313877E-07-0.08768554E-11-0.01005249E+05 0.06034738E+02                   4
+HO2               L 5/89H   1O   2   00   00G   200.000  3500.000  1000.000    1
+ 4.01721090E+00 2.23982013E-03-6.33658150E-07 1.14246370E-10-1.07908535E-14    2
+ 1.11856713E+02 3.78510215E+00 4.30179801E+00-4.74912051E-03 2.11582891E-05    3
+-2.42763894E-08 9.29225124E-12 2.94808040E+02 3.71666245E+00 1.00021620E+04    4
+H2O2              120186H   2O   2          G  0300.00   5000.00  1000.00      1
+ 0.04573167E+02 0.04336136E-01-0.01474689E-04 0.02348904E-08-0.01431654E-12    2
+-0.01800696E+06 0.05011370E+01 0.03388754E+02 0.06569226E-01-0.01485013E-05    3
+-0.04625806E-07 0.02471515E-10-0.01766315E+06 0.06785363E+02                   4
+N2                121286N   2               G  0300.00   5000.00  1000.00      1
+ 0.02926640E+02 0.01487977E-01-0.05684761E-05 0.01009704E-08-0.06753351E-13    2
+-0.09227977E+04 0.05980528E+02 0.03298677E+02 0.01408240E-01-0.03963222E-04    3
+ 0.05641515E-07-0.02444855E-10-0.01020900E+05 0.03950372E+02                   4
+AR                120186AR  1               G  0300.00   5000.00  1000.00      1
+ 0.02500000E+02 0.00000000E+00 0.00000000E+00 0.00000000E+00 0.00000000E+00    2
+-0.07453750E+04 0.04366001E+02 0.02500000E+02 0.00000000E+00 0.00000000E+00    3
+ 0.00000000E+00 0.00000000E+00-0.07453750E+04 0.04366001E+02                   4
+HE                120186HE  1               G  0300.00   5000.00  1000.00      1
+ 0.02500000E+02 0.00000000E+00 0.00000000E+00 0.00000000E+00 0.00000000E+00    2
+-0.07453750E+04 0.09153489E+01 0.02500000E+02 0.00000000E+00 0.00000000E+00    3
+ 0.00000000E+00 0.00000000E+00-0.07453750E+04 0.09153488E+01                   4
+CO                121286C   1O   1          G  0300.00   5000.00  1000.00      1
+ 0.03025078E+02 0.01442689E-01-0.05630828E-05 0.01018581E-08-0.06910952E-13    2
+-0.01426835E+06 0.06108218E+02 0.03262452E+02 0.01511941E-01-0.03881755E-04    3
+ 0.05581944E-07-0.02474951E-10-0.01431054E+06 0.04848897E+02                   4
+CO2               121286C   1O   2          G  0300.00   5000.00  1000.00      1
+ 0.04453623E+02 0.03140169E-01-0.01278411E-04 0.02393997E-08-0.01669033E-12    2
+-0.04896696E+06-0.09553959E+01 0.02275725E+02 0.09922072E-01-0.01040911E-03    3
+ 0.06866687E-07-0.02117280E-10-0.04837314E+06 0.01018849E+03                   4
+END
+
+!*********************************************************************************
+
+REACTIONS
+
+!======================
+!H2-O2 Chain Reactions
+!======================
+
+! Hong et al., Proc. Comb. Inst. 33:309-316 (2011)
+H+O2 = O+OH                                 	1.04E+14   0.00  1.5286E+04
+
+! Baulch et al., J. Phys. Chem. Ref. Data, 21:411 (1992)
+O+H2 = H+OH						3.818E+12  0.00  7.948E+03
+   DUPLICATE
+O+H2 = H+OH						8.792E+14  0.00  1.917E+04
+   DUPLICATE
+
+! Michael and Sutherland, J. Phys. Chem. 92:3853 (1988)
+H2+OH = H2O+H						0.216E+09  1.51  0.343E+04
+
+! Baulch et al., J. Phys. Chem. Ref. Data, 21:411 (1992)
+OH+OH = O+H2O						3.34E+04   2.42  -1.93E+03
+
+!============================
+!H2-O2 Dissociation Reactions
+!============================
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
+H2+M = H+H+M						4.577E+19 -1.40  1.0438E+05
+   H2/2.5/ H2O/12/
+   CO/1.9/ CO2/3.8/
+   AR/0.0/ HE/0.0/
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
+H2+AR = H+H+AR                              	5.840E+18 -1.10  1.0438E+05
+H2+HE = H+H+HE                              	5.840E+18 -1.10  1.0438E+05
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
+O+O+M = O2+M                                	6.165E+15 -0.50  0.000E+00
+   H2/2.5/ H2O/12/
+   AR/0.0/ HE/0.0/
+   CO/1.9/ CO2/3.8/
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
+O+O+AR = O2+AR                              	1.886E+13  0.00 -1.788E+03
+O+O+HE = O2+HE                              	1.886E+13  0.00 -1.788E+03
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
+O+H+M = OH+M                                	4.714E+18 -1.00  0.000E+00
+   H2/2.5/  H2O/12/
+   AR/0.75/ HE/0.75/
+   CO/1.9/  CO2/3.8/
+
+! Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+! Rate constant is for Ar with efficiencies from Michael et al., J. Phys. Chem. A, 106 (2002)
+H2O+M = H+OH+M                              	6.064E+27 -3.322 1.2079E+05
+   H2/3.0/  H2O/0.0/
+   HE/1.10/ N2/2.00/
+   O2/1.5/
+! Efficiencies for CO and CO2 taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+   CO/1.9/ CO2/3.8/
+
+! Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+H2O+H2O = H+OH+H2O                          	1.006E+26 -2.44  1.2018E+05
+
+!=================================
+! Formation and consumption of HO2
+!=================================
+
+! High-pressure limit from Troe, Proc. Comb. Inst. 28:1463-1469 (2000)
+! Low-pressure  limit from Michael et al., J. Phys. Chem. A 106:5297-5313
+! Centering factors from Fernandes et al., Phys. Chem. Chem. Phys. 10:4313-4321 (2008)
+!=================================================================================
+! MAIN BATH GAS IS N2 (comment this reaction otherwise)
+!
+H+O2(+M) = HO2(+M)                          	4.65084E+12  0.44  0.000E+00
+   LOW/6.366E+20 -1.72  5.248E+02/
+   TROE/0.5  1E-30  1E+30/
+   H2/2.0/ H2O/14/ O2/0.78/ CO/1.9/ CO2/3.8/ AR/0.67/ HE/0.8/
+!=================================================================================
+! MAIN BATH GAS IS AR OR HE (comment this reaction otherwise)
+!
+!H+O2(+M) = HO2(+M)                         	4.65084E+12  0.44  0.000E+00
+!   LOW/9.042E+19 -1.50  4.922E+02/
+!   TROE/0.5 1E-30  1E+30/
+!   H2/3.0/ H2O/21/ O2/1.1/ CO/2.7/ CO2/5.4/ HE/1.2/ N2/1.5/
+!=================================================================================
+
+! Michael et al., Proc. Comb. Inst. 28:1471 (2000)
+!HO2+H = H2+O2                                 	3.659E+06  2.09 -1.451E+03
+!Scaled by 0.75
+HO2+H = H2+O2                                 	2.750E+06  2.09 -1.451E+03
+
+! Mueller et al., Int. J. Chem. Kinetic. 31:113 (1999) 
+HO2+H = OH+OH                               	7.079E+13  0.00  2.950E+02
+
+! Fernandez-Ramos and Varandas, J. Phys. Chem. A 106:4077-4083 (2002)
+!HO2+O = O2+OH                               	4.750E+10  1.00 -7.2393E+02
+!Scaled by 0.60
+HO2+O = O2+OH                               	2.850E+10  1.00 -7.2393E+02
+
+! Keyser, J. Phys. Chem. 92:1193 (1988)
+HO2+OH = H2O+O2                             	2.890E+13  0.00 -4.970E+02
+
+!=====================================
+!Formation and Consumption of H2O2
+!=====================================
+
+! Hippler et al., J. Chem. Phys. 93:1755 (1990)
+HO2+HO2 = H2O2+O2                           	4.200E+14  0.00  1.1982E+04
+   DUPLICATE
+HO2+HO2 = H2O2+O2                           	1.300E+11  0.00 -1.6293E+03
+   DUPLICATE
+
+! Troe, Combust. Flame,  158:594-601 (2011)
+! Rate constant is for Ar
+H2O2(+M) = OH+OH(+M)            			2.00E+12   0.90  4.8749E+04
+   LOW/2.49E+24 -2.30 4.8749E+04/
+   TROE/0.43 1E-30 1E+30/
+   H2O/7.5/ CO2/1.6/
+   N2/1.5/  O2/1.2/
+   HE/0.65/ H2O2/7.7/
+! Efficiencies for H2 and CO taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+   H2/3.7/ CO/2.8/
+
+! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+H2O2+H = H2O+OH                             	2.410E+13  0.00  3.970E+03
+H2O2+H = HO2+H2                             	4.820E+13  0.00  7.950E+03
+H2O2+O = OH+HO2                             	9.550E+06  2.00  3.970E+03
+
+! Hong et al., J. Phys. Chem. A  114 (2010) 5718–5727
+H2O2+OH = HO2+H2O                           	1.740E+12  0.00  3.180E+02
+   DUPLICATE
+H2O2+OH = HO2+H2O                           	7.590E+13  0.00  7.270E+03
+   DUPLICATE
+
+END
