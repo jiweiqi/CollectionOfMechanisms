@@ -1,0 +1,50 @@
+!****************************************************************************
+! A 99-species reduced mechanism for iso-octane oxidation
+! Must be used with the supplied CKWYP subroutine (CHEMKIN-II compatible)
+!
+! Reference: 
+!
+! Chun Sang Yoo, Zhaoyu Luo, Tianfeng Lu, Hongjip Kim, Jacqueline H. Chen, 
+! “A DNS study of ignition characteristics of a lean iso-octane/air mixture 
+!  under HCCI and SACI conditions,” 
+!  Proc. Combust. Inst., 34(2) 2985–2993, 2013.
+!
+!****************************************************************************
+
+ELEMENTS
+C H O N 
+END
+
+SPECIES
+H               	H2              	O               	O2              	
+OH              	H2O             	HO2             	H2O2            	
+CO              	CO2             	CH2O            	HO2CHO          	
+O2CHO           	OCHO            	CH3O2H          	CH3O2           	
+CH4             	CH3             	CH2             	C2H6            	
+C2H5            	C2H4            	C2H3            	C2H2            	
+CH3CHO          	CH2CO           	HCCO            	C2H5O2          	
+CH3COCH3        	CH3COCH2        	C2H3CHO         	C2H3CO          	
+C3H6            	C3H5-A          	C3H4-P          	C3H4-A          	
+C3H3            	C3H6OOH2-1O2    	IC3H7O2         	C3KET21         	
+CH3CHCO         	SC4H9           	IC4H8           	IC4H7           	
+TC4H9O2         	IC4H9O2         	TC4H9O2H        	IC3H7CHO        	
+TC3H6CHO        	IC4H8OOH-IO2    	IC4KETII        	IC4H7OH         	
+IC4H6OH         	IC3H5CHO        	IC3H5CO         	IC3H6CO         	
+IC4H7OOH        	TC3H6O2CHO      	BC5H11          	AC5H10          	
+BC5H10          	CC5H10          	AC5H9-C         	CC5H9-B         	
+CH3CHCHO        	BC6H12          	CC6H12          	C5H10-2         	
+IC4H7-I1        	XC7H14          	YC7H14          	XC7H13-Z        	
+YC7H13-Y2       	YC7H15O2        	ACC6H10         	ACC6H9-A        	
+ACC6H9-D        	NEOC5H11O2      	TC4H9CHO        	IC8H18          	
+IC8H16          	JC8H16          	AC8H17O2        	BC8H17O2        	
+CC8H17O2        	DC8H17O2        	CC8H17O2H       	IC8ETERAB       	
+IC8ETERAC       	IC8ETERBD       	BC8H16OOH-AO2   	BC8H16OOH-DO2   	
+CC8H16OOH-AO2   	IC3H7COC3H6-T   	TC4H9COC2H4S    	
+iso001 	!AC8H16OOH-BO2/0.531 DC8H16OOH-BO2/0.469 
+iso002 	!IC8KETAB/0.532 IC8KETDB/0.468 
+iso003 	!IC8KETBA/0.592 IC8KETBD/0.408 
+N2              	
+END
+
+REACTIONS
+END
