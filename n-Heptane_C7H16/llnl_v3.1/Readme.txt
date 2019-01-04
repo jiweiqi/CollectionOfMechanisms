@@ -1,4 +1,4 @@
-Can not pass ck2cti
+
 
 Downloaded from https://combustion.llnl.gov/mechanisms/alkanes/n-heptane-detailed-mechanism-version-3
 
