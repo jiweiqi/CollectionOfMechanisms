@@ -18,7 +18,7 @@ Below are the proposed data organization structure.
     				
     		/chem.xml (cantera format)
 			
-		/chem.cti (cantera format, optionally)
+			/chem.cti (cantera format, optionally)
     	
     		/readme.md
   		
