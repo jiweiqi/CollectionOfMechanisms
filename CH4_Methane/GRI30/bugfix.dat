@@ -1,0 +1,93 @@
+       BUGFIXES  FOR  GRI-Mech VERSION 3.0
+       ===================================
+
+Bug No. 5.  (discovered by Marc Rumminger.) 8/4/99
+=========
+Bug: Element count lines in thermodynamics data have '0' as placeholders.
+
+Effect: Chemkin III interpreter searches for the element '0' and gives
+error message.  Mechanism won't be processed.  No error for Chemkin II.
+
+Fix: Zeroes have been removed from thermo30.dat file.
+
+       BUGFIXES  FOR  GRI-Mech VERSION 1.1,1.2,2.1
+       ===========================================
+
+Bug No. 4. (Discovered by V.M. Zamansky.) 11/2/95
+========= 
+Bug: Reactions 277 and 278 (NH3 + H = NH2 + H2 and NH3 + OH =
+NH2 + H2O) have negative values for E in the first release of
+GRI-Mech 2.1, which are incorrect. They should be positive.
+
+Effect of the error:
+
+Only reaction 277 has a significantly large value of E, and the
+ammonia kinetics is peripheral to the chemistry the mechanism is
+intended to model.  Recalculation of all targets and validation
+experiments has been done with GRI-Mech 2.11 (completed Nov. 21,
+1995).  No significant changes from the results obtained using
+GRI-Mech 2.1 were found.
+
+Fix:
+
+Use the revised mechanism GRI-Mech 2.11, which replaced the
+previous version on Nov. 3, 1995.  This makes E(277) = +9915.
+kcal/mole/K and E(278) = +955. kcal/mole/K.
+
+----------------------------------------------------------------
+
+Bug No. 3. (Discovered by David Underwood) 10/19/95
+========= 
+Bug: Reactions 204 and 205 (NNH --> N2 + H and NNH + M --> N2 + H + M
+are not accepted by Chemkin.  
+
+Cause:
+
+Chemkin notices that "M" is included on both sides of 205 and thus
+some versions of the code consider the two reactions to be the same.
+See Bug No. 1.
+
+Fix:
+
+Each of these 2 reaction records must be followed by a single
+line containing the word "DUPLICATE" in order for this pair
+of reactions to be accepted.
+
+----------------------------------------------------------------
+
+Bug No. 2. (Discovered by V.M. Zamansky.)  1/95
+=========
+
+Bug: 
+
+Chemkin refuses to accept the thermo.all file, returning the
+error message "NO TLO, TMID, THIGH GIVEN FOR THERMO.ALL", at
+least on the "PC" version of Chemkin.
+
+Cause:
+
+The 3 comment lines at the head of the thermo data file are not
+recognized as such by all versions of Chemkin, in particular
+by the "PC" version.
+
+Fix: Remove the first three lines.
+
+----------------------------------------------------------------
+
+Bug No. 1. (Discovered by V.M. Zamansky.)  1/95
+========= 
+Bug: Reactions 166 and 167 (HCO + H20 --> H + CO + H2O and HCO + M --> H
+ + CO + M) are not accepted by Chemkin.  
+
+Cause:
+
+Chemkin notices that H2O is included in "M" and rejects
+the duplication, at least in the "PC" version of Chemkin.
+
+Fix:
+
+Each of these 2 reaction records must be followed by a single
+line containing the word "DUPLICATE" in order for this pair
+of reactions to be accepted.
+
+

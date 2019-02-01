@@ -1,5 +1,8 @@
 
 //////////////////////////////////
+Jan. 04. 2019 Weiqi Ji
+Missint species in the transport data were imported from n-heptane v3.1 mechanism from LLNL.
+
 Jan. 03. 2019 Weiqi Ji
 Note: due to the missing species in the transport data, the xml format contains kinetic and thermo data.
 /////////////////////////////////

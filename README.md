@@ -18,10 +18,10 @@ Below are the proposed data organization structure.
     				
     		/chem.xml (cantera format)
 			
-			/chem.cti (cantera format)
+			/chem.cti (cantera format, optionally)
     	
     		/readme.md
-    	
+  		
     			+ how to cite?
     			+ link to the origional papers
     			+ original link for downloading the mechanisms
@@ -33,6 +33,4 @@ If you have any questions regarding including new mechanisms into the repo, feel
 
 If you don't want a mechanism to be shown in the repo, just send me an e-mail and I will remove it and record it at this page, so that other people won't put it here in the future. 
 
-+ useful tips for converting chemkin mechanisms to cti mechanisms.
-
-* https://chemicalkinetics.wordpress.com/2013/11/15/my-procedure-for-converting-chemkin-mechanisms-to-cantera-cti-mechanisms/
+useful tips for converting chemkin mechanisms to cti mechanisms. https://chemicalkinetics.wordpress.com/2013/11/15/my-procedure-for-converting-chemkin-mechanisms-to-cantera-cti-mechanisms/
