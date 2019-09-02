@@ -1,5 +1,5 @@
 # CollectionOfMechanisms
-This repo is a collection of existing combustion reaction mechanisms.
+This repo is a collection of existing combustion reaction mechanisms. This repo also tries to include a converted Cantera .xml based mechanism. Therefore, cantera users can import those mechanism out of the shelf.
 
 Below are the proposed data organization structure. See the demo folder for DME_CH3OCH3.
 
