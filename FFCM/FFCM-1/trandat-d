@@ -92,12 +92,7 @@ O                  0    80.000     2.750     0.000     0.000     0.000
 O2                 1   107.400     3.458     0.000     1.600     3.800          
 OH                 1    80.000     2.750     0.000     0.000     0.000          
 OH*                1    80.000     2.750     0.000     0.000     0.000
-                                                                                
-                                                                                
-The Lennard-Jones parameters of polycyclic aromatic hydrocarbons were estimated 
-based on the critical temperature and pressure. See H. Wang and M. Frenklach,   
-"Transport Properties of Polycyclic Aromatic Hydrocarbons for Flame Modeling."  
-Combustion and Flame, 96:163-170 (1994)                                         
+                                                                                                                     
                                                                                 
 c-C6H4             2   464.8       5.29      0.00     10.32      0.000  !  benze
 C6H6               2   464.8       5.29      0.00     10.32      0.000  !  benze
@@ -164,18 +159,7 @@ C6H5C6H5           2   676.5       6.31      0.00     20.00      1.000  !  biphe
 OC6H4CH3           2   567         5.6       1.6       0.0       1.000
 C10H8              2   630.4       6.18      0.00     16.50      1.000  !  naphthalene
 C6H4CH3            2   495.3       5.68      0.43     12.30      1.000  !
-
-                                                                                
- 1-15: Species name                                                             
- 16-80: Molecular parameters                                                    
-        molecule index: 0 = atom, 1= linear molec.                              
-                        2 = nonlinear molec.                                    
-        L-J potential well depth, e/kb (K)                                      
-        L-J collision diameter, s,                                            
-        Dipole moment, f, Debye                                                 
-        Polarizability, `,                                                   
-        Rotational relaxation number, Zrot at 298K                              
-        Comments                                                               
+                                                            
 END
 H HE   -9.66994265100   2.10026266000   -0.07705964500   0.00546112600 ! Middha et al, Proc. Comb. Inst., Vol. 29
         0.93003284006   0.08015000695   -0.00947327267   0.00063458775
