@@ -1,0 +1,1156 @@
+generator: ctml2yaml
+cantera-version: 2.5.0a4
+date: Tue, 14 Jul 2020 22:37:01 -0400
+input-files: [2S_CH4_CM2.xml]
+
+phases:
+- name: CH4_CM2
+  elements: [O, H, C, N]
+  species: [O2, H2O, CH4, CO, CO2, N2]
+  thermo: ideal-gas
+  kinetics: gas
+  reactions: all
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+- name: CH4_CM2_mix
+  elements: [O, H, C, N]
+  species: [O2, H2O, CH4, CO, CO2, N2]
+  thermo: ideal-gas
+  transport: mixture-averaged
+  kinetics: gas
+  reactions: all
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+- name: CH4_CM2_multi
+  elements: [O, H, C, N]
+  species: [O2, H2O, CH4, CO, CO2, N2]
+  thermo: ideal-gas
+  transport: multicomponent
+  kinetics: gas
+  reactions: all
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+- name: CH4_CM2_avbp
+  elements: [O, H, C, N]
+  species: [N2, O2, H2O, CH4, CO, CO2]
+  thermo: ideal-gas
+  transport: multicomponent
+  kinetics: gas
+  reactions: all
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+
+species:
+- name: H2
+  composition: {H: 2.0}
+  note: tpis78
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.34433112, 7.98052075e-03, -1.9478151e-05, 2.01572094e-08, -7.37611761e-12,
+      -917.935173, 0.683010238]
+    - [2.93286575, 8.26608026e-04, -1.46402364e-07, 1.54100414e-11, -6.888048e-16,
+      -813.065581, -1.02432865]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    dipole: 0.0
+    polarizability: 0.79
+    rotational-relaxation: 280.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: H
+  composition: {H: 1.0}
+  note: L6/94
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.5, 0.0, 0.0, 0.0, 0.0, 2.547366e+04, -0.44668285]
+    - [2.5, 0.0, 0.0, 0.0, 0.0, 2.547366e+04, -0.44668285]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 145.0
+    diameter: 2.05
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: O
+  composition: {O: 1.0}
+  note: L1/90
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.1682671, -3.27931884e-03, 6.64306396e-06, -6.12806624e-09, 2.11265971e-12,
+      2.91222592e+04, 2.05193346]
+    - [2.54363697, -2.73162486e-05, -4.1902952e-09, 4.95481845e-12, -4.79553694e-16,
+      2.9226012e+04, 4.92229457]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 80.0
+    diameter: 2.75
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: O2
+  composition: {O: 2.0}
+  note: RUS89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.78245636, -2.99673416e-03, 9.84730201e-06, -9.68129509e-09, 3.24372837e-12,
+      -1063.94356, 3.65767573]
+    - [3.66096065, 6.56365811e-04, -1.41149627e-07, 2.05797935e-11, -1.29913436e-15,
+      -1215.97718, 3.41536279]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    dipole: 0.0
+    polarizability: 1.6
+    rotational-relaxation: 3.8
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: OH
+  composition: {H: 1.0, O: 1.0}
+  note: RUS78
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3500.0]
+    data:
+    - [3.99201543, -2.40131752e-03, 4.61793841e-06, -3.88113333e-09, 1.3641147e-12,
+      3615.08056, -0.103925458]
+    - [3.09288767, 5.48429716e-04, 1.26505228e-07, -8.79461556e-11, 1.17412376e-14,
+      3858.657, 4.4766961]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.75
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: H2O
+  composition: {H: 2.0, O: 1.0}
+  note: L5/89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.1986352, -2.0364017e-03, 6.5203416e-06, -5.4879269e-09, 1.771968e-12, -3.0293726e+04,
+      -0.84900901]
+    - [2.6770389, 2.9731816e-03, -7.7376889e-07, 9.4433514e-11, -4.2689991e-15, -2.9885894e+04,
+      6.88255]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    polarizability: 0.0
+    rotational-relaxation: 4.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HO2
+  composition: {H: 1.0, O: 2.0}
+  note: T1/09
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 5000.0]
+    data:
+    - [4.30179807, -4.74912097e-03, 2.11582905e-05, -2.42763914e-08, 9.29225225e-12,
+      264.018485, 3.7166622]
+    - [4.17228741, 1.88117627e-03, -3.46277286e-07, 1.94657549e-11, 1.76256905e-16,
+      31.0206839, 2.95767672]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: H2O2
+  composition: {H: 2.0, O: 2.0}
+  note: T8/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.31515149, -8.47390622e-04, 1.76404323e-05, -2.26762944e-08, 9.08950158e-12,
+      -1.77067437e+04, 3.27373319]
+    - [4.57977305, 4.05326003e-03, -1.2984473e-06, 1.982114e-10, -1.13968792e-14,
+      -1.80071775e+04, 0.664970694]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 3.8
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C
+  composition: {C: 1.0}
+  note: L7/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.5542395, -3.2153772e-04, 7.3379223e-07, -7.3223487e-10, 2.6652144e-13, 8.5442681e+04,
+      4.5313085]
+    - [2.605583, -1.9593434e-04, 1.0673722e-07, -1.642394e-11, 8.187058e-16, 8.5411742e+04,
+      4.1923868]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 71.4
+    diameter: 3.298
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH
+  composition: {H: 1.0, C: 1.0}
+  note: IU3/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.4897583, 3.243216e-04, -1.6899751e-06, 3.162842e-09, -1.4061803e-12, 7.0660755e+04,
+      2.0842841]
+    - [2.5209369, 1.7653639e-03, -4.614766e-07, 5.9289675e-11, -3.3474501e-15, 7.0994878e+04,
+      7.4051829]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.75
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2
+  composition: {H: 2.0, C: 1.0}
+  note: IU3/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.71757846, 1.2739126e-03, 2.17347251e-06, -3.488585e-09, 1.65208866e-12, 4.58723866e+04,
+      1.75297945]
+    - [3.14631886, 3.03671259e-03, -9.96474439e-07, 1.5048358e-10, -8.57335515e-15,
+      4.60412605e+04, 4.72341711]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 144.0
+    diameter: 3.8
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2(S)
+  composition: {H: 2.0, C: 1.0}
+  note: IU3/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.19331325, -2.33105184e-03, 8.15676451e-06, -6.62985981e-09, 1.93233199e-12,
+      5.03662246e+04, -0.74673431]
+    - [3.13501686, 2.89593926e-03, -8.1666809e-07, 1.13572697e-10, -6.36262835e-15,
+      5.05040504e+04, 4.06030621]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 144.0
+    diameter: 3.8
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH3
+  composition: {H: 3.0, C: 1.0}
+  note: L11/89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3500.0]
+    data:
+    - [3.6735904, 2.01095175e-03, 5.73021856e-06, -6.87117425e-09, 2.54385734e-12,
+      1.64449988e+04, 1.60456433]
+    - [2.28571772, 7.23990037e-03, -2.98714348e-06, 5.95684644e-10, -4.67154394e-14,
+      1.67755843e+04, 8.48007179]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 144.0
+    diameter: 3.8
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH4
+  composition: {H: 4.0, C: 1.0}
+  note: g8/99
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [5.14825732, -0.013700241, 4.93749414e-05, -4.91952339e-08, 1.70097299e-11,
+      -1.02453222e+04, -4.63322726]
+    - [1.911786, 9.6026796e-03, -3.38387841e-06, 5.3879724e-10, -3.19306807e-14, -1.00992136e+04,
+      8.48241861]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 141.4
+    diameter: 3.746
+    dipole: 0.0
+    polarizability: 2.6
+    rotational-relaxation: 13.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CO
+  composition: {C: 1.0, O: 1.0}
+  note: RUS79
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.5795335, -6.1035369e-04, 1.0168143e-06, 9.0700586e-10, -9.0442449e-13, -1.4344086e+04,
+      3.5084093]
+    - [3.0484859, 1.3517281e-03, -4.8579405e-07, 7.8853644e-11, -4.6980746e-15, -1.4266117e+04,
+      6.0170977]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 98.1
+    diameter: 3.65
+    dipole: 0.0
+    polarizability: 1.95
+    rotational-relaxation: 1.8
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CO2
+  composition: {C: 1.0, O: 2.0}
+  note: L7/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.356813, 8.9841299e-03, -7.1220632e-06, 2.4573008e-09, -1.4288548e-13, -4.8371971e+04,
+      9.9009035]
+    - [4.6365111, 2.7414569e-03, -9.9589759e-07, 1.6038666e-10, -9.1619857e-15, -4.9024904e+04,
+      -1.9348955]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 244.0
+    diameter: 3.763
+    dipole: 0.0
+    polarizability: 2.65
+    rotational-relaxation: 2.1
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCO
+  composition: {H: 1.0, C: 1.0, O: 1.0}
+  note: L12/89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3500.0]
+    data:
+    - [4.22118584, -3.24392532e-03, 1.37799446e-05, -1.33144093e-08, 4.33768865e-12,
+      3839.56496, 3.39437243]
+    - [2.77217438, 4.95695526e-03, -2.48445613e-06, 5.89161778e-10, -5.33508711e-14,
+      4011.91815, 9.79834492]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2O
+  composition: {H: 2.0, C: 1.0, O: 1.0}
+  note: L8/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3500.0]
+    data:
+    - [4.79372315, -9.90833369e-03, 3.73220008e-05, -3.79285261e-08, 1.31772652e-11,
+      -1.43089567e+04, 0.6028129]
+    - [1.76069008, 9.20000082e-03, -4.42258813e-06, 1.00641212e-09, -8.8385564e-14,
+      -1.39958323e+04, 13.656323]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2OH
+  composition: {H: 3.0, C: 1.0, O: 1.0}
+  note: IU2/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.47832317, -1.35069687e-03, 2.78483707e-05, -3.64867397e-08, 1.47906775e-11,
+      -3524.76728, 3.30911984]
+    - [5.09312037, 5.9475855e-03, -2.06496524e-06, 3.23006703e-10, -1.88125052e-14,
+      -4058.13228, -1.84690613]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 417.0
+    diameter: 3.69
+    dipole: 1.7
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH3O
+  composition: {H: 3.0, C: 1.0, O: 1.0}
+  note: IU1/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.71180502, -2.80463306e-03, 3.76550971e-05, -4.73072089e-08, 1.8658842e-11,
+      1307.72484, 6.57240864]
+    - [4.75779238, 7.44142474e-03, -2.69705176e-06, 4.38090504e-10, -2.63537098e-14,
+      390.139164, -1.96680028]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 417.0
+    diameter: 3.69
+    dipole: 1.7
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH3OH
+  composition: {H: 4.0, C: 1.0, O: 1.0}
+  note: T06/02
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [5.65851051, -0.0162983419, 6.91938156e-05, -7.58372926e-08, 2.8042755e-11,
+      -2.56119736e+04, -0.897330508]
+    - [3.52726795, 0.0103178783, -3.62892944e-06, 5.77448016e-10, -3.42182632e-14,
+      -2.60028834e+04, 5.16758693]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.8
+    diameter: 3.626
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H
+  composition: {H: 1.0, C: 2.0}
+  note: T5/10
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.89867676, 0.0132988489, -2.80733327e-05, 2.89484755e-08, -1.07502351e-11,
+      6.7061605e+04, 6.18547632]
+    - [3.66270248, 3.82492252e-03, -1.366325e-06, 2.1345504e-10, -1.23216848e-14,
+      6.7168379e+04, 3.92205792]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 209.0
+    diameter: 4.1
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.5
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H2
+  composition: {H: 2.0, C: 2.0}
+  note: g1/91
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [0.808679682, 0.0233615762, -3.55172234e-05, 2.80152958e-08, -8.50075165e-12,
+      2.64289808e+04, 13.9396761]
+    - [4.65878489, 4.88396667e-03, -1.60828888e-06, 2.46974544e-10, -1.38605959e-14,
+      2.57594042e+04, -3.99838194]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 209.0
+    diameter: 4.1
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.5
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H3
+  composition: {H: 3.0, C: 2.0}
+  note: ATcT/A
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.36377642, 2.65765722e-04, 2.79620704e-05, -3.72986942e-08, 1.51590176e-11,
+      3.44749589e+04, 7.91510092]
+    - [4.15026763, 7.54021341e-03, -2.62997847e-06, 4.15974048e-10, -2.45407509e-14,
+      3.3856638e+04, 1.72812235]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 209.0
+    diameter: 4.1
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H4
+  composition: {H: 4.0, C: 2.0}
+  note: g1/00
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.95920063, -7.57051373e-03, 5.70989993e-05, -6.91588352e-08, 2.6988419e-11,
+      5089.77598, 4.09730213]
+    - [3.99182724, 0.0104833908, -3.71721342e-06, 5.94628366e-10, -3.53630386e-14,
+      4268.65851, -0.269081762]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 280.8
+    diameter: 3.971
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.5
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H5
+  composition: {H: 5.0, C: 2.0}
+  note: IU1/07
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.24185905, -3.56905235e-03, 4.82667202e-05, -5.85401009e-08, 2.25804514e-11,
+      1.29690344e+04, 4.44703782]
+    - [4.32195633, 0.0123930542, -4.3968096e-06, 7.03519917e-10, -4.18435239e-14,
+      1.21759475e+04, 0.171103809]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 252.3
+    diameter: 4.302
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.5
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C2H6
+  composition: {H: 6.0, C: 2.0}
+  note: g8/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.29142572, -5.50154901e-03, 5.99438458e-05, -7.08466469e-08, 2.68685836e-11,
+      -1.15222056e+04, 2.66678994]
+    - [4.04666411, 0.0153538802, -5.47039485e-06, 8.77826544e-10, -5.23167531e-14,
+      -1.24473499e+04, -0.968698313]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 252.3
+    diameter: 4.302
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.5
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCCO
+  composition: {H: 1.0, C: 2.0, O: 1.0}
+  note: 4/09
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [1.87607969, 0.0221205418, -3.58869325e-05, 3.05402541e-08, -1.01281069e-11,
+      2.0163384e+04, 13.696829]
+    - [5.91479333, 3.7140873e-03, -1.3013701e-06, 2.06473345e-10, -1.21476759e-14,
+      1.93596301e+04, -5.50567269]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 150.0
+    diameter: 2.5
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2CO
+  composition: {H: 2.0, C: 2.0, O: 1.0}
+  note: g4/02
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.13241136, 0.0181319455, -1.74093315e-05, 9.3533604e-09, -2.01724844e-12,
+      -7148.0852, 13.3807969]
+    - [5.75871449, 6.35124053e-03, -2.25955361e-06, 3.62321512e-10, -2.15855515e-14,
+      -8085.33464, -4.96490444]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCCOH
+  composition: {H: 2.0, C: 2.0, O: 1.0}
+  note: SRI91
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [1.2423733, 0.031072201, -5.0866864e-05, 4.3137131e-08, -1.4014594e-11, 8031.6143,
+      13.874319]
+    - [5.9238291, 6.79236e-03, -2.5658564e-06, 4.4987841e-10, -2.9940101e-14, 7264.626,
+      -7.6017742]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: N
+  composition: {N: 1.0}
+  note: L6/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.5, 0.0, 0.0, 0.0, 0.0, 5.6104638e+04, 4.1939088]
+    - [2.4159429, 1.7489065e-04, -1.1902369e-07, 3.0226244e-11, -2.0360983e-15, 5.6133775e+04,
+      4.6496095]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 71.4
+    diameter: 3.298
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NH
+  composition: {H: 1.0, N: 1.0}
+  note: ATcT/A
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.49295037, 3.1179572e-04, -1.48906628e-06, 2.48167402e-09, -1.03570916e-12,
+      4.21059722e+04, 1.84834973]
+    - [2.78372644, 1.32985888e-03, -4.24785573e-07, 7.83494442e-11, -5.5045131e-15,
+      4.23461945e+04, 5.74084863]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.65
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 4.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NH2
+  composition: {H: 2.0, N: 1.0}
+  note: And89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.2040029, -2.1061385e-03, 7.1068348e-06, -5.6115197e-09, 1.6440717e-12, 2.188591e+04,
+      -0.14184248]
+    - [2.8347421, 3.2073082e-03, -9.3390804e-07, 1.3702953e-10, -7.9206144e-15, 2.2171957e+04,
+      6.5204163]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 80.0
+    diameter: 2.65
+    dipole: 0.0
+    polarizability: 2.26
+    rotational-relaxation: 4.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NH3
+  composition: {H: 3.0, N: 1.0}
+  note: A12/04
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.46075151, -5.68781763e-03, 2.11411484e-05, -2.0284998e-08, 6.89500555e-12,
+      -6707.53514, -1.34450793]
+    - [2.09566674, 6.14750045e-03, -2.00328925e-06, 3.01334626e-10, -1.71227204e-14,
+      -6309.45436, 9.59574081]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.0
+    diameter: 2.92
+    dipole: 1.47
+    polarizability: 0.0
+    rotational-relaxation: 10.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NNH
+  composition: {H: 1.0, N: 2.0}
+  note: T07/93
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.3446927, -4.8497072e-03, 2.0059459e-05, -2.1726464e-08, 7.9469539e-12, 2.8791973e+04,
+      2.977941]
+    - [3.7667544, 2.8915082e-03, -1.041662e-06, 1.6842594e-10, -1.0091896e-14, 2.8650697e+04,
+      4.4705067]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 71.4
+    diameter: 3.798
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NO
+  composition: {O: 1.0, N: 1.0}
+  note: RUS89
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.21859896, -4.63988124e-03, 1.10443049e-05, -9.34055507e-09, 2.80554874e-12,
+      9845.09964, 2.28061001]
+    - [3.26071234, 1.19101135e-03, -4.29122646e-07, 6.94481463e-11, -4.03295681e-15,
+      9921.43132, 6.36900518]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    dipole: 0.0
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NO2
+  composition: {O: 2.0, N: 1.0}
+  note: L7/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.9440312, -1.585429e-03, 1.6657812e-05, -2.0475426e-08, 7.8350564e-12, 2896.618,
+      6.3119919]
+    - [4.884754, 2.1723955e-03, -8.2806909e-07, 1.574751e-10, -1.0510895e-14, 2316.4982,
+      -0.11741695]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 200.0
+    diameter: 3.5
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: N2O
+  composition: {O: 1.0, N: 2.0}
+  note: L7/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.2571502, 0.011304728, -1.3671319e-05, 9.6819803e-09, -2.9307182e-12, 8741.7746,
+      10.757992]
+    - [4.8230729, 2.6270251e-03, -9.5850872e-07, 1.6000712e-10, -9.7752302e-15, 8073.4047,
+      -2.2017208]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 232.4
+    diameter: 3.828
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HNO
+  composition: {H: 1.0, O: 1.0, N: 1.0}
+  note: ATcT/A
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.53525574, -5.68543377e-03, 1.8519854e-05, -1.71881225e-08, 5.55818157e-12,
+      1.16183003e+04, 1.74315886]
+    - [3.16598124, 2.99958892e-03, -3.94376786e-07, -3.85344089e-11, 7.07602668e-15,
+      1.17726311e+04, 7.64511172]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 116.7
+    diameter: 3.492
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CN
+  composition: {C: 1.0, N: 1.0}
+  note: IU8/03
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.61256069, -9.53015737e-04, 2.13757271e-06, -3.05001808e-10, -4.70518097e-13,
+      5.17084034e+04, 3.98238722]
+    - [3.3991285, 7.46548662e-04, -1.41493852e-07, 1.86747736e-11, -1.2603254e-15,
+      5.16569715e+04, 4.67148681]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 75.0
+    diameter: 3.856
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCN
+  composition: {H: 1.0, C: 1.0, N: 1.0}
+  note: ATcT/A
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.25901199, 0.0100510475, -1.33514567e-05, 1.00920479e-08, -3.00880408e-12,
+      1.45903166e+04, 8.9163196]
+    - [3.80231648, 3.14630087e-03, -1.06315727e-06, 1.66185438e-10, -9.79891962e-15,
+      1.42849502e+04, 1.57501632]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 569.0
+    diameter: 3.63
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: H2CN
+  composition: {H: 2.0, C: 1.0, N: 1.0}
+  note: '41687'
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 4000.0]
+    data:
+    - [2.851661, 5.6952331e-03, 1.07114e-06, -1.622612e-09, -2.3511081e-13, 2.863782e+04,
+      8.9927511]
+    - [5.209703, 2.9692911e-03, -2.8555891e-07, -1.63555e-10, 3.0432589e-14, 2.7677109e+04,
+      -4.444478]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 569.0
+    diameter: 3.63
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCNN
+  composition: {H: 1.0, C: 1.0, N: 2.0}
+  note: SRI/94
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [2.5243194, 0.015960619, -1.8816354e-05, 1.212554e-08, -3.2357378e-12, 5.4261984e+04,
+      11.67587]
+    - [5.8946362, 3.9895959e-03, -1.598238e-06, 2.9249395e-10, -2.0094686e-14, 5.3452941e+04,
+      -5.1030502]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 150.0
+    diameter: 2.5
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HCNO
+  composition: {H: 1.0, C: 1.0, O: 1.0, N: 1.0}
+  note: A5/05
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [0.607949401, 0.0282182431, -4.60451618e-05, 3.82559486e-08, -1.23226501e-11,
+      1.90714209e+04, 16.9199098]
+    - [5.91979744, 4.001146e-03, -1.42063343e-06, 2.27569621e-10, -1.3550487e-14,
+      1.80385534e+04, -8.26935223]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HOCN
+  composition: {H: 1.0, C: 1.0, O: 1.0, N: 1.0}
+  note: A5/05
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.88943546, 0.0116487242, -1.08005006e-05, 5.44138776e-09, -1.06857286e-12,
+      -3152.96691, 9.51295652]
+    - [5.28767714, 4.01746511e-03, -1.40407465e-06, 2.22562614e-10, -1.31562375e-14,
+      -3774.09807, -2.64470976]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: HNCO
+  composition: {H: 1.0, C: 1.0, O: 1.0, N: 1.0}
+  note: AciA5/05
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.24009031, 0.0145600497, -1.5435233e-05, 8.55535028e-09, -1.79631611e-12,
+      -1.54589951e+04, 12.1663775]
+    - [5.30045051, 4.02250821e-03, -1.4096228e-06, 2.23855342e-10, -1.32499966e-14,
+      -1.61995274e+04, -3.11770684]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: NCO
+  composition: {C: 1.0, O: 1.0, N: 1.0}
+  note: EA93
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.8269308, 8.8051688e-03, -8.3866134e-06, 4.8016964e-09, -1.3313595e-12, 1.4682477e+04,
+      9.5504646]
+    - [5.1521845, 2.3051761e-03, -8.8033153e-07, 1.4789098e-10, -9.0977996e-15, 1.4004123e+04,
+      -2.544266]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 232.4
+    diameter: 3.828
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: N2
+  composition: {N: 2.0}
+  note: G8/02
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.53100528, -1.23660988e-04, -5.02999433e-07, 2.43530612e-09, -1.40881235e-12,
+      -1046.97628, 2.96747038]
+    - [2.95257637, 1.3969004e-03, -4.92631603e-07, 7.86010195e-11, -4.60755204e-15,
+      -923.948688, 5.87188762]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    dipole: 0.0
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: AR
+  composition: {Ar: 1.0}
+  note: g5/97
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.375, 4.37967491]
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.375, 4.37967491]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 136.5
+    diameter: 3.33
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C3H7
+  composition: {H: 7.0, C: 3.0}
+  note: A5/05
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.08211458, 5.23240341e-03, 5.13554466e-05, -6.99343598e-08, 2.81819493e-11,
+      1.04074558e+04, 8.39534919]
+    - [6.49636579, 0.0177337992, -6.24898046e-06, 9.95389495e-10, -5.9019977e-14,
+      8859.73885, -8.5638971]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 266.8
+    diameter: 4.982
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: C3H8
+  composition: {H: 8.0, C: 3.0}
+  note: g2/00
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.21093013, 1.70886504e-03, 7.06530164e-05, -9.20060565e-08, 3.64618453e-11,
+      -1.43810883e+04, 5.61004451]
+    - [6.6691976, 0.0206108751, -7.36512349e-06, 1.18434262e-09, -7.0691463e-14, -1.62754066e+04,
+      -13.1943379]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 266.8
+    diameter: 4.982
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 1.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH2CHO
+  composition: {H: 3.0, C: 2.0, O: 1.0}
+  note: SAND86
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [3.409062, 0.010738574, 1.891492e-06, -7.158583e-09, 2.867385e-12, 1521.4766,
+      9.55829]
+    - [5.97567, 8.130591e-03, -2.743624e-06, 4.070304e-10, -2.176017e-14, 490.3218,
+      -5.045251]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+- name: CH3CHO
+  composition: {H: 4.0, C: 2.0, O: 1.0}
+  note: L8/88
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.7294595, -3.1932858e-03, 4.7534921e-05, -5.7458611e-08, 2.1931112e-11, -2.1572878e+04,
+      4.1030159]
+    - [5.4041108, 0.011723059, -4.2263137e-06, 6.8372451e-10, -4.0984863e-14, -2.2593122e+04,
+      -3.4807917]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 2.0
+    dispersion-coefficient: 0.0
+    quadrupole-polarizability: 0.0
+
+reactions:
+- equation: 'CH4 + 1.5 O2 => CO + 2 H2O '
+  rate-constant: {A: 2.0e+12, b: 0.0, Ea: 3.5e+04 cal/mol}
+  orders:
+    CH4: 0.9
+    O2: 1.1
+- equation: 'CO + 5.00E-01 O2 <=> CO2 '
+  rate-constant: {A: 6.324555e+07, b: 0.0, Ea: 1.2e+04 cal/mol}

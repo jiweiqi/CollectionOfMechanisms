@@ -55,7 +55,7 @@
     </state>
     <thermo model="IdealGas"/>
     <kinetics model="GasKinetics"/>
-    <transport model="AVBP"/>
+    <transport model="Multi"/>
   </phase>
 
   <!-- species definitions     -->
