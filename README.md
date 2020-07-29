@@ -24,3 +24,5 @@ Below are the proposed data organization structure. See the demo folder for DME_
 [Mechanisms from Lawrence Livermore National Laboratory (LLNL)](https://combustion.llnl.gov/mechanisms)
 
 [Mechanisms Collected on Cefac Cantera Manual](https://www.cerfacs.fr/cantera/mechanisms/meth.php#)
+
+[Mechanisms collected on Explosion Dynamics Laboratory of CalTech](https://shepherd.caltech.edu/EDL/PublicResources/sdt/cti_mech.html)
