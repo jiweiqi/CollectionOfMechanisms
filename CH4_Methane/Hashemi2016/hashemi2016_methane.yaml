@@ -1,6 +1,6 @@
 generator: cti2yaml
 cantera-version: 2.5.0a4
-date: Sat, 04 Jul 2020 23:13:46 -0400
+date: Wed, 29 Jul 2020 13:01:51 -0400
 input-files: [hashemi2016_methane.cti]
 
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
