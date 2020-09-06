@@ -1,21 +1,22 @@
 # CollectionOfMechanisms
-This repo is a collection of existing combustion reaction mechanisms. This repo also tries to include a converted Cantera .xml based mechanism. Therefore, cantera users can import those mechanism out of the shelf.
+This repo is a collection of combustion reaction mechanisms. This repo also tries to include a converted Cantera `XML` and `YAML` based mechanism. Therefore, cantera users can import those mechanism out of the shelf.
 
 Below are the proposed data organization structure. See the demo folder for DME_CH3OCH3.
-
-    /fuel name
-    	/readme.md (List of avaliable mechanisms)
-    	/Mechanism abbr. (e.g., GRI30 for methane)
-    		/chem.inp (chemkin format)	
-    		/thermo.dat
-    		/tran.dat
-    		/chem.xml (cantera format)
-			/chem.cti (cantera format, optionally)
-    		/readme.md
-    			+ how to cite?
-    			+ link to the origional papers
-    			+ original link for downloading the mechanisms
-    
+```
+/fuel name
+../readme.md (List of avaliable mechanisms)
+../Mechanism abbr. (e.g., GRI30 for methane)
+..../chem.inp (chemkin format)	
+..../thermo.dat
+..../tran.dat
+..../chem.xml (cantera format)
+..../chem.yaml (cantera format)
+..../chem.cti (cantera format, optionally)
+..../readme.md
+    + how to cite?
+    + link to the origional paper/website
+    + original link for downloading the mechanism
+``` 
 
 ## Useful links
 
