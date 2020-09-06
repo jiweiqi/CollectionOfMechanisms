@@ -1,1 +1,0 @@
-https://www.cerfacs.fr/cantera/docs/mechanisms/methane-air/GLOB/CANTERA/1S_CH4_MP1.cti
