@@ -1,0 +1,3012 @@
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+C
+C A 24-species reduced mechanism for high-T oxidation of n-dodecane
+C
+C Developed by Yang Gao and Tianfeng Lu
+C Department of Mechanical Engineering
+C University of Connecticut
+C
+C Email: tlu@engr.uconn.edu
+C
+C Reference:
+C    Vie A., Franzelli B., Gao Y., Lu T.F., Wang H., Ihme M., 
+C    "Analysis of segregation and bifurcation in turbulent spray flames: 
+C     a 3D counterflow configuration," 
+C    Proc. Combust. Inst.,  DOI: 10.1016/j.proci.2014.06.083.
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE CKWYP  (P, T, Y, ICKWRK, RCKWRK, WDOT)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION Y(*),WDOT(*),ICKWRK(*),RCKWRK(*)
+      DIMENSION RF(193),RB(193),RKLOW(18),C(24)
+      DIMENSION XQ(7)
+C
+      CALL YTCP(P, T, Y, C)
+      CALL RATT(T, RF, RB, RKLOW)
+      CALL RATX(T, C, RF, RB, RKLOW)
+      CALL QSSA(RF, RB, XQ)
+      CALL RDOT(RF, RB, WDOT)
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE CKWYR  (RHO, T, Y, ICKWRK, RCKWRK, WDOT)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION Y(*),WDOT(*),ICKWRK(*),RCKWRK(*)
+      DIMENSION RF(193),RB(193),RKLOW(18),C(24)
+      DIMENSION XQ(7)
+C
+      CALL YTCR(RHO, T, Y, C)
+      CALL RATT(T, RF, RB, RKLOW)
+      CALL RATX(T, C, RF, RB, RKLOW)
+      CALL QSSA(RF, RB, XQ)
+      CALL RDOT(RF, RB, WDOT)
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE YTCP (P, T, Y, C)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION Y(*), C(*)
+      DATA SMALL/1D-50/
+C
+      C(1) = Y(1)/1.007969975471497D0
+      C(2) = Y(2)/1.599940013885498D1
+      C(3) = Y(3)/1.700737011432648D1
+      C(4) = Y(4)/3.300677025318146D1
+      C(5) = Y(5)/2.015939950942993D0
+      C(6) = Y(6)/1.801534008979797D1
+      C(7) = Y(7)/3.401474022865295D1
+      C(8) = Y(8)/3.199880027770996D1
+      C(9) = Y(9)/1.503506028652191D1
+      C(10) = Y(10)/1.604303026199341D1
+      C(11) = Y(11)/3.00264904499054D1
+      C(12) = Y(12)/2.80105504989624D1
+      C(13) = Y(13)/4.400995063781738D1
+      C(14) = Y(14)/2.603824067115784D1
+      C(15) = Y(15)/2.805418062210083D1
+      C(16) = Y(16)/3.007012057304382D1
+      C(17) = Y(17)/4.304561078548431D1
+      C(18) = Y(18)/4.107330095767975D1
+      C(19) = Y(19)/4.208127093315125D1
+      C(20) = Y(20)/5.606473112106323D1
+      C(21) = Y(21)/5.610836124420166D1
+      C(22) = Y(22)/1.70341023683548D2
+      C(23) = Y(23)/8.416254186630249D1
+      C(24) = Y(24)/2.801339912414551D1
+C
+      SUM = 0D0
+      DO K = 1, 24
+         SUM = SUM + C(K)
+      ENDDO
+      SUM = P/(SUM*T*8.314510D7)
+C
+      DO K = 1, 24
+         C(K) = C(K)*SUM
+      ENDDO
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE YTCR (RHO, T, Y, C)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION Y(*), C(*)
+      DATA SMALL/1D-50/
+C
+C     H
+      C(1) = Y(1)/1.007969975471497D0
+C     O
+      C(2) = Y(2)/1.599940013885498D1
+C     OH
+      C(3) = Y(3)/1.700737011432648D1
+C     HO2
+      C(4) = Y(4)/3.300677025318146D1
+C     H2
+      C(5) = Y(5)/2.015939950942993D0
+C     H2O
+      C(6) = Y(6)/1.801534008979797D1
+C     H2O2
+      C(7) = Y(7)/3.401474022865295D1
+C     O2
+      C(8) = Y(8)/3.199880027770996D1
+C     CH3
+      C(9) = Y(9)/1.503506028652191D1
+C     CH4
+      C(10) = Y(10)/1.604303026199341D1
+C     CH2O
+      C(11) = Y(11)/3.00264904499054D1
+C     CO
+      C(12) = Y(12)/2.80105504989624D1
+C     CO2
+      C(13) = Y(13)/4.400995063781738D1
+C     C2H2
+      C(14) = Y(14)/2.603824067115784D1
+C     C2H4
+      C(15) = Y(15)/2.805418062210083D1
+C     C2H6
+      C(16) = Y(16)/3.007012057304382D1
+C     CH2CHO
+      C(17) = Y(17)/4.304561078548431D1
+C     aC3H5
+      C(18) = Y(18)/4.107330095767975D1
+C     C3H6
+      C(19) = Y(19)/4.208127093315125D1
+C     C2H3CHO
+      C(20) = Y(20)/5.606473112106323D1
+C     C4H81
+      C(21) = Y(21)/5.610836124420166D1
+C     NC12H26
+      C(22) = Y(22)/1.70341023683548D2
+C     C6H12
+      C(23) = Y(23)/8.416254186630249D1
+C     N2
+      C(24) = Y(24)/2.801339912414551D1
+C
+      DO K = 1, 24
+         C(K) = RHO * C(K)
+      ENDDO
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE RATT (T, RF, RB, RKLOW)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      PARAMETER (RU=8.31451D7, SMALL=1.D-200, PATM=1.01325D6)
+      DIMENSION RF(*), RB(*), RKLOW(*)
+      DIMENSION SMH(30), EG(30)
+C
+      ALOGT = LOG(T)
+      TI = 1D0/T
+      TI2 = TI*TI
+C
+      CALL RDSMH (T, SMH)
+      EG(1) = EXP(SMH(1))
+      EG(2) = EXP(SMH(2))
+      EG(3) = EXP(SMH(3))
+      EG(4) = EXP(SMH(4))
+      EG(5) = EXP(SMH(5))
+      EG(6) = EXP(SMH(6))
+      EG(7) = EXP(SMH(7))
+      EG(8) = EXP(SMH(8))
+      EG(9) = EXP(SMH(9))
+      EG(10) = EXP(SMH(10))
+      EG(11) = EXP(SMH(11))
+      EG(12) = EXP(SMH(12))
+      EG(13) = EXP(SMH(13))
+      EG(14) = EXP(SMH(14))
+      EG(15) = EXP(SMH(15))
+      EG(16) = EXP(SMH(16))
+      EG(17) = EXP(SMH(17))
+      EG(18) = EXP(SMH(18))
+      EG(19) = EXP(SMH(19))
+      EG(20) = EXP(SMH(20))
+      EG(21) = EXP(SMH(21))
+      EG(22) = EXP(SMH(22))
+      EG(23) = EXP(SMH(23))
+      EG(24) = EXP(SMH(24))
+      EG(25) = EXP(SMH(25))
+      EG(26) = EXP(SMH(26))
+      EG(27) = EXP(SMH(27))
+      EG(28) = EXP(SMH(28))
+      EG(30) = EXP(SMH(30))
+      PFAC1 = PATM / (RU*T)
+      PFAC2 = PFAC1*PFAC1
+      PFAC3 = PFAC2*PFAC1
+C
+C
+      RF(1) = EXP(3.781365440989417D1 -6.707D-1*ALOGT 
+     * -8.575315233251871D3*TI)
+      EQK = EG(2)*EG(3)/EG(1)/EG(8)
+      RB(1) = RF(1) / MAX(EQK, SMALL)
+      RF(2) = EXP(1.073400250738888D1 +2.7D0*ALOGT 
+     * -3.150136339425897D3*TI)
+      EQK = EG(1)*EG(3)/EG(2)/EG(5)
+      RB(2) = RF(2) / MAX(EQK, SMALL)
+      RF(3) = EXP(1.897111162231072D1 +1.51D0*ALOGT 
+     * -1.726033170004924D3*TI)
+      EQK = EG(1)*EG(6)/EG(3)/EG(5)
+      RB(3) = RF(3) / MAX(EQK, SMALL)
+      RF(4) = EXP(1.058986184880864D1 +2.4D0*ALOGT 
+     * +1.061787168720231D3*TI)
+      EQK = EG(2)*EG(6)/EG(3)/EG(3)
+      RB(4) = RF(4) / MAX(EQK, SMALL)
+      RF(5) = EXP(4.202314503819682D1 -1.D0*ALOGT)
+      EQK = EG(5)/EG(1)/EG(1)/PFAC1
+      RB(5) = RF(5) / MAX(EQK, SMALL)
+      RF(6) = EXP(3.903858606524095D1 -6.D-1*ALOGT)
+      EQK = EG(5)/EG(1)/EG(1)/PFAC1
+      RB(6) = RF(6) / MAX(EQK, SMALL)
+      RF(7) = EXP(4.547615992139523D1 -1.25D0*ALOGT)
+      EQK = EG(5)/EG(1)/EG(1)/PFAC1
+      RB(7) = RF(7) / MAX(EQK, SMALL)
+      RF(8) = EXP(4.775644995211934D1 -2.D0*ALOGT)
+      EQK = EG(5)/EG(1)/EG(1)/PFAC1
+      RB(8) = RF(8) / MAX(EQK, SMALL)
+      RF(9) = 8.D1*RF(8)
+      EQK = EG(6)/EG(1)/EG(3)/PFAC1
+      RB(9) = RF(9) / MAX(EQK, SMALL)
+      RF(10) = 5.296629213483146D0*RF(5)
+      EQK = EG(3)/EG(1)/EG(2)/PFAC1
+      RB(10) = RF(10) / MAX(EQK, SMALL)
+      RF(11) = 6.741573033707865D-2*RF(5)
+      EQK = EG(8)/EG(2)/EG(2)/PFAC1
+      RB(11) = RF(11) / MAX(EQK, SMALL)
+      RF(12) = EXP(2.926339399964515D1 +4.4D-1*ALOGT)
+      EQK = EG(4)/EG(1)/EG(8)/PFAC1
+      RB(12) = RF(12) / MAX(EQK, SMALL)
+      RF(13) = EXP(1.329058600981878D1 +2.433D0*ALOGT 
+     * -2.692309815207098D4*TI)
+      EQK = EG(1)*EG(4)/EG(5)/EG(8)
+      RB(13) = RF(13) / MAX(EQK, SMALL)
+      RF(14) = EXP(3.234055131724088D1 -3.7D-1*ALOGT)
+      EQK = EG(7)/EG(3)/EG(3)/PFAC1
+      RB(14) = RF(14) / MAX(EQK, SMALL)
+      RF(15) = EXP(2.900978721062765D1 -3.376583839863861D2*TI)
+      EQK = EG(2)*EG(6)/EG(1)/EG(4)
+      RB(15) = RF(15) / MAX(EQK, SMALL)
+      RF(16) = EXP(3.194650722679419D1 -1.484489169537763D2*TI)
+      EQK = EG(3)*EG(3)/EG(1)/EG(4)
+      RB(16) = RF(16) / MAX(EQK, SMALL)
+      RF(17) = 4.D13
+      EQK = EG(3)*EG(8)/EG(2)/EG(4)
+      RB(17) = RF(17) / MAX(EQK, SMALL)
+      RF(18) = EXP(2.559080028740199D1 +8.20243168253069D2*TI)
+      EQK = EG(7)*EG(8)/EG(4)/EG(4)
+      RB(18) = RF(18) / MAX(EQK, SMALL)
+      RF(19) = EXP(3.353310785188531D1 -6.038600011679036D3*TI)
+      EQK = EG(7)*EG(8)/EG(4)/EG(4)
+      RB(19) = RF(19) / MAX(EQK, SMALL)
+      RF(20) = EXP(4.17901213782829D1 -1.76D0*ALOGT 
+     * -3.019300005839518D1*TI)
+      EQK = EG(6)*EG(8)/EG(3)/EG(4)
+      RB(20) = RF(20) / MAX(EQK, SMALL)
+      RF(21) = EXP(1.958330615898009D2 -2.23D1*ALOGT 
+     * -1.353652835951384D4*TI)
+      EQK = EG(6)*EG(8)/EG(3)/EG(4)
+      RB(21) = RF(21) / MAX(EQK, SMALL)
+      RF(22) = EXP(1.62861784418104D2 -1.672D1*ALOGT 
+     * -1.655582836535336D4*TI)
+      EQK = EG(6)*EG(8)/EG(3)/EG(4)
+      RB(22) = RF(22) / MAX(EQK, SMALL)
+      RF(23) = EXP(2.855130386907224D1 +2.D0*ALOGT 
+     * -2.012866670559679D4*TI)
+      EQK = EG(6)*EG(8)/EG(3)/EG(4)
+      RB(23) = RF(23) / MAX(EQK, SMALL)
+      RF(24) = EXP(3.131515726471902D2 -4.D1*ALOGT 
+     * -1.75119400338692D4*TI)
+      EQK = EG(6)*EG(8)/EG(3)/EG(4)
+      RB(24) = RF(24) / MAX(EQK, SMALL)
+      RF(25) = EXP(1.561556883000702D1 +2.D0*ALOGT 
+     * -2.616726671727582D3*TI)
+      EQK = EG(4)*EG(5)/EG(1)/EG(7)
+      RB(25) = RF(25) / MAX(EQK, SMALL)
+      RF(26) = EXP(3.081323295642516D1 -1.997770170530481D3*TI)
+      EQK = EG(3)*EG(6)/EG(1)/EG(7)
+      RB(26) = RF(26) / MAX(EQK, SMALL)
+      RF(27) = EXP(1.608039378377431D1 +2.D0*ALOGT 
+     * -1.997770170530481D3*TI)
+      EQK = EG(3)*EG(4)/EG(2)/EG(7)
+      RB(27) = RF(27) / MAX(EQK, SMALL)
+      RF(28) = EXP(2.832416829648849D1 -2.148735170822457D2*TI)
+      EQK = EG(4)*EG(6)/EG(3)/EG(7)
+      RB(28) = RF(28) / MAX(EQK, SMALL)
+      RF(29) = EXP(9.538806728516803D1 -7.D0*ALOGT 
+     * -1.892094670326098D4*TI)
+      EQK = EG(4)*EG(6)/EG(3)/EG(7)
+      RB(29) = RF(29) / MAX(EQK, SMALL)
+      RF(30) = EXP(2.333480513766778D1 -1.199668535653569D3*TI)
+      EQK = EG(17)/EG(2)/EG(16)/PFAC1
+      RB(30) = RF(30) / MAX(EQK, SMALL)
+      RF(31) = EXP(1.116280045189523D1 +2.053D0*ALOGT 
+     * +1.789790721794902D2*TI)
+      EQK = EG(1)*EG(17)/EG(3)/EG(16)
+      RB(31) = RF(31) / MAX(EQK, SMALL)
+      RF(32) = EXP(2.938143762162222D1 -6.64D-1*ALOGT 
+     * -1.669823868229545D2*TI)
+      EQK = EG(1)*EG(17)/EG(3)/EG(16)
+      RB(32) = RF(32) / MAX(EQK, SMALL)
+      RF(33) = EXP(2.774345654525834D1 -2.400343504642417D4*TI)
+      EQK = EG(2)*EG(17)/EG(8)/EG(16)
+      RB(33) = RF(33) / MAX(EQK, SMALL)
+      RF(34) = EXP(1.196400108433044D1 +2.18D0*ALOGT 
+     * -9.0290204129627D3*TI)
+      EQK = EG(3)*EG(17)/EG(4)/EG(16)
+      RB(34) = RF(34) / MAX(EQK, SMALL)
+      RF(35) = 1.2D14
+      EQK = EG(5)*EG(16)/EG(1)/EG(13)
+      RB(35) = RF(35) / MAX(EQK, SMALL)
+      RF(36) = 3.D13
+      EQK = EG(3)*EG(16)/EG(2)/EG(13)
+      RB(36) = RF(36) / MAX(EQK, SMALL)
+      RF(37) = 3.D13
+      EQK = EG(1)*EG(17)/EG(2)/EG(13)
+      RB(37) = RF(37) / MAX(EQK, SMALL)
+      RF(38) = 3.02D13
+      EQK = EG(6)*EG(16)/EG(3)/EG(13)
+      RB(38) = RF(38) / MAX(EQK, SMALL)
+      RF(39) = EXP(3.976988501176528D1 -1.D0*ALOGT 
+     * -8.554683349878635D3*TI)
+      EQK = EG(1)*EG(16)/EG(13)*PFAC1
+      RB(39) = RF(39) / MAX(EQK, SMALL)
+      RF(40) = 1.2D1*RF(39)
+      EQK = EG(1)*EG(16)/EG(13)*PFAC1
+      RB(40) = RF(40) / MAX(EQK, SMALL)
+      RF(41) = EXP(2.321150027682708D1 +8.070000000000001D-1*ALOGT 
+     * +3.658385173742216D2*TI)
+      EQK = EG(4)*EG(16)/EG(8)/EG(13)
+      RB(41) = RF(41) / MAX(EQK, SMALL)
+      RF(42) = EXP(1.757671067365784D1 +1.5D0*ALOGT 
+     * -4.005604674413761D4*TI)
+      EQK = EG(14)/EG(5)/EG(16)/PFAC1
+      RB(42) = RF(42) / MAX(EQK, SMALL)
+      RF(43) = EXP(2.77171988121696D1 +4.8D-1*ALOGT 
+     * +1.308363335863791D2*TI)
+      EQK = EG(14)/EG(1)/EG(13)/PFAC1
+      RB(43) = RF(43) / MAX(EQK, SMALL)
+      RF(44) = EXP(3.775765221977888D1 -8.D-1*ALOGT)
+      EQK = EG(11)/EG(1)/EG(9)/PFAC1
+      RB(44) = RF(44) / MAX(EQK, SMALL)
+      RF(45) = 8.D13
+      EQK = EG(1)*EG(13)/EG(2)/EG(9)
+      RB(45) = RF(45) / MAX(EQK, SMALL)
+      RF(46) = 2.D13
+      EQK = EG(1)*EG(14)/EG(3)/EG(9)
+      RB(46) = RF(46) / MAX(EQK, SMALL)
+      RF(47) = EXP(1.312236337740433D1 +2.D0*ALOGT 
+     * -3.638256507036619D3*TI)
+      EQK = EG(1)*EG(11)/EG(5)/EG(9)
+      RB(47) = RF(47) / MAX(EQK, SMALL)
+      RF(48) = EXP(2.999187511704657D1 -7.548250014598796D2*TI)
+      EQK = EG(3)*EG(13)/EG(8)/EG(9)
+      RB(48) = RF(48) / MAX(EQK, SMALL)
+      RF(49) = 2.490566037735849D-1*RF(48)
+      EQK = EG(1)*EG(1)*EG(17)/EG(8)/EG(9)*PFAC1
+      RB(49) = RF(49) / MAX(EQK, SMALL)
+      RF(50) = 2.D13
+      EQK = EG(3)*EG(14)/EG(4)/EG(9)
+      RB(50) = RF(50) / MAX(EQK, SMALL)
+      RF(51) = 3.2D13
+      EQK = EG(5)*EG(18)/EG(9)/EG(9)
+      RB(51) = RF(51) / MAX(EQK, SMALL)
+      RF(52) = EXP(3.033907131703076D1 -3.019300005839518D2*TI)
+      EQK = EG(9)/EG(10)
+      RB(52) = RF(52) / MAX(EQK, SMALL)
+      RF(53) = 1.5D13
+      EQK = EG(5)*EG(16)/EG(2)/EG(10)
+      RB(53) = RF(53) / MAX(EQK, SMALL)
+      RF(54) = 1.5D13
+      EQK = EG(1)*EG(13)/EG(2)/EG(10)
+      RB(54) = RF(54) / MAX(EQK, SMALL)
+      RF(55) = 3.D13
+      EQK = EG(1)*EG(14)/EG(3)/EG(10)
+      RB(55) = RF(55) / MAX(EQK, SMALL)
+      RF(56) = 7.D13
+      EQK = EG(1)*EG(11)/EG(5)/EG(10)
+      RB(56) = RF(56) / MAX(EQK, SMALL)
+      RF(57) = 2.8D13
+      EQK = EG(1)*EG(3)*EG(16)/EG(8)/EG(10)*PFAC1
+      RB(57) = RF(57) / MAX(EQK, SMALL)
+      RF(58) = 1.2D13
+      EQK = EG(6)*EG(16)/EG(8)/EG(10)
+      RB(58) = RF(58) / MAX(EQK, SMALL)
+      RF(59) = 3.D13
+      EQK = EG(9)/EG(10)
+      RB(59) = RF(59) / MAX(EQK, SMALL)
+      RF(60) = 9.D12
+      EQK = EG(9)/EG(10)
+      RB(60) = RF(60) / MAX(EQK, SMALL)
+      RF(61) = 7.D12
+      EQK = EG(9)/EG(10)
+      RB(61) = RF(61) / MAX(EQK, SMALL)
+      RF(62) = 1.4D13
+      EQK = EG(14)*EG(16)/EG(10)/EG(17)
+      RB(62) = RF(62) / MAX(EQK, SMALL)
+      RF(63) = EXP(2.701483497650473D1 +4.54D-1*ALOGT 
+     * -1.308363335863791D3*TI)
+      EQK = EG(15)/EG(1)/EG(14)/PFAC1
+      RB(63) = RF(63) / MAX(EQK, SMALL)
+      RF(64) = EXP(2.385876005287556D1 +1.05D0*ALOGT 
+     * -1.648034586520737D3*TI)
+      EQK = EG(5)*EG(13)/EG(1)/EG(14)
+      RB(64) = RF(64) / MAX(EQK, SMALL)
+      RF(65) = EXP(3.129458276205819D1 -1.781387003445316D3*TI)
+      EQK = EG(3)*EG(13)/EG(2)/EG(14)
+      RB(65) = RF(65) / MAX(EQK, SMALL)
+      RF(66) = EXP(2.195582609812426D1 +1.18D0*ALOGT 
+     * +2.249378504350441D2*TI)
+      EQK = EG(6)*EG(13)/EG(3)/EG(14)
+      RB(66) = RF(66) / MAX(EQK, SMALL)
+      RF(67) = EXP(3.223619130191664D1 -2.012866670559679D4*TI)
+      EQK = EG(4)*EG(13)/EG(8)/EG(14)
+      RB(67) = RF(67) / MAX(EQK, SMALL)
+      RF(68) = EXP(2.763102111592855D1 -4.025733341119358D3*TI)
+      EQK = EG(7)*EG(13)/EG(4)/EG(14)
+      RB(68) = RF(68) / MAX(EQK, SMALL)
+      RF(69) = EXP(3.708037838837523D1 -6.3D-1*ALOGT 
+     * -1.927319837060892D2*TI)
+      EQK = EG(12)/EG(1)/EG(11)/PFAC1
+      RB(69) = RF(69) / MAX(EQK, SMALL)
+      RF(70) = 8.43D13
+      EQK = EG(1)*EG(14)/EG(2)/EG(11)
+      RB(70) = RF(70) / MAX(EQK, SMALL)
+      RF(71) = EXP(1.784086224869942D1 +1.6D0*ALOGT 
+     * -2.727434338608365D3*TI)
+      EQK = EG(6)*EG(9)/EG(3)/EG(11)
+      RB(71) = RF(71) / MAX(EQK, SMALL)
+      RF(72) = 2.501D13
+      EQK = EG(6)*EG(10)/EG(3)/EG(11)
+      RB(72) = RF(72) / MAX(EQK, SMALL)
+      RF(73) = EXP(3.105950935782661D1 -1.449264002802969D4*TI)
+      EQK = EG(2)*EG(15)/EG(8)/EG(11)
+      RB(73) = RF(73) / MAX(EQK, SMALL)
+      RF(74) = EXP(2.430678477540252D1 -4.498757008700882D3*TI)
+      EQK = EG(3)*EG(14)/EG(8)/EG(11)
+      RB(74) = RF(74) / MAX(EQK, SMALL)
+      RF(75) = 1.D12
+      EQK = EG(8)*EG(12)/EG(4)/EG(11)
+      RB(75) = RF(75) / MAX(EQK, SMALL)
+      RF(76) = 1.34D13
+      EQK = EG(3)*EG(15)/EG(4)/EG(11)
+      RB(76) = RF(76) / MAX(EQK, SMALL)
+      RF(77) = EXP(1.010642839653282D1 +2.47D0*ALOGT 
+     * -2.606662338374784D3*TI)
+      EQK = EG(4)*EG(12)/EG(7)/EG(11)
+      RB(77) = RF(77) / MAX(EQK, SMALL)
+      RF(78) = 8.48D12
+      EQK = EG(12)*EG(16)/EG(11)/EG(13)
+      RB(78) = RF(78) / MAX(EQK, SMALL)
+      RF(79) = EXP(8.107720061910534D0 +2.81D0*ALOGT 
+     * -2.94884967236993D3*TI)
+      EQK = EG(12)*EG(13)/EG(11)/EG(14)
+      RB(79) = RF(79) / MAX(EQK, SMALL)
+      RF(80) = 4.D13
+      EQK = EG(1)*EG(20)/EG(9)/EG(11)
+      RB(80) = RF(80) / MAX(EQK, SMALL)
+      RF(81) = EXP(3.011592776571655D1 +2.868335005547542D2*TI)
+      EQK = EG(1)*EG(20)/EG(10)/EG(11)
+      RB(81) = RF(81) / MAX(EQK, SMALL)
+      RF(82) = EXP(3.759277757658865D1 -9.7D-1*ALOGT 
+     * -3.119943339367502D2*TI)
+      EQK = EG(22)/EG(11)/EG(11)/PFAC1
+      RB(82) = RF(82) / MAX(EQK, SMALL)
+      RF(83) = EXP(2.923845702569198D1 +1.D-1*ALOGT 
+     * -5.334096676983148D3*TI)
+      EQK = EG(1)*EG(21)/EG(11)/EG(11)
+      RB(83) = RF(83) / MAX(EQK, SMALL)
+      RF(84) = 2.D13
+      EQK = EG(5)*EG(14)/EG(1)/EG(15)
+      RB(84) = RF(84) / MAX(EQK, SMALL)
+      RF(85) = 3.2D13
+      EQK = EG(3)*EG(11)/EG(1)/EG(15)
+      RB(85) = RF(85) / MAX(EQK, SMALL)
+      RF(86) = 1.6D13
+      EQK = EG(6)*EG(10)/EG(1)/EG(15)
+      RB(86) = RF(86) / MAX(EQK, SMALL)
+      RF(87) = 1.D13
+      EQK = EG(3)*EG(14)/EG(2)/EG(15)
+      RB(87) = RF(87) / MAX(EQK, SMALL)
+      RF(88) = 5.D12
+      EQK = EG(6)*EG(14)/EG(3)/EG(15)
+      RB(88) = RF(88) / MAX(EQK, SMALL)
+      RF(89) = EXP(-2.847965319932889D1 +7.6D0*ALOGT 
+     * +1.776354836768916D3*TI)
+      EQK = EG(4)*EG(14)/EG(8)/EG(15)
+      RB(89) = RF(89) / MAX(EQK, SMALL)
+      RF(90) = EXP(2.030775039298474D1 +1.62D0*ALOGT 
+     * -5.454868677216729D3*TI)
+      EQK = EG(5)*EG(11)/EG(1)/EG(12)
+      RB(90) = RF(90) / MAX(EQK, SMALL)
+      RF(91) = EXP(2.074306846424259D1 +1.5D0*ALOGT 
+     * -4.327663341703309D3*TI)
+      EQK = EG(3)*EG(11)/EG(2)/EG(12)
+      RB(91) = RF(91) / MAX(EQK, SMALL)
+      RF(92) = EXP(1.842068074395237D1 +1.6D0*ALOGT 
+     * -1.570036003036549D3*TI)
+      EQK = EG(6)*EG(11)/EG(3)/EG(12)
+      RB(92) = RF(92) / MAX(EQK, SMALL)
+      RF(93) = EXP(1.471567190790855D1 +2.D0*ALOGT 
+     * -4.161601841382136D3*TI)
+      EQK = EG(11)*EG(11)/EG(9)/EG(12)
+      RB(93) = RF(93) / MAX(EQK, SMALL)
+      RF(94) = 1.333333333333333D0*RF(81)
+      EQK = EG(11)*EG(11)/EG(10)/EG(12)
+      RB(94) = RF(94) / MAX(EQK, SMALL)
+      RF(95) = EXP(1.97713479274291D1 +1.62D0*ALOGT 
+     * -1.864327174605727D4*TI)
+      EQK = EG(1)*EG(18)/EG(19)*PFAC1
+      RB(95) = RF(95) / MAX(EQK, SMALL)
+      RF(96) = EXP(1.522160754638034D1 +2.D0*ALOGT 
+     * -9.561116685158474D2*TI)
+      EQK = EG(9)*EG(16)/EG(2)/EG(18)
+      RB(96) = RF(96) / MAX(EQK, SMALL)
+      RF(97) = EXP(-7.635493904311701D0 +4.D0*ALOGT 
+     * +1.006433335279839D3*TI)
+      EQK = EG(11)*EG(16)/EG(3)/EG(18)
+      RB(97) = RF(97) / MAX(EQK, SMALL)
+      RF(98) = EXP(1.611809565095832D1 +2.D0*ALOGT 
+     * -3.019300005839518D3*TI)
+      EQK = EG(16)*EG(19)/EG(13)/EG(18)
+      RB(98) = RF(98) / MAX(EQK, SMALL)
+      RF(99) = EXP(1.230228267232072D2 -1.282D1*ALOGT 
+     * -1.797993153477433D4*TI)
+      EQK = EG(24)/EG(11)/EG(18)/PFAC1
+      RB(99) = RF(99) / MAX(EQK, SMALL)
+      RF(100) = EXP(2.943602581190662D1 +2.7D-1*ALOGT 
+     * -1.409006669391775D2*TI)
+      EQK = EG(20)/EG(1)/EG(19)/PFAC1
+      RB(100) = RF(100) / MAX(EQK, SMALL)
+      RF(101) = 9.D13
+      EQK = EG(5)*EG(18)/EG(1)/EG(19)
+      RB(101) = RF(101) / MAX(EQK, SMALL)
+      RF(102) = 4.8D13
+      EQK = EG(11)*EG(16)/EG(2)/EG(19)
+      RB(102) = RF(102) / MAX(EQK, SMALL)
+      RF(103) = 3.011D13
+      EQK = EG(6)*EG(18)/EG(3)/EG(19)
+      RB(103) = RF(103) / MAX(EQK, SMALL)
+      RF(104) = EXP(1.410818017192709D1 +1.61D0*ALOGT 
+     * +1.929332703731452D2*TI)
+      EQK = EG(4)*EG(18)/EG(8)/EG(19)
+      RB(104) = RF(104) / MAX(EQK, SMALL)
+      RF(105) = EXP(2.642704831160261D1 +2.9D-1*ALOGT 
+     * -5.535383344039117D0*TI)
+      EQK = EG(2)*EG(23)/EG(8)/EG(19)
+      RB(105) = RF(105) / MAX(EQK, SMALL)
+      RF(106) = EXP(3.836741779139978D1 -1.39D0*ALOGT 
+     * -5.082488343163189D2*TI)
+      EQK = EG(13)*EG(14)/EG(8)/EG(19)
+      RB(106) = RF(106) / MAX(EQK, SMALL)
+      RF(107) = 1.D13
+      EQK = EG(3)*EG(23)/EG(4)/EG(19)
+      RB(107) = RF(107) / MAX(EQK, SMALL)
+      RF(108) = EXP(2.32164712895491D1 +2.999171339133921D2*TI)
+      EQK = EG(4)*EG(20)/EG(7)/EG(19)
+      RB(108) = RF(108) / MAX(EQK, SMALL)
+      RF(109) = 9.033D13
+      EQK = EG(16)*EG(20)/EG(13)/EG(19)
+      RB(109) = RF(109) / MAX(EQK, SMALL)
+      RF(110) = 1.8D13
+      EQK = EG(27)/EG(13)/EG(19)/PFAC1
+      RB(110) = RF(110) / MAX(EQK, SMALL)
+      RF(111) = 3.92D11
+      EQK = EG(12)*EG(18)/EG(11)/EG(19)
+      RB(111) = RF(111) / MAX(EQK, SMALL)
+      RF(112) = 2.5D13
+      EQK = EG(25)/EG(11)/EG(19)/PFAC1
+      RB(112) = RF(112) / MAX(EQK, SMALL)
+      RF(113) = EXP(5.566750733996526D1 -2.83D0*ALOGT 
+     * -9.368887918120025D3*TI)
+      EQK = EG(1)*EG(24)/EG(11)/EG(19)
+      RB(113) = RF(113) / MAX(EQK, SMALL)
+      RF(114) = 9.6D11
+      EQK = EG(18)*EG(20)/EG(19)/EG(19)
+      RB(114) = RF(114) / MAX(EQK, SMALL)
+      RF(115) = EXP(9.646011254645141D1 -9.147D0*ALOGT 
+     * -2.360086171231223D4*TI)
+      EQK = EG(11)*EG(16)/EG(23)*PFAC1
+      RB(115) = RF(115) / MAX(EQK, SMALL)
+      RF(116) = 9.D13
+      EQK = EG(11)*EG(13)/EG(1)/EG(23)
+      RB(116) = RF(116) / MAX(EQK, SMALL)
+      RF(117) = 1.8D10
+      EQK = EG(3)*EG(14)*EG(16)/EG(8)/EG(23)*PFAC1
+      RB(117) = RF(117) / MAX(EQK, SMALL)
+      RF(118) = EXP(2.103588439468822D1 +1.463D0*ALOGT 
+     * -6.818585846520912D2*TI)
+      EQK = EG(21)/EG(1)/EG(20)/PFAC1
+      RB(118) = RF(118) / MAX(EQK, SMALL)
+      RF(119) = EXP(1.774143646856141D1 +1.9D0*ALOGT 
+     * -6.51665584593696D3*TI)
+      EQK = EG(5)*EG(19)/EG(1)/EG(20)
+      RB(119) = RF(119) / MAX(EQK, SMALL)
+      RF(120) = EXP(1.653020530178515D1 +1.9D0*ALOGT 
+     * -1.8820303369733D3*TI)
+      EQK = EG(3)*EG(19)/EG(2)/EG(20)
+      RB(120) = RF(120) / MAX(EQK, SMALL)
+      RF(121) = EXP(1.677042083699801D1 +1.83D0*ALOGT 
+     * -1.107076668807823D2*TI)
+      EQK = EG(11)*EG(13)/EG(2)/EG(20)
+      RB(121) = RF(121) / MAX(EQK, SMALL)
+      RF(122) = 2.D-2*RF(121)
+      EQK = EG(9)*EG(14)/EG(2)/EG(20)
+      RB(122) = RF(122) / MAX(EQK, SMALL)
+      RF(123) = EXP(1.509644440342634D1 +2.D0*ALOGT 
+     * -1.258041669099799D3*TI)
+      EQK = EG(6)*EG(19)/EG(3)/EG(20)
+      RB(123) = RF(123) / MAX(EQK, SMALL)
+      RF(124) = EXP(1.611809565095832D1 +2.D0*ALOGT 
+     * -4.025733341119358D3*TI)
+      EQK = EG(16)*EG(21)/EG(13)/EG(20)
+      RB(124) = RF(124) / MAX(EQK, SMALL)
+      RF(125) = EXP(3.062675338948254D1 -3.019300005839518D3*TI)
+      EQK = EG(1)*EG(24)/EG(9)/EG(20)
+      RB(125) = RF(125) / MAX(EQK, SMALL)
+      RF(126) = 5.D13
+      EQK = EG(1)*EG(24)/EG(10)/EG(20)
+      RB(126) = RF(126) / MAX(EQK, SMALL)
+      RF(127) = EXP(1.233270529646354D1 +2.D0*ALOGT 
+     * -4.629593342287261D3*TI)
+      EQK = EG(12)*EG(19)/EG(11)/EG(20)
+      RB(127) = RF(127) / MAX(EQK, SMALL)
+      RF(128) = EXP(2.652235849140694D1 -3.874768340827382D3*TI)
+      EQK = EG(26)/EG(11)/EG(20)/PFAC1
+      RB(128) = RF(128) / MAX(EQK, SMALL)
+      RF(129) = EXP(3.137344133697052D1 -3.059557339250712D4*TI)
+      EQK = EG(4)*EG(19)/EG(8)/EG(20)
+      RB(129) = RF(129) / MAX(EQK, SMALL)
+      RF(130) = EXP(4.079452643666405D1 -9.9D-1*ALOGT 
+     * -7.95082334871073D2*TI)
+      EQK = EG(22)/EG(1)/EG(21)/PFAC1
+      RB(130) = RF(130) / MAX(EQK, SMALL)
+      RF(131) = 2.D12
+      EQK = EG(5)*EG(20)/EG(1)/EG(21)
+      RB(131) = RF(131) / MAX(EQK, SMALL)
+      RF(132) = 1.604D13
+      EQK = EG(11)*EG(14)/EG(2)/EG(21)
+      RB(132) = RF(132) / MAX(EQK, SMALL)
+      RF(133) = 2.D10
+      EQK = EG(4)*EG(20)/EG(8)/EG(21)
+      RB(133) = RF(133) / MAX(EQK, SMALL)
+      RF(134) = 3.D11
+      EQK = EG(8)*EG(22)/EG(4)/EG(21)
+      RB(134) = RF(134) / MAX(EQK, SMALL)
+      RF(135) = 3.D11
+      EQK = EG(7)*EG(20)/EG(4)/EG(21)
+      RB(135) = RF(135) / MAX(EQK, SMALL)
+      RF(136) = 2.4D13
+      EQK = EG(3)*EG(11)*EG(14)/EG(4)/EG(21)*PFAC1
+      RB(136) = RF(136) / MAX(EQK, SMALL)
+      RF(137) = EXP(2.288658886260695D1 -4.901330342812818D2*TI)
+      EQK = EG(4)*EG(22)/EG(7)/EG(21)
+      RB(137) = RF(137) / MAX(EQK, SMALL)
+      RF(138) = 1.5D13
+      EQK = EG(28)/EG(19)/EG(21)/PFAC1
+      RB(138) = RF(138) / MAX(EQK, SMALL)
+      RF(139) = EXP(7.504369952894507D1 -5.22D0*ALOGT 
+     * -9.937019535885494D3*TI)
+      EQK = EG(11)*EG(24)/EG(19)/EG(21)
+      RB(139) = RF(139) / MAX(EQK, SMALL)
+      RF(140) = EXP(1.856044268632752D1 +1.9D0*ALOGT 
+     * -3.789221507328595D3*TI)
+      EQK = EG(5)*EG(21)/EG(1)/EG(22)
+      RB(140) = RF(140) / MAX(EQK, SMALL)
+      RF(141) = EXP(1.831309553327243D1 +1.92D0*ALOGT 
+     * -2.863302838871143D3*TI)
+      EQK = EG(3)*EG(21)/EG(2)/EG(22)
+      RB(141) = RF(141) / MAX(EQK, SMALL)
+      RF(142) = EXP(1.507963728510996D1 +2.12D0*ALOGT 
+     * -4.377985008467301D2*TI)
+      EQK = EG(6)*EG(21)/EG(3)/EG(22)
+      RB(142) = RF(142) / MAX(EQK, SMALL)
+      RF(143) = EXP(3.131990057004248D1 +2.767691672019558D2*TI)
+      EQK = EG(11)*EG(21)/EG(10)/EG(22)
+      RB(143) = RF(143) / MAX(EQK, SMALL)
+      RF(144) = EXP(1.563033530012333D1 +1.74D0*ALOGT 
+     * -5.258614176837161D3*TI)
+      EQK = EG(12)*EG(21)/EG(11)/EG(22)
+      RB(144) = RF(144) / MAX(EQK, SMALL)
+      RF(145) = 2.D14
+      EQK = EG(25)/EG(1)/EG(24)/PFAC1
+      RB(145) = RF(145) / MAX(EQK, SMALL)
+      RF(146) = 6.D13
+      EQK = EG(1)*EG(27)/EG(2)/EG(24)
+      RB(146) = RF(146) / MAX(EQK, SMALL)
+      RF(147) = EXP(7.511780750109878D1 -5.16D0*ALOGT 
+     * -1.515990532932022D4*TI)
+      EQK = EG(1)*EG(1)*EG(27)/EG(3)/EG(24)*PFAC1
+      RB(147) = RF(147) / MAX(EQK, SMALL)
+      RF(148) = EXP(3.05324427100113D1 -4.1D-1*ALOGT 
+     * -1.150302980558092D4*TI)
+      EQK = EG(3)*EG(27)/EG(8)/EG(24)
+      RB(148) = RF(148) / MAX(EQK, SMALL)
+      RF(149) = 2.66D12
+      EQK = EG(8)*EG(25)/EG(4)/EG(24)
+      RB(149) = RF(149) / MAX(EQK, SMALL)
+      RF(150) = 6.6D12
+      EQK = EG(3)*EG(14)*EG(19)/EG(4)/EG(24)*PFAC1
+      RB(150) = RF(150) / MAX(EQK, SMALL)
+      RF(151) = 6.D13
+      EQK = EG(16)*EG(25)/EG(13)/EG(24)
+      RB(151) = RF(151) / MAX(EQK, SMALL)
+      RF(152) = EXP(3.223619130191664D1 -3.2D-1*ALOGT 
+     * +1.319937319219509D2*TI)
+      EQK = EG(28)/EG(11)/EG(24)/PFAC1
+      RB(152) = RF(152) / MAX(EQK, SMALL)
+      RF(153) = EXP(3.021878515115626D1 -1.640838588173486D3*TI)
+      EQK = EG(26)/EG(1)/EG(25)/PFAC1
+      RB(153) = RF(153) / MAX(EQK, SMALL)
+      RF(154) = EXP(5.043372849455479D1 -2.39D0*ALOGT 
+     * -5.625962344214302D3*TI)
+      EQK = EG(11)*EG(20)/EG(1)/EG(25)
+      RB(154) = RF(154) / MAX(EQK, SMALL)
+      RF(155) = EXP(1.206104687347992D1 +2.5D0*ALOGT 
+     * -1.2530095024234D3*TI)
+      EQK = EG(5)*EG(24)/EG(1)/EG(25)
+      RB(155) = RF(155) / MAX(EQK, SMALL)
+      RF(156) = EXP(1.750439001207821D1 +1.65D0*ALOGT 
+     * -1.645518503182537D2*TI)
+      EQK = EG(1)*EG(1)*EG(27)/EG(2)/EG(25)*PFAC1
+      RB(156) = RF(156) / MAX(EQK, SMALL)
+      RF(157) = EXP(1.737085861945369D1 +1.65D0*ALOGT 
+     * +4.891266009460019D2*TI)
+      EQK = EG(13)*EG(21)/EG(2)/EG(25)
+      RB(157) = RF(157) / MAX(EQK, SMALL)
+      RF(158) = EXP(2.591622268783662D1 +7.D-1*ALOGT 
+     * -2.958914005722728D3*TI)
+      EQK = EG(3)*EG(24)/EG(2)/EG(25)
+      RB(158) = RF(158) / MAX(EQK, SMALL)
+      RF(159) = EXP(1.494691266945537D1 +2.D0*ALOGT 
+     * +1.499585669566961D2*TI)
+      EQK = EG(6)*EG(24)/EG(3)/EG(25)
+      RB(159) = RF(159) / MAX(EQK, SMALL)
+      RF(160) = EXP(9.169518377455928D0 +2.6D0*ALOGT 
+     * -6.999743846871283D3*TI)
+      EQK = EG(7)*EG(24)/EG(4)/EG(25)
+      RB(160) = RF(160) / MAX(EQK, SMALL)
+      RF(161) = EXP(7.884573603642703D-1 +3.5D0*ALOGT 
+     * -2.855754588856544D3*TI)
+      EQK = EG(12)*EG(24)/EG(11)/EG(25)
+      RB(161) = RF(161) / MAX(EQK, SMALL)
+      RF(162) = EXP(2.540539706407063D1 +4.54D-1*ALOGT 
+     * -2.928721005664333D3*TI)
+      EQK = EG(13)*EG(20)/EG(1)/EG(27)
+      RB(162) = RF(162) / MAX(EQK, SMALL)
+      RF(163) = 7.692307692307693D-1*RF(65)
+      EQK = EG(3)*EG(16)*EG(19)/EG(2)/EG(27)*PFAC1
+      RB(163) = RF(163) / MAX(EQK, SMALL)
+      RF(164) = RF(66)
+      EQK = EG(6)*EG(16)*EG(19)/EG(3)/EG(27)*PFAC1
+      RB(164) = RF(164) / MAX(EQK, SMALL)
+      RF(165) = EXP(5.657037505150728D1 -2.92D0*ALOGT 
+     * -6.292724428837196D3*TI)
+      EQK = EG(11)*EG(21)/EG(1)/EG(26)
+      RB(165) = RF(165) / MAX(EQK, SMALL)
+      RF(166) = 1.8D12
+      EQK = EG(5)*EG(25)/EG(1)/EG(26)
+      RB(166) = RF(166) / MAX(EQK, SMALL)
+      RF(167) = 9.6D13
+      EQK = EG(14)*EG(21)/EG(2)/EG(26)
+      RB(167) = RF(167) / MAX(EQK, SMALL)
+      RF(168) = 2.4D13
+      EQK = EG(6)*EG(25)/EG(3)/EG(26)
+      RB(168) = RF(168) / MAX(EQK, SMALL)
+      RF(169) = 9.D10
+      EQK = EG(4)*EG(25)/EG(8)/EG(26)
+      RB(169) = RF(169) / MAX(EQK, SMALL)
+      RF(170) = 2.4D13
+      EQK = EG(3)*EG(14)*EG(21)/EG(4)/EG(26)*PFAC1
+      RB(170) = RF(170) / MAX(EQK, SMALL)
+      RF(171) = 1.1D13
+      EQK = EG(12)*EG(25)/EG(11)/EG(26)
+      RB(171) = RF(171) / MAX(EQK, SMALL)
+      RF(172) = 2.D0*RF(154)
+      EQK = EG(20)*EG(21)/EG(1)/EG(28)
+      RB(172) = RF(172) / MAX(EQK, SMALL)
+      RF(173) = 4.D0*RF(154)
+      EQK = EG(11)*EG(25)/EG(1)/EG(28)
+      RB(173) = RF(173) / MAX(EQK, SMALL)
+      RF(174) = EXP(1.96146032124248D1 +1.45D0*ALOGT 
+     * +2.022931003912477D2*TI)
+      EQK = EG(13)*EG(26)/EG(2)/EG(28)
+      RB(174) = RF(174) / MAX(EQK, SMALL)
+      RF(175) = EXP(5.510304650036664D1 -2.03D0*ALOGT 
+     * -4.530660945429253D4*TI)
+      RB(175) = 0D0
+      RF(176) = EXP(6.159709648335515D1 -2.68D0*ALOGT 
+     * -4.436911680247936D4*TI)
+      RB(176) = 0D0
+      RF(177) = EXP(5.962895522872093D1 -2.65D0*ALOGT 
+     * -4.447982446936014D4*TI)
+      RB(177) = 0D0
+      RF(178) = EXP(6.125350677896508D1 -2.66D0*ALOGT 
+     * -4.448032768602778D4*TI)
+      RB(178) = 0D0
+      RF(179) = EXP(1.407787482243176D1 +2.54D0*ALOGT 
+     * -3.399731806575297D3*TI)
+      RB(179) = 0D0
+      RF(180) = EXP(1.546416918355166D1 +2.4D0*ALOGT 
+     * -2.249881721018081D3*TI)
+      RB(180) = 0D0
+      RF(181) = EXP(1.473180128983843D1 +2.4D0*ALOGT 
+     * -2.769704538690118D3*TI)
+      RB(181) = 0D0
+      RF(182) = EXP(1.303898176846528D1 +2.6D0*ALOGT 
+     * -8.89687068387378D2*TI)
+      RB(182) = 0D0
+      RF(183) = EXP(1.645456788757953D1 +1.8D0*ALOGT 
+     * -4.901330342812818D2*TI)
+      RB(183) = 0D0
+      RF(184) = EXP(1.520180491908416D1 +2.D0*ALOGT 
+     * +2.999171339133921D2*TI)
+      RB(184) = 0D0
+      RF(185) = EXP(-1.020327255651516D-1 +3.65D0*ALOGT 
+     * -3.599508823628345D3*TI)
+      RB(185) = 0D0
+      RF(186) = EXP(1.791759469228055D0 +3.46D0*ALOGT 
+     * -2.75762733866676D3*TI)
+      RB(186) = 0D0
+      RF(187) = EXP(3.131990057004248D1 -2.562882488290111D4*TI)
+      RB(187) = 0D0
+      RF(188) = EXP(3.270619493116237D1 -2.394808121298378D4*TI)
+      RB(188) = 0D0
+      RF(189) = EXP(1.077058804021951D1 +2.55D0*ALOGT 
+     * -8.298042849382275D3*TI)
+      RB(189) = 0D0
+      RF(190) = 3.958333333333333D0*RF(160)
+      RB(190) = 0D0
+      RF(191) = EXP(5.302711578733687D1 -2.03D0*ALOGT 
+     * -3.77201149729531D4*TI)
+      EQK = EG(24)*EG(26)/EG(30)*PFAC1
+      RB(191) = RF(191) / MAX(EQK, SMALL)
+      RF(192) = 2.D0*RF(154)
+      EQK = EG(25)*EG(26)/EG(1)/EG(30)
+      RB(192) = RF(192) / MAX(EQK, SMALL)
+      RF(193) = RF(174)
+      EQK = EG(13)*EG(20)*EG(26)/EG(2)/EG(30)*PFAC1
+      RB(193) = RF(193) / MAX(EQK, SMALL)
+C
+      RKLOW(1) = EXP(4.559410099735222D1 -1.4D0*ALOGT)
+      RKLOW(2) = EXP(3.984208130296976D1 -5.84D-1*ALOGT 
+     * +1.153875818898336D3*TI)
+      RKLOW(3) = EXP(5.542160680152843D1 -2.79D0*ALOGT 
+     * -2.108981054078904D3*TI)
+      RKLOW(4) = EXP(6.379313832844232D1 -3.42D0*ALOGT 
+     * -4.244632591542722D4*TI)
+      RKLOW(5) = EXP(5.556214682430743D1 -2.57D0*ALOGT 
+     * -7.170837513868855D2*TI)
+      RKLOW(6) = EXP(6.333294832064492D1 -3.14D0*ALOGT 
+     * -6.189565011971013D2*TI)
+      RKLOW(7) = EXP(6.986601015018564D1 -4.8D0*ALOGT 
+     * -2.797884672077953D3*TI)
+      RKLOW(8) = EXP(7.689235621931073D1 -4.76D0*ALOGT 
+     * -1.227848669041404D3*TI)
+      RKLOW(9) = EXP(1.15700234196288D2 -9.67D0*ALOGT 
+     * -3.1300076727203D3*TI)
+      RKLOW(10) = EXP(6.311175598946197D1 -3.4D0*ALOGT 
+     * -1.801451258417455D4*TI)
+      RKLOW(11) = EXP(6.941402502644259D1 -3.86D0*ALOGT 
+     * -1.670679336564533D3*TI)
+      RKLOW(12) = EXP(1.350015492208952D2 -1.194D1*ALOGT 
+     * -4.916326199508487D3*TI)
+      RKLOW(13) = EXP(9.050737549423765D1 -6.642D0*ALOGT 
+     * -2.903056955614697D3*TI)
+      RKLOW(14) = EXP(9.509412345149228D1 -7.08D0*ALOGT 
+     * -3.364003423172863D3*TI)
+      RKLOW(15) = EXP(1.293830201385977D2 -1.179D1*ALOGT 
+     * -4.521150150410858D3*TI)
+      RKLOW(16) = EXP(1.384402845218764D2 -1.2D1*ALOGT 
+     * -3.003096429141513D3*TI)
+      RKLOW(17) = EXP(1.3951864295364D2 -1.281D1*ALOGT 
+     * -3.145104172749498D3*TI)
+      RKLOW(18) = EXP(8.933241371888575D1 -6.66D0*ALOGT 
+     * -3.522516673479438D3*TI)
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE RDSMH  (T, SMH)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION SMH(*), TN(5)
+C
+      TLOG = LOG(T)
+      TI = 1D0/T
+C
+      TN(1) = TLOG - 1D0
+      TN(2) = T
+      TN(3) = TN(2)*T
+      TN(4) = TN(3)*T
+      TN(5) = TN(4)*T
+C H
+      IF (T .GT. 1000) THEN
+      SMH(1) = -4.46682914D-1 -2.54736599D4*TI 
+     *         +2.50000001D0*TN(1) -1.154214865D-11*TN(2) 
+     *         +2.692699133333334D-15*TN(3) -3.945960291666667D-19*TN(4) 
+     *         +2.490986785D-23*TN(5) 
+      ELSE
+      SMH(1) = -4.46682853D-1 -2.54736599D4*TI 
+     *         +2.5D0*TN(1) +3.526664095D-13*TN(2) 
+     *         -3.326532733333333D-16*TN(3) +1.917346933333333D-19*TN(4) 
+     *         -4.63866166D-23*TN(5) 
+      ENDIF
+C O
+      IF (T .GT. 1000) THEN
+      SMH(2) = 4.78433864D0 -2.92175791D4*TI 
+     *         +2.56942078D0*TN(1) -4.298705685D-5*TN(2) 
+     *         +6.991409816666667D-9*TN(3) -8.348149916666666D-13*TN(4) 
+     *         +6.141684549999999D-17*TN(5) 
+      ELSE
+      SMH(2) = 2.05193346D0 -2.91222592D4*TI 
+     *         +3.1682671D0*TN(1) -1.63965942D-3*TN(2) 
+     *         +1.107177326666667D-6*TN(3) -5.106721866666666D-10*TN(4) 
+     *         +1.056329855D-13*TN(5) 
+      ENDIF
+C OH
+      IF (T .GT. 1000) THEN
+      SMH(3) = 5.70164073D0 -3.71885774D3*TI 
+     *         +2.86472886D0*TN(1) +5.2825224D-4*TN(2) 
+     *         -4.318045966666667D-8*TN(3) +2.54348895D-12*TN(4) 
+     *         -6.6597938D-17*TN(5) 
+      ELSE
+      SMH(3) = -6.9043296D-1 -3.38153812D3*TI 
+     *         +4.12530561D0*TN(1) -1.612724695D-3*TN(2) 
+     *         +1.087941151666667D-6*TN(3) -4.832113691666666D-10*TN(4) 
+     *         +1.031186895D-13*TN(5) 
+      ENDIF
+C HO2
+      IF (T .GT. 1000) THEN
+      SMH(4) = 3.78510215D0 -1.11856713D2*TI 
+     *         +4.0172109D0*TN(1) +1.119910065D-3*TN(2) 
+     *         -1.056096916666667D-7*TN(3) +9.520530833333334D-12*TN(4) 
+     *         -5.39542675D-16*TN(5) 
+      ELSE
+      SMH(4) = 3.71666245D0 -2.9480804D2*TI 
+     *         +4.30179801D0*TN(1) -2.374560255D-3*TN(2) 
+     *         +3.526381516666666D-6*TN(3) -2.02303245D-9*TN(4) 
+     *         +4.646125620000001D-13*TN(5) 
+      ENDIF
+C H2
+      IF (T .GT. 1000) THEN
+      SMH(5) = -3.20502331D0 +9.50158922D2*TI 
+     *         +3.3372792D0*TN(1) -2.470123655D-5*TN(2) 
+     *         +8.324279633333333D-8*TN(3) -1.496386616666667D-11*TN(4) 
+     *         +1.00127688D-15*TN(5) 
+      ELSE
+      SMH(5) = 6.83010238D-1 +9.17935173D2*TI 
+     *         +2.34433112D0*TN(1) +3.990260375D-3*TN(2) 
+     *         -3.2463585D-6*TN(3) +1.67976745D-9*TN(4) 
+     *         -3.688058805D-13*TN(5) 
+      ENDIF
+C H2O
+      IF (T .GT. 1000) THEN
+      SMH(6) = 4.9667701D0 +3.00042971D4*TI 
+     *         +3.03399249D0*TN(1) +1.08845902D-3*TN(2) 
+     *         -2.734541966666666D-8*TN(3) -8.08683225D-12*TN(4) 
+     *         +8.4100496D-16*TN(5) 
+      ELSE
+      SMH(6) = -8.49032208D-1 +3.02937267D4*TI 
+     *         +4.19864056D0*TN(1) -1.01821705D-3*TN(2) 
+     *         +1.086733685D-6*TN(3) -4.57330885D-10*TN(4) 
+     *         +8.85989085D-14*TN(5) 
+      ENDIF
+C H2O2
+      IF (T .GT. 1000) THEN
+      SMH(7) = 2.91615662D0 +1.78617877D4*TI 
+     *         +4.16500285D0*TN(1) +2.45415847D-3*TN(2) 
+     *         -3.168987083333333D-7*TN(3) +3.09321655D-11*TN(4) 
+     *         -1.439541525D-15*TN(5) 
+      ELSE
+      SMH(7) = 3.43505074D0 +1.77025821D4*TI 
+     *         +4.27611269D0*TN(1) -2.714112085D-4*TN(2) 
+     *         +2.78892835D-6*TN(3) -1.798090108333333D-9*TN(4) 
+     *         +4.312271815D-13*TN(5) 
+      ENDIF
+C O2
+      IF (T .GT. 1000) THEN
+      SMH(8) = 5.45323129D0 +1.08845772D3*TI 
+     *         +3.28253784D0*TN(1) +7.4154377D-4*TN(2) 
+     *         -1.263277781666667D-7*TN(3) +1.745587958333333D-11*TN(4) 
+     *         -1.08358897D-15*TN(5) 
+      ELSE
+      SMH(8) = 3.65767573D0 +1.06394356D3*TI 
+     *         +3.78245636D0*TN(1) -1.49836708D-3*TN(2) 
+     *         +1.641217001666667D-6*TN(3) -8.067745908333334D-10*TN(4) 
+     *         +1.621864185D-13*TN(5) 
+      ENDIF
+C CH2
+      IF (T .GT. 1000) THEN
+      SMH(9) = 6.17119324D0 -4.6263604D4*TI 
+     *         +2.87410113D0*TN(1) +1.82819646D-3*TN(2) 
+     *         -2.348243283333333D-7*TN(3) +2.168162908333333D-11*TN(4) 
+     *         -9.38637835D-16*TN(5) 
+      ELSE
+      SMH(9) = 1.56253185D0 -4.60040401D4*TI 
+     *         +3.76267867D0*TN(1) +4.844360715D-4*TN(2) 
+     *         +4.658164016666667D-7*TN(3) -3.209092941666667D-10*TN(4) 
+     *         +8.43708595D-14*TN(5) 
+      ENDIF
+C CH2*
+      IF (T .GT. 1000) THEN
+      SMH(10) = 8.62650169D0 -5.09259997D4*TI 
+     *         +2.29203842D0*TN(1) +2.327943185D-3*TN(2) 
+     *         -3.353199116666667D-7*TN(3) +3.48255D-11*TN(4) 
+     *         -1.698581825D-15*TN(5) 
+      ELSE
+      SMH(10) = -7.69118967D-1 -5.04968163D4*TI 
+     *         +4.19860411D0*TN(1) -1.183307095D-3*TN(2) 
+     *         +1.372160366666667D-6*TN(3) -5.573466508333334D-10*TN(4) 
+     *         +9.71573685D-14*TN(5) 
+      ENDIF
+C CH3
+      IF (T .GT. 1000) THEN
+      SMH(11) = 8.48007179D0 -1.67755843D4*TI 
+     *         +2.28571772D0*TN(1) +3.619950185D-3*TN(2) 
+     *         -4.978572466666667D-7*TN(3) +4.9640387D-11*TN(4) 
+     *         -2.33577197D-15*TN(5) 
+      ELSE
+      SMH(11) = 1.60456433D0 -1.64449988D4*TI 
+     *         +3.6735904D0*TN(1) +1.005475875D-3*TN(2) 
+     *         +9.550364266666668D-7*TN(3) -5.725978541666666D-10*TN(4) 
+     *         +1.27192867D-13*TN(5) 
+      ENDIF
+C CH4
+      IF (T .GT. 1000) THEN
+      SMH(12) = 1.8437318D1 +9.468344590000001D3*TI 
+     *         +7.4851495D-2*TN(1) +6.69547335D-3*TN(2) 
+     *         -9.554763483333333D-7*TN(3) +1.019104458333333D-10*TN(4) 
+     *         -5.0907615D-15*TN(5) 
+      ELSE
+      SMH(12) = -4.64130376D0 +1.02466476D4*TI 
+     *         +5.14987613D0*TN(1) -6.8354894D-3*TN(2) 
+     *         +8.19667665D-6*TN(3) -4.039525216666667D-9*TN(4) 
+     *         +8.3346978D-13*TN(5) 
+      ENDIF
+C HCO
+      IF (T .GT. 1000) THEN
+      SMH(13) = 9.79834492D0 -4.01191815D3*TI 
+     *         +2.77217438D0*TN(1) +2.47847763D-3*TN(2) 
+     *         -4.140760216666667D-7*TN(3) +4.909681483333334D-11*TN(4) 
+     *         -2.667543555D-15*TN(5) 
+      ELSE
+      SMH(13) = 3.39437243D0 -3.83956496D3*TI 
+     *         +4.22118584D0*TN(1) -1.62196266D-3*TN(2) 
+     *         +2.296657433333333D-6*TN(3) -1.109534108333333D-9*TN(4) 
+     *         +2.168844325D-13*TN(5) 
+      ENDIF
+C CH2O
+      IF (T .GT. 1000) THEN
+      SMH(14) = 1.3656323D1 +1.39958323D4*TI 
+     *         +1.76069008D0*TN(1) +4.60000041D-3*TN(2) 
+     *         -7.370980216666666D-7*TN(3) +8.386767666666666D-11*TN(4) 
+     *         -4.419278200000001D-15*TN(5) 
+      ELSE
+      SMH(14) = 6.028129D-1 +1.43089567D4*TI 
+     *         +4.79372315D0*TN(1) -4.954166845D-3*TN(2) 
+     *         +6.220333466666666D-6*TN(3) -3.160710508333333D-9*TN(4) 
+     *         +6.5886326D-13*TN(5) 
+      ENDIF
+C CH3O
+      IF (T .GT. 1000) THEN
+      SMH(15) = -1.96680028D0 -3.7811194D2*TI 
+     *         +4.75779238D0*TN(1) +3.72071237D-3*TN(2) 
+     *         -4.495086266666666D-7*TN(3) +3.6507542D-11*TN(4) 
+     *         -1.31768549D-15*TN(5) 
+      ELSE
+      SMH(15) = 6.57240864D0 -1.2956976D3*TI 
+     *         +3.71180502D0*TN(1) -1.40231653D-3*TN(2) 
+     *         +6.275849516666667D-6*TN(3) -3.942267408333333D-9*TN(4) 
+     *         +9.329421000000001D-13*TN(5) 
+      ENDIF
+C CO
+      IF (T .GT. 1000) THEN
+      SMH(16) = 7.81868772D0 +1.41518724D4*TI 
+     *         +2.71518561D0*TN(1) +1.031263715D-3*TN(2) 
+     *         -1.664709618333334D-7*TN(3) +1.9171084D-11*TN(4) 
+     *         -1.01823858D-15*TN(5) 
+      ELSE
+      SMH(16) = 3.50840928D0 +1.4344086D4*TI 
+     *         +3.57953347D0*TN(1) -3.0517684D-4*TN(2) 
+     *         +1.69469055D-7*TN(3) +7.558382366666667D-11*TN(4) 
+     *         -4.522122495D-14*TN(5) 
+      ENDIF
+C CO2
+      IF (T .GT. 1000) THEN
+      SMH(17) = 2.27163806D0 +4.8759166D4*TI 
+     *         +3.85746029D0*TN(1) +2.20718513D-3*TN(2) 
+     *         -3.691356733333334D-7*TN(3) +4.362418233333334D-11*TN(4) 
+     *         -2.36042082D-15*TN(5) 
+      ELSE
+      SMH(17) = 9.90105222D0 +4.83719697D4*TI 
+     *         +2.35677352D0*TN(1) +4.492298385D-3*TN(2) 
+     *         -1.187260448333333D-6*TN(3) +2.049325183333333D-10*TN(4) 
+     *         -7.184977399999999D-15*TN(5) 
+      ENDIF
+C C2H2
+      IF (T .GT. 1000) THEN
+      SMH(18) = -1.23028121D0 -2.59359992D4*TI 
+     *         +4.14756964D0*TN(1) +2.98083332D-3*TN(2) 
+     *         -3.9549142D-7*TN(3) +3.895101425D-11*TN(4) 
+     *         -1.806176065D-15*TN(5) 
+      ELSE
+      SMH(18) = 1.39397051D1 -2.64289807D4*TI 
+     *         +8.08681094D-1*TN(1) +1.168078145D-2*TN(2) 
+     *         -5.91953025D-6*TN(3) +2.334603641666667D-9*TN(4) 
+     *         -4.25036487D-13*TN(5) 
+      ENDIF
+C C2H3
+      IF (T .GT. 1000) THEN
+      SMH(19) = 7.78732378D0 -3.46128739D4*TI 
+     *         +3.016724D0*TN(1) +5.1651146D-3*TN(2) 
+     *         -7.801372483333333D-7*TN(3) +8.480274D-11*TN(4) 
+     *         -4.313035205D-15*TN(5) 
+      ELSE
+      SMH(19) = 8.51054025D0 -3.48598468D4*TI 
+     *         +3.21246645D0*TN(1) +7.5739581D-4*TN(2) 
+     *         +4.320156866666666D-6*TN(3) -2.980482058333333D-9*TN(4) 
+     *         +7.35754365D-13*TN(5) 
+      ENDIF
+C C2H4
+      IF (T .GT. 1000) THEN
+      SMH(20) = 1.03053693D1 -4.93988614D3*TI 
+     *         +2.03611116D0*TN(1) +7.32270755D-3*TN(2) 
+     *         -1.118463191666667D-6*TN(3) +1.226857691666667D-10*TN(4) 
+     *         -6.28530305D-15*TN(5) 
+      ELSE
+      SMH(20) = 4.09733096D0 -5.08977593D3*TI 
+     *         +3.95920148D0*TN(1) -3.785261235D-3*TN(2) 
+     *         +9.516504866666667D-6*TN(3) -5.763239608333333D-9*TN(4) 
+     *         +1.349421865D-12*TN(5) 
+      ENDIF
+C C2H5
+      IF (T .GT. 1000) THEN
+      SMH(21) = 1.34624343D1 -1.285752D4*TI 
+     *         +1.95465642D0*TN(1) +8.698636100000001D-3*TN(2) 
+     *         -1.330344446666667D-6*TN(3) +1.460147408333333D-10*TN(4) 
+     *         -7.4820788D-15*TN(5) 
+      ELSE
+      SMH(21) = 4.70720924D0 -1.28416265D4*TI 
+     *         +4.30646568D0*TN(1) -2.09329446D-3*TN(2) 
+     *         +8.28571345D-6*TN(3) -4.992721716666666D-9*TN(4) 
+     *         +1.15254502D-12*TN(5) 
+      ENDIF
+C C2H6
+      IF (T .GT. 1000) THEN
+      SMH(22) = 1.51156107D1 +1.14263932D4*TI 
+     *         +1.0718815D0*TN(1) +1.084263385D-2*TN(2) 
+     *         -1.67093445D-6*TN(3) +1.845100008333333D-10*TN(4) 
+     *         -9.5001445D-15*TN(5) 
+      ELSE
+      SMH(22) = 2.66682316D0 +1.15222055D4*TI 
+     *         +4.29142492D0*TN(1) -2.75077135D-3*TN(2) 
+     *         +9.990638133333334D-6*TN(3) -5.903885708333334D-9*TN(4) 
+     *         +1.343428855D-12*TN(5) 
+      ENDIF
+C CH2CHO
+      IF (T .GT. 1000) THEN
+      SMH(23) = -5.0320879D0 +9.695D2*TI 
+     *         +5.9756699D0*TN(1) +4.0652957D-3*TN(2) 
+     *         -4.5727075D-7*TN(3) +3.391920083333333D-11*TN(4) 
+     *         -1.08800855D-15*TN(5) 
+      ELSE
+      SMH(23) = 9.571453500000001D0 -6.2D1*TI 
+     *         +3.4090624D0*TN(1) +5.369287D-3*TN(2) 
+     *         +3.1524875D-7*TN(3) -5.965485916666667D-10*TN(4) 
+     *         +1.43369255D-13*TN(5) 
+      ENDIF
+C aC3H5
+      IF (T .GT. 1000) THEN
+      SMH(24) = -1.124305D1 -1.7482449D4*TI 
+     *         +6.5007877D0*TN(1) +7.1623655D-3*TN(2) 
+     *         -9.463605333333332D-7*TN(3) +9.234000833333333D-11*TN(4) 
+     *         -4.518194349999999D-15*TN(5) 
+      ELSE
+      SMH(24) = 1.7173214D1 -1.9245629D4*TI 
+     *         +1.3631835D0*TN(1) +9.906910499999999D-3*TN(2) 
+     *         +2.082843333333333D-6*TN(3) -2.779629583333333D-9*TN(4) 
+     *         +7.9232855D-13*TN(5) 
+      ENDIF
+C C3H6
+      IF (T .GT. 1000) THEN
+      SMH(25) = -1.331335D1 +9.235703D2*TI 
+     *         +6.732257D0*TN(1) +7.45417D-3*TN(2) 
+     *         -8.249831666666666D-7*TN(3) +6.010018333333334D-11*TN(4) 
+     *         -1.883102D-15*TN(5) 
+      ELSE
+      SMH(25) = 1.614534D1 -1.074826D3*TI 
+     *         +1.493307D0*TN(1) +1.046259D-2*TN(2) 
+     *         +7.47799D-7*TN(3) -1.39076D-9*TN(4) 
+     *         +3.579073D-13*TN(5) 
+      ENDIF
+C nC3H7
+      IF (T .GT. 1000) THEN
+      SMH(26) = -1.5515297D1 -7.9762236D3*TI 
+     *         +7.7097479D0*TN(1) +8.015742500000001D-3*TN(2) 
+     *         -8.786706333333332D-7*TN(3) +6.324029333333334D-11*TN(4) 
+     *         -1.94313595D-15*TN(5) 
+      ELSE
+      SMH(26) = 2.1136034D1 -1.0312346D4*TI 
+     *         +1.0491173D0*TN(1) +1.30044865D-2*TN(2) 
+     *         +3.923752666666667D-7*TN(3) -1.632927666666667D-9*TN(4) 
+     *         +4.68601035D-13*TN(5) 
+      ENDIF
+C C2H3CHO
+      IF (T .GT. 1000) THEN
+      SMH(27) = -4.8588004D0 +1.0784054D4*TI 
+     *         +5.8111868D0*TN(1) +8.557128000000001D-3*TN(2) 
+     *         -1.247236016666667D-6*TN(3) +1.187687416666667D-10*TN(4) 
+     *         -4.58734205D-15*TN(5) 
+      ELSE
+      SMH(27) = 1.9498077D1 +9.335734399999999D3*TI 
+     *         +1.2713498D0*TN(1) +1.3115527D-2*TN(2) 
+     *         -1.548538416666667D-6*TN(3) -3.986439333333333D-10*TN(4) 
+     *         +1.67402715D-13*TN(5) 
+      ENDIF
+C C4H81
+      IF (T .GT. 1000) THEN
+      SMH(28) = 1.5543201D1 +2.1397231D3*TI 
+     *         +2.0535841D0*TN(1) +1.71752535D-2*TN(2) 
+     *         -2.6471995D-6*TN(3) +2.757471833333334D-10*TN(4) 
+     *         -1.26805225D-14*TN(5) 
+      ELSE
+      SMH(28) = 2.1062469D1 +1.7904004D3*TI 
+     *         +1.181138D0*TN(1) +1.542669D-2*TN(2) 
+     *         +8.477541166666667D-7*TN(3) -2.054574D-9*TN(4) 
+     *         +5.555096499999999D-13*TN(5) 
+      ENDIF
+C C6H12
+      IF (T .GT. 1000) THEN
+      SMH(30) = -5.1947624D1 +1.2462882D4*TI 
+     *         +1.5091719D1*TN(1) +1.4538455D-2*TN(2) 
+     *         -1.5836005D-6*TN(3) +1.230413666666667D-10*TN(4) 
+     *         -4.4740416D-15*TN(5) 
+      ELSE
+      SMH(30) = 3.1462109D1 +7.486021D3*TI 
+     *         -5.5547744D-1*TN(1) +3.2302864D-2*TN(2) 
+     *         -5.700070666666667D-6*TN(3) +4.20181775D-10*TN(4) 
+     *         +5.738688D-14*TN(5) 
+      ENDIF
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE RATX (T, C, RF, RB, RKLOW)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      PARAMETER (SMALL = 1D-200)
+      DIMENSION C(*), RF(*), RB(*), RKLOW(*)
+C
+      ALOGT = LOG(T)
+      CTOT = 0.0
+      DO K = 1, 24
+         CTOT = CTOT + C(K)
+      ENDDO
+C
+      RF(1) = RF(1)*C(1)*C(8)
+      RB(1) = RB(1)*C(2)*C(3)
+      RF(2) = RF(2)*C(2)*C(5)
+      RB(2) = RB(2)*C(1)*C(3)
+      RF(3) = RF(3)*C(3)*C(5)
+      RB(3) = RB(3)*C(1)*C(6)
+      RF(4) = RF(4)*C(3)*C(3)
+      RB(4) = RB(4)*C(2)*C(6)
+      CTB = CTOT-C(5)-C(6)
+     * -C(13)
+      RF(5) = RF(5)*CTB*C(1)*C(1)
+      RB(5) = RB(5)*CTB*C(5)
+      RF(6) = RF(6)*C(1)*C(1)*C(5)
+      RB(6) = RB(6)*C(5)*C(5)
+      RF(7) = RF(7)*C(1)*C(1)*C(6)
+      RB(7) = RB(7)*C(5)*C(6)
+      RF(8) = RF(8)*C(1)*C(1)*C(13)
+      RB(8) = RB(8)*C(5)*C(13)
+      CTB = CTOT+C(5)+5.3D0*C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      RF(9) = RF(9)*CTB*C(1)*C(3)
+      RB(9) = RB(9)*CTB*C(6)
+      CTB = CTOT+C(5)+1.1D1*C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      RF(10) = RF(10)*CTB*C(1)*C(2)
+      RB(10) = RB(10)*CTB*C(3)
+      CTB = CTOT+1.4D0*C(5)+1.44D1*C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      RF(11) = RF(11)*CTB*C(2)*C(2)
+      RB(11) = RB(11)*CTB*C(8)
+      CTB = CTOT-1.5D-1*C(8)+1.089D1*C(6)
+     * +9.000000000000008D-2*C(12)+1.18D0*C(13)
+      PR = RKLOW(1) * CTB / RF(12)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FC = (PRLOG -1.983099029051326D-1)
+     *     /(1.132308094493256D0 -0.14D0*(PRLOG -1.983099029051326D-1))
+      FC = EXP(-6.931471805599453D-1 /(1.0D0 + FC*FC))
+      PCOR = FC * PCOR
+      RF(12) = RF(12) * PCOR
+      RB(12) = RB(12) * PCOR
+      RF(12) = RF(12)*C(1)*C(8)
+      RB(12) = RB(12)*C(4)
+      RF(13) = RF(13)*C(5)*C(8)
+      RB(13) = RB(13)*C(1)*C(4)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      PR = RKLOW(2) * CTB / RF(14)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 2.654D-1*EXP(-T/9.4D1)
+     *      + 7.346D-1*EXP(-T/1.756D3)
+     *     + EXP(-5.182D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(14) = RF(14) * PCOR
+      RB(14) = RB(14) * PCOR
+      RF(14) = RF(14)*C(3)*C(3)
+      RB(14) = RB(14)*C(7)
+      RF(15) = RF(15)*C(1)*C(4)
+      RB(15) = RB(15)*C(2)*C(6)
+      RF(16) = RF(16)*C(1)*C(4)
+      RB(16) = RB(16)*C(3)*C(3)
+      RF(17) = RF(17)*C(2)*C(4)
+      RB(17) = RB(17)*C(3)*C(8)
+      RF(18) = RF(18)*C(4)*C(4)
+      RB(18) = RB(18)*C(7)*C(8)
+      RF(19) = RF(19)*C(4)*C(4)
+      RB(19) = RB(19)*C(7)*C(8)
+      RF(20) = RF(20)*C(3)*C(4)
+      RB(20) = RB(20)*C(6)*C(8)
+      RF(21) = RF(21)*C(3)*C(4)
+      RB(21) = RB(21)*C(6)*C(8)
+      RF(22) = RF(22)*C(3)*C(4)
+      RB(22) = RB(22)*C(6)*C(8)
+      RF(23) = RF(23)*C(3)*C(4)
+      RB(23) = RB(23)*C(6)*C(8)
+      RF(24) = RF(24)*C(3)*C(4)
+      RB(24) = RB(24)*C(6)*C(8)
+      RF(25) = RF(25)*C(1)*C(7)
+      RB(25) = RB(25)*C(4)*C(5)
+      RF(26) = RF(26)*C(1)*C(7)
+      RB(26) = RB(26)*C(3)*C(6)
+      RF(27) = RF(27)*C(2)*C(7)
+      RB(27) = RB(27)*C(3)*C(4)
+      RF(28) = RF(28)*C(3)*C(7)
+      RB(28) = RB(28)*C(4)*C(6)
+      RF(29) = RF(29)*C(3)*C(7)
+      RB(29) = RB(29)*C(4)*C(6)
+      CTB = CTOT+C(5)+1.1D1*C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      PR = RKLOW(3) * CTB / RF(30)
+      PCOR = PR / (1.0 + PR)
+      RF(30) = RF(30) * PCOR
+      RB(30) = RB(30) * PCOR
+      RF(30) = RF(30)*C(2)*C(12)
+      RB(30) = RB(30)*C(13)
+      RF(31) = RF(31)*C(3)*C(12)
+      RB(31) = RB(31)*C(1)*C(13)
+      RF(32) = RF(32)*C(3)*C(12)
+      RB(32) = RB(32)*C(1)*C(13)
+      RF(33) = RF(33)*C(8)*C(12)
+      RB(33) = RB(33)*C(2)*C(13)
+      RF(34) = RF(34)*C(4)*C(12)
+      RB(34) = RB(34)*C(3)*C(13)
+      RF(35) = RF(35)*C(1)
+      RB(35) = RB(35)*C(5)*C(12)
+      RF(36) = RF(36)*C(2)
+      RB(36) = RB(36)*C(3)*C(12)
+      RF(37) = RF(37)*C(2)
+      RB(37) = RB(37)*C(1)*C(13)
+      RF(38) = RF(38)*C(3)
+      RB(38) = RB(38)*C(6)*C(12)
+      CTB = CTOT+C(5)-C(6)
+     * +7.5D-1*C(12)+2.6D0*C(13)
+      RF(39) = RF(39)*CTB
+      RB(39) = RB(39)*CTB*C(1)*C(12)
+      RF(40) = RF(40)*C(6)
+      RB(40) = RB(40)*C(1)*C(6)*C(12)
+      RF(41) = RF(41)*C(8)
+      RB(41) = RB(41)*C(4)*C(12)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(4) * CTB / RF(42)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 6.799999999999995D-2*EXP(-T/1.97D2)
+     *      + 9.320000000000001D-1*EXP(-T/1.54D3)
+     *     + EXP(-1.03D4/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(42) = RF(42) * PCOR
+      RB(42) = RB(42) * PCOR
+      RF(42) = RF(42)*C(5)*C(12)
+      RB(42) = RB(42)*C(11)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(5) * CTB / RF(43)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 2.176D-1*EXP(-T/2.71D2)
+     *      + 7.824D-1*EXP(-T/2.755D3)
+     *     + EXP(-6.57D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(43) = RF(43) * PCOR
+      RB(43) = RB(43) * PCOR
+      RF(43) = RF(43)*C(1)
+      RB(43) = RB(43)*C(11)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(6) * CTB / RF(44)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 3.2D-1*EXP(-T/7.8D1)
+     *      + 6.8D-1*EXP(-T/1.995D3)
+     *     + EXP(-5.59D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(44) = RF(44) * PCOR
+      RB(44) = RB(44) * PCOR
+      RF(44) = RF(44)*C(1)
+      RB(44) = RB(44)*C(9)
+      RF(45) = RF(45)*C(2)
+      RB(45) = RB(45)*C(1)
+      RF(46) = RF(46)*C(3)
+      RB(46) = RB(46)*C(1)*C(11)
+      RF(47) = RF(47)*C(5)
+      RB(47) = RB(47)*C(1)*C(9)
+      RF(48) = RF(48)*C(8)
+      RB(48) = RB(48)*C(3)
+      RF(49) = RF(49)*C(8)
+      RB(49) = RB(49)*C(1)*C(1)*C(13)
+      RF(50) = RF(50)*C(4)
+      RB(50) = RB(50)*C(3)*C(11)
+      RB(51) = RB(51)*C(5)*C(14)
+      RF(52) = RF(52)*C(24)
+      RB(52) = RB(52)*C(24)
+      RF(53) = RF(53)*C(2)
+      RB(53) = RB(53)*C(5)*C(12)
+      RF(54) = RF(54)*C(2)
+      RB(54) = RB(54)*C(1)
+      RF(55) = RF(55)*C(3)
+      RB(55) = RB(55)*C(1)*C(11)
+      RF(56) = RF(56)*C(5)
+      RB(56) = RB(56)*C(1)*C(9)
+      RF(57) = RF(57)*C(8)
+      RB(57) = RB(57)*C(1)*C(3)*C(12)
+      RF(58) = RF(58)*C(8)
+      RB(58) = RB(58)*C(6)*C(12)
+      RF(59) = RF(59)*C(6)
+      RB(59) = RB(59)*C(6)
+      RF(60) = RF(60)*C(12)
+      RB(60) = RB(60)*C(12)
+      RF(61) = RF(61)*C(13)
+      RB(61) = RB(61)*C(13)
+      RF(62) = RF(62)*C(13)
+      RB(62) = RB(62)*C(11)*C(12)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(7) * CTB / RF(63)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 2.42D-1*EXP(-T/9.4D1)
+     *      + 7.58D-1*EXP(-T/1.555D3)
+     *     + EXP(-4.2D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(63) = RF(63) * PCOR
+      RB(63) = RB(63) * PCOR
+      RF(63) = RF(63)*C(1)*C(11)
+      RF(64) = RF(64)*C(1)*C(11)
+      RB(64) = RB(64)*C(5)
+      RF(65) = RF(65)*C(2)*C(11)
+      RB(65) = RB(65)*C(3)
+      RF(66) = RF(66)*C(3)*C(11)
+      RB(66) = RB(66)*C(6)
+      RF(67) = RF(67)*C(8)*C(11)
+      RB(67) = RB(67)*C(4)
+      RF(68) = RF(68)*C(4)*C(11)
+      RB(68) = RB(68)*C(7)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(8) * CTB / RF(69)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 2.17D-1*EXP(-T/7.4D1)
+     *      + 7.83D-1*EXP(-T/2.941D3)
+     *     + EXP(-6.964D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(69) = RF(69) * PCOR
+      RB(69) = RB(69) * PCOR
+      RF(69) = RF(69)*C(1)*C(9)
+      RB(69) = RB(69)*C(10)
+      RF(70) = RF(70)*C(2)*C(9)
+      RB(70) = RB(70)*C(1)*C(11)
+      RF(71) = RF(71)*C(3)*C(9)
+      RB(71) = RB(71)*C(6)
+      RF(72) = RF(72)*C(3)*C(9)
+      RB(72) = RB(72)*C(6)
+      RF(73) = RF(73)*C(8)*C(9)
+      RB(73) = RB(73)*C(2)
+      RF(74) = RF(74)*C(8)*C(9)
+      RB(74) = RB(74)*C(3)*C(11)
+      RF(75) = RF(75)*C(4)*C(9)
+      RB(75) = RB(75)*C(8)*C(10)
+      RF(76) = RF(76)*C(4)*C(9)
+      RB(76) = RB(76)*C(3)
+      RF(77) = RF(77)*C(7)*C(9)
+      RB(77) = RB(77)*C(4)*C(10)
+      RF(78) = RF(78)*C(9)
+      RB(78) = RB(78)*C(10)*C(12)
+      RF(79) = RF(79)*C(9)*C(11)
+      RB(79) = RB(79)*C(10)
+      RF(80) = RF(80)*C(9)
+      RB(80) = RB(80)*C(1)*C(15)
+      RF(81) = RF(81)*C(9)
+      RB(81) = RB(81)*C(1)*C(15)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(9) * CTB / RF(82)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 4.675D-1*EXP(-T/1.51D2)
+     *      + 5.325D-1*EXP(-T/1.038D3)
+     *     + EXP(-4.97D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(82) = RF(82) * PCOR
+      RB(82) = RB(82) * PCOR
+      RF(82) = RF(82)*C(9)*C(9)
+      RB(82) = RB(82)*C(16)
+      RF(83) = RF(83)*C(9)*C(9)
+      RB(83) = RB(83)*C(1)
+      RF(84) = RF(84)*C(1)
+      RB(84) = RB(84)*C(5)*C(11)
+      RF(85) = RF(85)*C(1)
+      RB(85) = RB(85)*C(3)*C(9)
+      RF(86) = RF(86)*C(1)
+      RB(86) = RB(86)*C(6)
+      RF(87) = RF(87)*C(2)
+      RB(87) = RB(87)*C(3)*C(11)
+      RF(88) = RF(88)*C(3)
+      RB(88) = RB(88)*C(6)*C(11)
+      RF(89) = RF(89)*C(8)
+      RB(89) = RB(89)*C(4)*C(11)
+      RF(90) = RF(90)*C(1)*C(10)
+      RB(90) = RB(90)*C(5)*C(9)
+      RF(91) = RF(91)*C(2)*C(10)
+      RB(91) = RB(91)*C(3)*C(9)
+      RF(92) = RF(92)*C(3)*C(10)
+      RB(92) = RB(92)*C(6)*C(9)
+      RF(93) = RF(93)*C(10)
+      RB(93) = RB(93)*C(9)*C(9)
+      RF(94) = RF(94)*C(10)
+      RB(94) = RB(94)*C(9)*C(9)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+     * +2.D0*C(14)+2.D0*C(15)
+      PR = RKLOW(10) * CTB / RF(95)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = -9.816D-1*EXP(-T/5.3837D3)
+     *      + 1.9816D0*EXP(-T/4.2932D0)
+     *     + EXP(7.95D-2/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(95) = RF(95) * PCOR
+      RB(95) = RB(95) * PCOR
+      RB(95) = RB(95)*C(1)*C(14)
+      RF(96) = RF(96)*C(2)*C(14)
+      RB(96) = RB(96)*C(12)
+      RF(97) = RF(97)*C(3)*C(14)
+      RB(97) = RB(97)*C(9)*C(12)
+      RF(98) = RF(98)*C(14)
+      RB(98) = RB(98)*C(12)
+      RF(99) = RF(99)*C(9)*C(14)
+      RB(99) = RB(99)*C(18)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+     * +2.D0*C(14)+2.D0*C(15)
+      PR = RKLOW(11) * CTB / RF(100)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 2.18D-1*EXP(-T/2.075D2)
+     *      + 7.82D-1*EXP(-T/2.663D3)
+     *     + EXP(-6.095D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(100) = RF(100) * PCOR
+      RB(100) = RB(100) * PCOR
+      RF(100) = RF(100)*C(1)
+      RB(100) = RB(100)*C(15)
+      RF(101) = RF(101)*C(1)
+      RB(101) = RB(101)*C(5)*C(14)
+      RF(102) = RF(102)*C(2)
+      RB(102) = RB(102)*C(9)*C(12)
+      RF(103) = RF(103)*C(3)
+      RB(103) = RB(103)*C(6)*C(14)
+      RF(104) = RF(104)*C(8)
+      RB(104) = RB(104)*C(4)*C(14)
+      RF(105) = RF(105)*C(8)
+      RB(105) = RB(105)*C(2)*C(17)
+      RF(106) = RF(106)*C(8)
+      RB(106) = RB(106)*C(11)
+      RF(107) = RF(107)*C(4)
+      RB(107) = RB(107)*C(3)*C(17)
+      RF(108) = RF(108)*C(7)
+      RB(108) = RB(108)*C(4)*C(15)
+      RB(109) = RB(109)*C(12)*C(15)
+      RB(110) = RB(110)*C(20)
+      RF(111) = RF(111)*C(9)
+      RB(111) = RB(111)*C(10)*C(14)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+     * +2.D0*C(15)
+      PR = RKLOW(12) * CTB / RF(112)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 8.25D-1*EXP(-T/1.3406D3)
+     *      + 1.75D-1*EXP(-T/6.D4)
+     *     + EXP(-1.01398D4/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(112) = RF(112) * PCOR
+      RB(112) = RB(112) * PCOR
+      RF(112) = RF(112)*C(9)
+      RB(112) = RB(112)*C(19)
+      RF(113) = RF(113)*C(9)
+      RB(113) = RB(113)*C(1)*C(18)
+      RB(114) = RB(114)*C(14)*C(15)
+      RF(115) = RF(115)*C(17)
+      RB(115) = RB(115)*C(9)*C(12)
+      RF(116) = RF(116)*C(1)*C(17)
+      RB(116) = RB(116)*C(9)
+      RF(117) = RF(117)*C(8)*C(17)
+      RB(117) = RB(117)*C(3)*C(11)*C(12)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(13) * CTB / RF(118)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 1.569D0*EXP(-T/2.99D2)
+     *      - 5.69D-1*EXP(-T/9.147D3)
+     *     + EXP(1.524D2/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(118) = RF(118) * PCOR
+      RB(118) = RB(118) * PCOR
+      RF(118) = RF(118)*C(1)*C(15)
+      RF(119) = RF(119)*C(1)*C(15)
+      RB(119) = RB(119)*C(5)
+      RF(120) = RF(120)*C(2)*C(15)
+      RB(120) = RB(120)*C(3)
+      RF(121) = RF(121)*C(2)*C(15)
+      RB(121) = RB(121)*C(9)
+      RF(122) = RF(122)*C(2)*C(15)
+      RB(122) = RB(122)*C(11)
+      RF(123) = RF(123)*C(3)*C(15)
+      RB(123) = RB(123)*C(6)
+      RF(124) = RF(124)*C(15)
+      RB(124) = RB(124)*C(12)
+      RF(125) = RF(125)*C(15)
+      RB(125) = RB(125)*C(1)*C(18)
+      RF(126) = RF(126)*C(15)
+      RB(126) = RB(126)*C(1)*C(18)
+      RF(127) = RF(127)*C(9)*C(15)
+      RB(127) = RB(127)*C(10)
+      RF(128) = RF(128)*C(9)*C(15)
+      RF(129) = RF(129)*C(8)*C(15)
+      RB(129) = RB(129)*C(4)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(14) * CTB / RF(130)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 1.578000000000001D-1*EXP(-T/1.25D2)
+     *      + 8.421999999999999D-1*EXP(-T/2.219D3)
+     *     + EXP(-6.882D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(130) = RF(130) * PCOR
+      RB(130) = RB(130) * PCOR
+      RF(130) = RF(130)*C(1)
+      RB(130) = RB(130)*C(16)
+      RF(131) = RF(131)*C(1)
+      RB(131) = RB(131)*C(5)*C(15)
+      RF(132) = RF(132)*C(2)
+      RB(132) = RB(132)*C(9)*C(11)
+      RF(133) = RF(133)*C(8)
+      RB(133) = RB(133)*C(4)*C(15)
+      RF(134) = RF(134)*C(4)
+      RB(134) = RB(134)*C(8)*C(16)
+      RF(135) = RF(135)*C(4)
+      RB(135) = RB(135)*C(7)*C(15)
+      RF(136) = RF(136)*C(4)
+      RB(136) = RB(136)*C(3)*C(9)*C(11)
+      RF(137) = RF(137)*C(7)
+      RB(137) = RB(137)*C(4)*C(16)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(15) * CTB / RF(138)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 8.02D-1*EXP(-T/2.2779D3)
+     *      + 1.98D-1*EXP(-T/6.D4)
+     *     + EXP(-5.7232D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(138) = RF(138) * PCOR
+      RB(138) = RB(138) * PCOR
+      RB(138) = RB(138)*C(21)
+      RB(139) = RB(139)*C(9)*C(18)
+      RF(140) = RF(140)*C(1)*C(16)
+      RB(140) = RB(140)*C(5)
+      RF(141) = RF(141)*C(2)*C(16)
+      RB(141) = RB(141)*C(3)
+      RF(142) = RF(142)*C(3)*C(16)
+      RB(142) = RB(142)*C(6)
+      RF(143) = RF(143)*C(16)
+      RB(143) = RB(143)*C(9)
+      RF(144) = RF(144)*C(9)*C(16)
+      RB(144) = RB(144)*C(10)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(16) * CTB / RF(145)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 9.8D-1*EXP(-T/1.0966D3)
+     *      + 2.D-2*EXP(-T/1.0966D3)
+     *     + EXP(-6.8595D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(145) = RF(145) * PCOR
+      RB(145) = RB(145) * PCOR
+      RF(145) = RF(145)*C(1)*C(18)
+      RB(145) = RB(145)*C(19)
+      RF(146) = RF(146)*C(2)*C(18)
+      RB(146) = RB(146)*C(1)*C(20)
+      RF(147) = RF(147)*C(3)*C(18)
+      RB(147) = RB(147)*C(1)*C(1)*C(20)
+      RF(148) = RF(148)*C(8)*C(18)
+      RB(148) = RB(148)*C(3)*C(20)
+      RF(149) = RF(149)*C(4)*C(18)
+      RB(149) = RB(149)*C(8)*C(19)
+      RF(150) = RF(150)*C(4)*C(18)
+      RB(150) = RB(150)*C(3)*C(11)
+      RF(151) = RF(151)*C(18)
+      RB(151) = RB(151)*C(12)*C(19)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(17) * CTB / RF(152)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 8.96D-1*EXP(-T/1.606D3)
+     *      + 1.04D-1*EXP(-T/6.D4)
+     *     + EXP(-6.1184D3/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(152) = RF(152) * PCOR
+      RB(152) = RB(152) * PCOR
+      RF(152) = RF(152)*C(9)*C(18)
+      RB(152) = RB(152)*C(21)
+      CTB = CTOT+C(5)+5.D0*C(6)
+     * +C(10)+5.D-1*C(12)
+     * +C(13)+2.D0*C(16)
+      PR = RKLOW(18) * CTB / RF(153)
+      PCOR = PR / (1.0 + PR)
+      PRLOG = LOG10(MAX(PR,SMALL))
+      FCENT = 0.D0*EXP(-T/1.D3)
+     *      + 1.D0*EXP(-T/1.31D3)
+     *     + EXP(-4.8097D4/T)
+      FCLOG = LOG10(MAX(FCENT,SMALL))
+      XN    = 0.75 - 1.27*FCLOG
+      CPRLOG= PRLOG - (0.4 + 0.67*FCLOG)
+      FLOG = FCLOG/(1.0 + (CPRLOG/(XN-0.14*CPRLOG))**2)
+      FC = 10.0**FLOG
+      PCOR = FC * PCOR
+      RF(153) = RF(153) * PCOR
+      RB(153) = RB(153) * PCOR
+      RF(153) = RF(153)*C(1)*C(19)
+      RF(154) = RF(154)*C(1)*C(19)
+      RB(154) = RB(154)*C(9)*C(15)
+      RF(155) = RF(155)*C(1)*C(19)
+      RB(155) = RB(155)*C(5)*C(18)
+      RF(156) = RF(156)*C(2)*C(19)
+      RB(156) = RB(156)*C(1)*C(1)*C(20)
+      RF(157) = RF(157)*C(2)*C(19)
+      RF(158) = RF(158)*C(2)*C(19)
+      RB(158) = RB(158)*C(3)*C(18)
+      RF(159) = RF(159)*C(3)*C(19)
+      RB(159) = RB(159)*C(6)*C(18)
+      RF(160) = RF(160)*C(4)*C(19)
+      RB(160) = RB(160)*C(7)*C(18)
+      RF(161) = RF(161)*C(9)*C(19)
+      RB(161) = RB(161)*C(10)*C(18)
+      RF(162) = RF(162)*C(1)*C(20)
+      RB(162) = RB(162)*C(15)
+      RF(163) = RF(163)*C(2)*C(20)
+      RB(163) = RB(163)*C(3)*C(12)
+      RF(164) = RF(164)*C(3)*C(20)
+      RB(164) = RB(164)*C(6)*C(12)
+      RF(165) = RF(165)*C(1)
+      RB(165) = RB(165)*C(9)
+      RF(166) = RF(166)*C(1)
+      RB(166) = RB(166)*C(5)*C(19)
+      RF(167) = RF(167)*C(2)
+      RB(167) = RB(167)*C(11)
+      RF(168) = RF(168)*C(3)
+      RB(168) = RB(168)*C(6)*C(19)
+      RF(169) = RF(169)*C(8)
+      RB(169) = RB(169)*C(4)*C(19)
+      RF(170) = RF(170)*C(4)
+      RB(170) = RB(170)*C(3)*C(11)
+      RF(171) = RF(171)*C(9)
+      RB(171) = RB(171)*C(10)*C(19)
+      RF(172) = RF(172)*C(1)*C(21)
+      RB(172) = RB(172)*C(15)
+      RF(173) = RF(173)*C(1)*C(21)
+      RB(173) = RB(173)*C(9)*C(19)
+      RF(174) = RF(174)*C(2)*C(21)
+      RF(175) = RF(175)*C(22)
+      RF(176) = RF(176)*C(22)
+      RF(177) = RF(177)*C(22)
+      RF(178) = RF(178)*C(22)
+      RF(179) = RF(179)*C(1)*C(22)
+      RF(180) = RF(180)*C(1)*C(22)
+      RF(181) = RF(181)*C(2)*C(22)
+      RF(182) = RF(182)*C(2)*C(22)
+      RF(183) = RF(183)*C(3)*C(22)
+      RF(184) = RF(184)*C(3)*C(22)
+      RF(185) = RF(185)*C(9)*C(22)
+      RF(186) = RF(186)*C(9)*C(22)
+      RF(187) = RF(187)*C(8)*C(22)
+      RF(188) = RF(188)*C(8)*C(22)
+      RF(189) = RF(189)*C(4)*C(22)
+      RF(190) = RF(190)*C(4)*C(22)
+      RF(191) = RF(191)*C(23)
+      RB(191) = RB(191)*C(18)
+      RF(192) = RF(192)*C(1)*C(23)
+      RB(192) = RB(192)*C(19)
+      RF(193) = RF(193)*C(2)*C(23)
+      RB(193) = RB(193)*C(15)
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE RDOT(RF, RB, WDOT)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION RF(*), RB(*), WDOT(*)
+C
+      DO K = 1, 24
+         WDOT(K) = 0D0
+      ENDDO
+C
+      ROP = RF(1)-RB(1)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      ROP = RF(2)-RB(2)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(5) = WDOT(5) -ROP
+      ROP = RF(3)-RB(3)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(5) = WDOT(5) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      ROP = RF(4)-RB(4)
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(3) = WDOT(3) -ROP -ROP
+      WDOT(6) = WDOT(6) +ROP
+      ROP = RF(5)-RB(5)
+      WDOT(1) = WDOT(1) -ROP -ROP
+      WDOT(5) = WDOT(5) +ROP
+      ROP = RF(6)-RB(6)
+      WDOT(1) = WDOT(1) -ROP -ROP
+      WDOT(5) = WDOT(5) +ROP
+      ROP = RF(7)-RB(7)
+      WDOT(1) = WDOT(1) -ROP -ROP
+      WDOT(5) = WDOT(5) +ROP
+      ROP = RF(8)-RB(8)
+      WDOT(1) = WDOT(1) -ROP -ROP
+      WDOT(5) = WDOT(5) +ROP
+      ROP = RF(9)-RB(9)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      ROP = RF(10)-RB(10)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      ROP = RF(11)-RB(11)
+      WDOT(2) = WDOT(2) -ROP -ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(12)-RB(12)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      ROP = RF(13)-RB(13)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(5) = WDOT(5) -ROP
+      WDOT(8) = WDOT(8) -ROP
+      ROP = RF(14)-RB(14)
+      WDOT(3) = WDOT(3) -ROP -ROP
+      WDOT(7) = WDOT(7) +ROP
+      ROP = RF(15)-RB(15)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      ROP = RF(16)-RB(16)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(3) = WDOT(3) +ROP +ROP
+      WDOT(4) = WDOT(4) -ROP
+      ROP = RF(17)-RB(17)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(18)-RB(18)
+      WDOT(4) = WDOT(4) -ROP -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(19)-RB(19)
+      WDOT(4) = WDOT(4) -ROP -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(20)-RB(20)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(21)-RB(21)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(22)-RB(22)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(23)-RB(23)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(24)-RB(24)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) +ROP
+      ROP = RF(25)-RB(25)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      ROP = RF(26)-RB(26)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      ROP = RF(27)-RB(27)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      ROP = RF(28)-RB(28)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      ROP = RF(29)-RB(29)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      ROP = RF(30)-RB(30)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(12) = WDOT(12) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(31)-RB(31)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(12) = WDOT(12) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(32)-RB(32)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(12) = WDOT(12) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(33)-RB(33)
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(12) = WDOT(12) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(34)-RB(34)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(12) = WDOT(12) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(35)-RB(35)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(36)-RB(36)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(37)-RB(37)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(38)-RB(38)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(39)-RB(39)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(40)-RB(40)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(41)-RB(41)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(42)-RB(42)
+      WDOT(5) = WDOT(5) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      WDOT(12) = WDOT(12) -ROP
+      ROP = RF(43)-RB(43)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(44)-RB(44)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      ROP = RF(45)-RB(45)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      ROP = RF(46)-RB(46)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(47)-RB(47)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(5) = WDOT(5) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      ROP = RF(48)-RB(48)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      ROP = RF(49)-RB(49)
+      WDOT(1) = WDOT(1) +ROP +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(13) = WDOT(13) +ROP
+      ROP = RF(50)-RB(50)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(51)-RB(51)
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(52)-RB(52)
+      ROP = RF(53)-RB(53)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(54)-RB(54)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      ROP = RF(55)-RB(55)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(56)-RB(56)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(5) = WDOT(5) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      ROP = RF(57)-RB(57)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(58)-RB(58)
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(59)-RB(59)
+      ROP = RF(60)-RB(60)
+      ROP = RF(61)-RB(61)
+      ROP = RF(62)-RB(62)
+      WDOT(11) = WDOT(11) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(13) = WDOT(13) -ROP
+      ROP = RF(63)-RB(63)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(64)-RB(64)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(65)-RB(65)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(66)-RB(66)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(67)-RB(67)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(68)-RB(68)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(69)-RB(69)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      ROP = RF(70)-RB(70)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(71)-RB(71)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      ROP = RF(72)-RB(72)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      ROP = RF(73)-RB(73)
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      ROP = RF(74)-RB(74)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(75)-RB(75)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(8) = WDOT(8) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      ROP = RF(76)-RB(76)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      ROP = RF(77)-RB(77)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      ROP = RF(78)-RB(78)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(79)-RB(79)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(11) = WDOT(11) -ROP
+      ROP = RF(80)-RB(80)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(81)-RB(81)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(82)-RB(82)
+      WDOT(9) = WDOT(9) -ROP -ROP
+      WDOT(16) = WDOT(16) +ROP
+      ROP = RF(83)-RB(83)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(9) = WDOT(9) -ROP -ROP
+      ROP = RF(84)-RB(84)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(85)-RB(85)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(9) = WDOT(9) +ROP
+      ROP = RF(86)-RB(86)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      ROP = RF(87)-RB(87)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(88)-RB(88)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(89)-RB(89)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(90)-RB(90)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(10) = WDOT(10) -ROP
+      ROP = RF(91)-RB(91)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(10) = WDOT(10) -ROP
+      ROP = RF(92)-RB(92)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(10) = WDOT(10) -ROP
+      ROP = RF(93)-RB(93)
+      WDOT(9) = WDOT(9) +ROP +ROP
+      WDOT(10) = WDOT(10) -ROP
+      ROP = RF(94)-RB(94)
+      WDOT(9) = WDOT(9) +ROP +ROP
+      WDOT(10) = WDOT(10) -ROP
+      ROP = RF(95)-RB(95)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(96)-RB(96)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(14) = WDOT(14) -ROP
+      ROP = RF(97)-RB(97)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(14) = WDOT(14) -ROP
+      ROP = RF(98)-RB(98)
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(14) = WDOT(14) -ROP
+      ROP = RF(99)-RB(99)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(14) = WDOT(14) -ROP
+      WDOT(18) = WDOT(18) +ROP
+      ROP = RF(100)-RB(100)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(101)-RB(101)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(102)-RB(102)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      ROP = RF(103)-RB(103)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(104)-RB(104)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(105)-RB(105)
+      WDOT(2) = WDOT(2) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(17) = WDOT(17) +ROP
+      ROP = RF(106)-RB(106)
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(107)-RB(107)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(17) = WDOT(17) +ROP
+      ROP = RF(108)-RB(108)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(109)-RB(109)
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(110)-RB(110)
+      WDOT(20) = WDOT(20) +ROP
+      ROP = RF(111)-RB(111)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(14) = WDOT(14) +ROP
+      ROP = RF(112)-RB(112)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(113)-RB(113)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(18) = WDOT(18) +ROP
+      ROP = RF(114)-RB(114)
+      WDOT(14) = WDOT(14) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(115)-RB(115)
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(17) = WDOT(17) -ROP
+      ROP = RF(116)-RB(116)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(17) = WDOT(17) -ROP
+      ROP = RF(117)-RB(117)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(17) = WDOT(17) -ROP
+      ROP = RF(118)-RB(118)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(119)-RB(119)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(120)-RB(120)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(121)-RB(121)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(122)-RB(122)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(123)-RB(123)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(124)-RB(124)
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(125)-RB(125)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      WDOT(18) = WDOT(18) +ROP
+      ROP = RF(126)-RB(126)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      WDOT(18) = WDOT(18) +ROP
+      ROP = RF(127)-RB(127)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(128)-RB(128)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(129)-RB(129)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(15) = WDOT(15) -ROP
+      ROP = RF(130)-RB(130)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(16) = WDOT(16) +ROP
+      ROP = RF(131)-RB(131)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(132)-RB(132)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(133)-RB(133)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(134)-RB(134)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(8) = WDOT(8) +ROP
+      WDOT(16) = WDOT(16) +ROP
+      ROP = RF(135)-RB(135)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      ROP = RF(136)-RB(136)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(137)-RB(137)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(7) = WDOT(7) -ROP
+      WDOT(16) = WDOT(16) +ROP
+      ROP = RF(138)-RB(138)
+      WDOT(21) = WDOT(21) +ROP
+      ROP = RF(139)-RB(139)
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      ROP = RF(140)-RB(140)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(16) = WDOT(16) -ROP
+      ROP = RF(141)-RB(141)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(16) = WDOT(16) -ROP
+      ROP = RF(142)-RB(142)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(16) = WDOT(16) -ROP
+      ROP = RF(143)-RB(143)
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(16) = WDOT(16) -ROP
+      ROP = RF(144)-RB(144)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(16) = WDOT(16) -ROP
+      ROP = RF(145)-RB(145)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(146)-RB(146)
+      WDOT(1) = WDOT(1) +ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(20) = WDOT(20) +ROP
+      ROP = RF(147)-RB(147)
+      WDOT(1) = WDOT(1) +ROP +ROP
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(20) = WDOT(20) +ROP
+      ROP = RF(148)-RB(148)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(20) = WDOT(20) +ROP
+      ROP = RF(149)-RB(149)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(8) = WDOT(8) +ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(150)-RB(150)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      WDOT(18) = WDOT(18) -ROP
+      ROP = RF(151)-RB(151)
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(152)-RB(152)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(18) = WDOT(18) -ROP
+      WDOT(21) = WDOT(21) +ROP
+      ROP = RF(153)-RB(153)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(154)-RB(154)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(155)-RB(155)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(156)-RB(156)
+      WDOT(1) = WDOT(1) +ROP +ROP
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(19) = WDOT(19) -ROP
+      WDOT(20) = WDOT(20) +ROP
+      ROP = RF(157)-RB(157)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(158)-RB(158)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(159)-RB(159)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(160)-RB(160)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(161)-RB(161)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(19) = WDOT(19) -ROP
+      ROP = RF(162)-RB(162)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(20) = WDOT(20) -ROP
+      ROP = RF(163)-RB(163)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(20) = WDOT(20) -ROP
+      ROP = RF(164)-RB(164)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(12) = WDOT(12) +ROP
+      WDOT(20) = WDOT(20) -ROP
+      ROP = RF(165)-RB(165)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      ROP = RF(166)-RB(166)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(167)-RB(167)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(168)-RB(168)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(169)-RB(169)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(170)-RB(170)
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(11) = WDOT(11) +ROP
+      ROP = RF(171)-RB(171)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      ROP = RF(172)-RB(172)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(21) = WDOT(21) -ROP
+      ROP = RF(173)-RB(173)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(21) = WDOT(21) -ROP
+      ROP = RF(174)-RB(174)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(21) = WDOT(21) -ROP
+      ROP = RF(175)
+      WDOT(9) = WDOT(9) +ROP
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(176)
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(177)
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(21) = WDOT(21) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      ROP = RF(178)
+      WDOT(19) = WDOT(19) +ROP +ROP
+      WDOT(22) = WDOT(22) -ROP
+      ROP = RF(179)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(180)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(5) = WDOT(5) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(181)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(182)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(3) = WDOT(3) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(183)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(184)
+      WDOT(3) = WDOT(3) -ROP
+      WDOT(6) = WDOT(6) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(185)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(186)
+      WDOT(9) = WDOT(9) -ROP
+      WDOT(10) = WDOT(10) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(187)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(188)
+      WDOT(4) = WDOT(4) +ROP
+      WDOT(8) = WDOT(8) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(189)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(190)
+      WDOT(4) = WDOT(4) -ROP
+      WDOT(7) = WDOT(7) +ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(22) = WDOT(22) -ROP
+      WDOT(23) = WDOT(23) +ROP
+      ROP = RF(191)-RB(191)
+      WDOT(18) = WDOT(18) +ROP
+      WDOT(23) = WDOT(23) -ROP
+      ROP = RF(192)-RB(192)
+      WDOT(1) = WDOT(1) -ROP
+      WDOT(19) = WDOT(19) +ROP
+      WDOT(23) = WDOT(23) -ROP
+      ROP = RF(193)-RB(193)
+      WDOT(2) = WDOT(2) -ROP
+      WDOT(15) = WDOT(15) +ROP
+      WDOT(23) = WDOT(23) -ROP
+C
+      END
+C                                                                      C
+C----------------------------------------------------------------------C
+C                                                                      C
+      SUBROUTINE QSSA(RF, RB, XQ)
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z), INTEGER (I-N)
+      DIMENSION RF(*), RB(*), XQ(*)
+C
+      RF(51) = 0.D0
+      RF(109) = 0.D0
+      RF(110) = 0.D0
+      RF(114) = 0.D0
+      RF(138) = 0.D0
+      RF(139) = 0.D0
+      RB(157) = 0.D0
+      RB(174) = 0.D0
+      RB(176) = 0.D0
+      RB(177) = 0.D0
+      RB(178) = 0.D0
+      RB(193) = 0.D0
+C
+C     CH2
+      DEN = +RF( 44) +RF( 45) +RF( 46) +RF( 47) +RF( 48) 
+     *  +RF( 49) +RF( 50) +RF( 80) +RF( 93) +RF(125) +RB( 52) 
+     *  +RB( 59) +RB( 60) +RB( 61) +RB( 71) +RB( 96) +RB(122) 
+      A1_0 = ( +RB( 44) +RB( 46) +RB( 47) +RB( 49) +RB( 50) 
+     *  +RB( 51) +RB( 51) +RF( 71) +RB( 80) +RB( 93) +RF( 96) 
+     *  +RF(122) +RB(125) )/DEN
+      A1_2 = ( +RF( 52) +RF( 59) +RF( 60) +RF( 61) )/DEN
+      A1_3 = ( +RB( 45) +RB( 48) )/DEN
+C     CH2*
+      DEN = +RF( 52) +RF( 53) +RF( 54) +RF( 55) +RF( 56) 
+     *  +RF( 57) +RF( 58) +RF( 59) +RF( 60) +RF( 61) +RF( 62) 
+     *  +RF( 81) +RF( 94) +RF(126) +RF(143) +RB( 72) +RB( 86) 
+      A2_0 = ( +RB( 53) +RB( 55) +RB( 56) +RB( 57) +RB( 58) 
+     *  +RB( 62) +RF( 72) +RB( 81) +RB( 94) +RB(126) )/DEN
+      A2_1 = ( +RB( 52) +RB( 59) +RB( 60) +RB( 61) )/DEN
+      A2_3 = ( +RB( 54) )/DEN
+      A2_4 = ( +RF( 86) )/DEN
+      A2_6 = ( +RB(143) )/DEN
+C     HCO
+      DEN = +RF( 35) +RF( 36) +RF( 37) +RF( 38) +RF( 39) 
+     *  +RF( 40) +RF( 41) +RF( 43) +RF( 78) +RF( 98) +RF(124) 
+     *  +RF(151) +RB( 45) +RB( 48) +RB( 54) +RB( 64) +RB( 65) 
+     *  +RB( 66) +RB( 67) +RB( 68) +RB( 79) +RB(106) +RB(116) 
+     *  +RB(121) +RB(162) 
+      A3_0 = ( +RB( 35) +RB( 36) +RB( 37) +RB( 38) +RB( 39) 
+     *  +RB( 40) +RB( 41) +RB( 43) +RF( 64) +RF( 65) +RF( 66) 
+     *  +RF( 67) +RF( 68) +RB( 78) +RF( 79) +RB(109) +RB(110) 
+     *  +RF(116) +RF(121) +RB(151) +RF(157) +RF(162) +RF(174) 
+     *  +RF(193) )/DEN
+      A3_1 = ( +RF( 45) +RF( 48) )/DEN
+      A3_2 = ( +RF( 54) )/DEN
+      A3_5 = ( +RB( 98) +RF(106) )/DEN
+      A3_6 = ( +RB(124) )/DEN
+C     CH3O
+      DEN = +RF( 84) +RF( 85) +RF( 86) +RF( 87) +RF( 88) 
+     *  +RF( 89) +RB( 63) +RB( 73) +RB( 76) 
+      A4_0 = ( +RF( 63) +RF( 73) +RF( 76) +RB( 84) +RB( 85) 
+     *  +RB( 87) +RB( 88) +RB( 89) )/DEN
+      A4_2 = ( +RB( 86) )/DEN
+C     C2H3
+      DEN = +RF( 95) +RF(100) +RF(101) +RF(102) +RF(103) 
+     *  +RF(104) +RF(105) +RF(106) +RF(107) +RF(108) +RF(111) 
+     *  +RF(112) +RF(113) +RB( 98) +RB(119) +RB(120) +RB(123) 
+     *  +RB(127) +RB(129) +RB(150) +RB(163) +RB(164) 
+      A5_0 = ( +RB( 95) +RB(100) +RB(101) +RB(102) +RB(103) 
+     *  +RB(104) +RB(105) +RB(107) +RB(108) +RB(109) +RB(110) 
+     *  +RB(111) +RB(112) +RB(113) +RB(114) +RB(114) +RF(119) 
+     *  +RF(120) +RF(123) +RF(127) +RF(129) +RB(138) +RB(139) 
+     *  +RF(150) +RF(163) +RF(164) )/DEN
+      A5_3 = ( +RF( 98) +RB(106) )/DEN
+C     C2H5
+      DEN = +RF(130) +RF(131) +RF(132) +RF(133) +RF(134) 
+     *  +RF(135) +RF(136) +RF(137) +RB( 83) +RB(118) +RB(124) 
+     *  +RB(140) +RB(141) +RB(142) +RB(143) +RB(144) +RB(165) 
+     *  +RB(167) +RB(170) +RB(172) 
+      A6_0 = ( +RF( 83) +RF(118) +RB(130) +RB(131) +RB(132) 
+     *  +RB(133) +RB(134) +RB(135) +RB(136) +RB(137) +RB(138) 
+     *  +RB(139) +RF(140) +RF(141) +RF(142) +RF(144) +RF(157) 
+     *  +RF(172) )/DEN
+      A6_2 = ( +RF(143) )/DEN
+      A6_3 = ( +RF(124) )/DEN
+      A6_7 = ( +RF(165) +RF(167) +RF(170) )/DEN
+C     nC3H7
+      DEN = +RF(165) +RF(166) +RF(167) +RF(168) +RF(169) 
+     *  +RF(170) +RF(171) +RB(128) +RB(153) +RB(175) +RB(179) 
+     *  +RB(180) +RB(181) +RB(182) +RB(183) +RB(184) +RB(185) 
+     *  +RB(186) +RB(187) +RB(188) +RB(189) +RB(190) +RB(191) 
+     *  +RB(192) 
+      A7_0 = ( +RF(128) +RF(153) +RB(166) +RB(168) +RB(169) 
+     *  +RB(171) +RF(174) +RF(175) +RF(176) +RF(176) +RF(177) 
+     *  +RF(177) +RF(178) +RF(178) +RF(179) +RF(180) +RF(181) 
+     *  +RF(182) +RF(183) +RF(184) +RF(185) +RF(186) +RF(187) 
+     *  +RF(188) +RF(189) +RF(190) +RF(191) +RF(192) +RF(193) )/DEN
+      A7_6 = ( +RB(165) +RB(167) +RB(170) )/DEN
+C
+      A3_0 = A3_0 + A3_5*A5_0
+      DEN = 1 -A3_5*A5_3
+      A3_0 = A3_0/DEN
+      A3_2 = A3_2/DEN
+      A3_6 = A3_6/DEN
+      A3_1 = A3_1/DEN
+      A2_0 = A2_0 + A2_4*A4_0
+      DEN = 1 -A2_4*A4_2
+      A2_0 = A2_0/DEN
+      A2_3 = A2_3/DEN
+      A2_6 = A2_6/DEN
+      A2_1 = A2_1/DEN
+      A6_0 = A6_0 + A6_7*A7_0
+      DEN = 1 -A6_7*A7_6
+      A6_0 = A6_0/DEN
+      A6_3 = A6_3/DEN
+      A6_2 = A6_2/DEN
+      A3_0 = A3_0 + A3_1*A1_0
+      A3_2 = A3_2 + A3_1*A1_2
+      DEN = 1 -A3_1*A1_3
+      A3_0 = A3_0/DEN
+      A3_2 = A3_2/DEN
+      A3_6 = A3_6/DEN
+      A2_0 = A2_0 + A2_1*A1_0
+      A2_3 = A2_3 + A2_1*A1_3
+      DEN = 1 -A2_1*A1_2
+      A2_0 = A2_0/DEN
+      A2_3 = A2_3/DEN
+      A2_6 = A2_6/DEN
+      A3_0 = A3_0 + A3_6*A6_0
+      A3_2 = A3_2 + A3_6*A6_2
+      DEN = 1 -A3_6*A6_3
+      A3_0 = A3_0/DEN
+      A3_2 = A3_2/DEN
+      A2_0 = A2_0 + A2_6*A6_0
+      A2_3 = A2_3 + A2_6*A6_3
+      DEN = 1 -A2_6*A6_2
+      A2_0 = A2_0/DEN
+      A2_3 = A2_3/DEN
+      A3_0 = A3_0 + A3_2*A2_0
+      DEN = 1 -A3_2*A2_3
+      A3_0 = A3_0/DEN
+      XQ(3) = A3_0
+      XQ(2) = A2_0 +A2_3*XQ(3)
+      XQ(6) = A6_0 +A6_3*XQ(3) +A6_2*XQ(2)
+      XQ(1) = A1_0 +A1_3*XQ(3) +A1_2*XQ(2)
+      XQ(7) = A7_0 +A7_6*XQ(6)
+      XQ(4) = A4_0 +A4_2*XQ(2)
+      XQ(5) = A5_0 +A5_3*XQ(3)
+C
+      RF( 35) = RF( 35)*XQ( 3)
+      RF( 36) = RF( 36)*XQ( 3)
+      RF( 37) = RF( 37)*XQ( 3)
+      RF( 38) = RF( 38)*XQ( 3)
+      RF( 39) = RF( 39)*XQ( 3)
+      RF( 40) = RF( 40)*XQ( 3)
+      RF( 41) = RF( 41)*XQ( 3)
+      RF( 43) = RF( 43)*XQ( 3)
+      RF( 44) = RF( 44)*XQ( 1)
+      RF( 45) = RF( 45)*XQ( 1)
+      RB( 45) = RB( 45)*XQ( 3)
+      RF( 46) = RF( 46)*XQ( 1)
+      RF( 47) = RF( 47)*XQ( 1)
+      RF( 48) = RF( 48)*XQ( 1)
+      RB( 48) = RB( 48)*XQ( 3)
+      RF( 49) = RF( 49)*XQ( 1)
+      RF( 50) = RF( 50)*XQ( 1)
+      RF( 52) = RF( 52)*XQ( 2)
+      RB( 52) = RB( 52)*XQ( 1)
+      RF( 53) = RF( 53)*XQ( 2)
+      RF( 54) = RF( 54)*XQ( 2)
+      RB( 54) = RB( 54)*XQ( 3)
+      RF( 55) = RF( 55)*XQ( 2)
+      RF( 56) = RF( 56)*XQ( 2)
+      RF( 57) = RF( 57)*XQ( 2)
+      RF( 58) = RF( 58)*XQ( 2)
+      RF( 59) = RF( 59)*XQ( 2)
+      RB( 59) = RB( 59)*XQ( 1)
+      RF( 60) = RF( 60)*XQ( 2)
+      RB( 60) = RB( 60)*XQ( 1)
+      RF( 61) = RF( 61)*XQ( 2)
+      RB( 61) = RB( 61)*XQ( 1)
+      RF( 62) = RF( 62)*XQ( 2)
+      RB( 63) = RB( 63)*XQ( 4)
+      RB( 64) = RB( 64)*XQ( 3)
+      RB( 65) = RB( 65)*XQ( 3)
+      RB( 66) = RB( 66)*XQ( 3)
+      RB( 67) = RB( 67)*XQ( 3)
+      RB( 68) = RB( 68)*XQ( 3)
+      RB( 71) = RB( 71)*XQ( 1)
+      RB( 72) = RB( 72)*XQ( 2)
+      RB( 73) = RB( 73)*XQ( 4)
+      RB( 76) = RB( 76)*XQ( 4)
+      RF( 78) = RF( 78)*XQ( 3)
+      RB( 79) = RB( 79)*XQ( 3)
+      RF( 80) = RF( 80)*XQ( 1)
+      RF( 81) = RF( 81)*XQ( 2)
+      RB( 83) = RB( 83)*XQ( 6)
+      RF( 84) = RF( 84)*XQ( 4)
+      RF( 85) = RF( 85)*XQ( 4)
+      RF( 86) = RF( 86)*XQ( 4)
+      RB( 86) = RB( 86)*XQ( 2)
+      RF( 87) = RF( 87)*XQ( 4)
+      RF( 88) = RF( 88)*XQ( 4)
+      RF( 89) = RF( 89)*XQ( 4)
+      RF( 93) = RF( 93)*XQ( 1)
+      RF( 94) = RF( 94)*XQ( 2)
+      RF( 95) = RF( 95)*XQ( 5)
+      RB( 96) = RB( 96)*XQ( 1)
+      RF( 98) = RF( 98)*XQ( 3)
+      RB( 98) = RB( 98)*XQ( 5)
+      RF(100) = RF(100)*XQ( 5)
+      RF(101) = RF(101)*XQ( 5)
+      RF(102) = RF(102)*XQ( 5)
+      RF(103) = RF(103)*XQ( 5)
+      RF(104) = RF(104)*XQ( 5)
+      RF(105) = RF(105)*XQ( 5)
+      RF(106) = RF(106)*XQ( 5)
+      RB(106) = RB(106)*XQ( 3)
+      RF(107) = RF(107)*XQ( 5)
+      RF(108) = RF(108)*XQ( 5)
+      RF(111) = RF(111)*XQ( 5)
+      RF(112) = RF(112)*XQ( 5)
+      RF(113) = RF(113)*XQ( 5)
+      RB(116) = RB(116)*XQ( 3)
+      RB(118) = RB(118)*XQ( 6)
+      RB(119) = RB(119)*XQ( 5)
+      RB(120) = RB(120)*XQ( 5)
+      RB(121) = RB(121)*XQ( 3)
+      RB(122) = RB(122)*XQ( 1)
+      RB(123) = RB(123)*XQ( 5)
+      RF(124) = RF(124)*XQ( 3)
+      RB(124) = RB(124)*XQ( 6)
+      RF(125) = RF(125)*XQ( 1)
+      RF(126) = RF(126)*XQ( 2)
+      RB(127) = RB(127)*XQ( 5)
+      RB(128) = RB(128)*XQ( 7)
+      RB(129) = RB(129)*XQ( 5)
+      RF(130) = RF(130)*XQ( 6)
+      RF(131) = RF(131)*XQ( 6)
+      RF(132) = RF(132)*XQ( 6)
+      RF(133) = RF(133)*XQ( 6)
+      RF(134) = RF(134)*XQ( 6)
+      RF(135) = RF(135)*XQ( 6)
+      RF(136) = RF(136)*XQ( 6)
+      RF(137) = RF(137)*XQ( 6)
+      RB(140) = RB(140)*XQ( 6)
+      RB(141) = RB(141)*XQ( 6)
+      RB(142) = RB(142)*XQ( 6)
+      RF(143) = RF(143)*XQ( 2)
+      RB(143) = RB(143)*XQ( 6)
+      RB(144) = RB(144)*XQ( 6)
+      RB(150) = RB(150)*XQ( 5)
+      RF(151) = RF(151)*XQ( 3)
+      RB(153) = RB(153)*XQ( 7)
+      RB(162) = RB(162)*XQ( 3)
+      RB(163) = RB(163)*XQ( 5)
+      RB(164) = RB(164)*XQ( 5)
+      RF(165) = RF(165)*XQ( 7)
+      RB(165) = RB(165)*XQ( 6)
+      RF(166) = RF(166)*XQ( 7)
+      RF(167) = RF(167)*XQ( 7)
+      RB(167) = RB(167)*XQ( 6)
+      RF(168) = RF(168)*XQ( 7)
+      RF(169) = RF(169)*XQ( 7)
+      RF(170) = RF(170)*XQ( 7)
+      RB(170) = RB(170)*XQ( 6)
+      RF(171) = RF(171)*XQ( 7)
+      RB(172) = RB(172)*XQ( 6)
+      RB(175) = RB(175)*XQ( 7)
+      RB(179) = RB(179)*XQ( 7)
+      RB(180) = RB(180)*XQ( 7)
+      RB(181) = RB(181)*XQ( 7)
+      RB(182) = RB(182)*XQ( 7)
+      RB(183) = RB(183)*XQ( 7)
+      RB(184) = RB(184)*XQ( 7)
+      RB(185) = RB(185)*XQ( 7)
+      RB(186) = RB(186)*XQ( 7)
+      RB(187) = RB(187)*XQ( 7)
+      RB(188) = RB(188)*XQ( 7)
+      RB(189) = RB(189)*XQ( 7)
+      RB(190) = RB(190)*XQ( 7)
+      RB(191) = RB(191)*XQ( 7)
+      RB(192) = RB(192)*XQ( 7)
+C
+      END

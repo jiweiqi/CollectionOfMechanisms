@@ -1,0 +1,32 @@
+!
+! A 24-species reduced mechanism for high-temperature oxidation of n-dodecane
+! with lumped fuel cracking reactions
+!
+! Developed by Yang Gao and Tianfeng Lu
+! Department of Mechanical Engineering
+! University of Connecticut
+!
+! Email: tlu@engr.uconn.edu
+!
+! Reference:
+!     Vie A., Franzelli B., Gao Y., Lu T.F., Wang H., Ihme M., 
+!     "Analysis of segregation and bifurcation in turbulent spray flames: 
+!      a 3D counterflow configuration," 
+!     Proc. Combust. Inst.,  DOI: 10.1016/j.proci.2014.06.083.
+! 
+
+ELEMENTS
+O H C N 
+END
+
+SPECIES
+H               	O               	OH              	HO2             	
+H2              	H2O             	H2O2            	O2              	
+CH3             	CH4             	CH2O            	CO              	
+CO2             	C2H2            	C2H4            	C2H6            	
+CH2CHO          	aC3H5           	C3H6            	C2H3CHO         	
+C4H81           	NC12H26         	C6H12           	N2              	
+END
+
+REACTIONS
+END
