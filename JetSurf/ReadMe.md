@@ -1,0 +1,4 @@
+The cti and xml files are derived from [Explosion Dynamics Laboratory at CalTech](https://shepherd.caltech.edu/EDL/PublicResources/sdt/cti_mech.html). To quote: JetSurF Version 2.0 - A working model for the combustion of n-alkane up to n-dodecane, cyclohexane, and mono-alkylated cyclohexane up to n-butyl-cyclohexane. See the Stanford webpage for details. 348 species, 2163 reactions, 300 to 2000 K. Thermodynamics refit for a number of species to eliminate midpoint temperature issues. (DAT) Data file for all species with new fits for selected species, NASA 7 format.
+
+TODO: What fuels the JetSurf2 can model?
+* <= n-dodecane
