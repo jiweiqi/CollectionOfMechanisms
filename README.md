@@ -6,6 +6,7 @@ Below are the proposed data organization structure. See the demo folder for DME_
 
 ```
 Fuel Name
+|
 │   README.md: list of reaction mechanisms and brief introduction
 │
 └───Mechanism abbr. (e.g., GRI30 for methane)
@@ -16,6 +17,7 @@ Fuel Name
 │   │   /chem.yaml (cantera format)
 │   │   /chem.cti (cantera format, optionally)
 │   │   /README.md: link to the origional paper/website
+|
 ```
 
 ## Chemical Mechanism Resources
