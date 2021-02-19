@@ -28,6 +28,7 @@ Resources published by kinetics groups (incomplete alphabetic list):
 * [Lawrence Livermore National Laboratory (LLNL) Mechanisms](https://combustion.llnl.gov/mechanisms)
 * [NUI Galway Mechanisms](http://c3.nuigalway.ie/combustionchemistrycentre/mechanismdownloads/)
 * [San Diego Mechanisms](http://web.eng.ucsd.edu/mae/groups/combustion/mechanism.html)
+* [Stanford Mechanisms](https://web.stanford.edu/group/haiwanglab/)
 * [UConn Mechanisms](http://spark.engr.uconn.edu/mechs/mechs.htm)
 
 Other collections:
