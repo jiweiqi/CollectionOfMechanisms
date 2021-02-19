@@ -15,7 +15,7 @@ Fuel Name
 │   │   /chem.xml (cantera format)
 │   │   /chem.yaml (cantera format)
 │   │   /chem.cti (cantera format, optionally)
-│   │   /README.md: how to cite, link to the origional paper/website, original link for downloading the mechanism
+│   │   /README.md: link to the origional paper/website
 ```
 
 ## Chemical Mechanism Resources
