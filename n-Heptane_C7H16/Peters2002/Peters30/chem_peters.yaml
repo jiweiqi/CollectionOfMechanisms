@@ -9,9 +9,12 @@ phases:
 - name: gas
   thermo: ideal-gas
   elements: [H, C, O, N]
-  species: [nc7h16, c4h9, c3h7, o2, c7h15-1, c7h15-2, 
-            ho2, h2o2, oh, h2o, c5h11, c2h4, c2h5, c3h6, 
-            ch2o, c2h3, ch2o, cho, co, h, n2]
+  species: [nc7h16, c7h15-1, c7h15-2, c5h11, 
+            c4h9, 
+            c3h7, c3h6, 
+            c2h5, c2h4, c2h3, 
+            ch2o, hco, 
+            o2, h, oh, ho2, h2o2, h2o, co, co2, n2]
   kinetics: gas
   reactions: all
   transport: mixture-averaged
@@ -241,6 +244,24 @@ species:
     well-depth: 107.4
     rotational-relaxation: 3.8
   note: '120186'
+- name: c5h11
+  composition: {C: 5, H: 11}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1396.0, 5000.0]
+    data:
+    - [-0.994216435, 0.0599860809, -3.78318587e-05, 1.21310895e-08, -1.57042863e-12,
+      4976.97538, 33.5998032]
+    - [15.4992372, 0.0238273176, -8.13845161e-06, 1.26220569e-09, -7.31730066e-14,
+      -1009.88975, -55.8563592]
+  transport:
+    model: gas
+    geometry: nonlinear
+    diameter: 5.664
+    well-depth: 523.2
+    dipole: 1.7
+    rotational-relaxation: 1.0
+  note: 8/4/4THERM
 - name: ch2o
   composition: {C: 1, H: 2, O: 1}
   thermo:
@@ -497,7 +518,7 @@ species:
     well-depth: 357.0
     rotational-relaxation: 1.0
   note: 4/4/0therm
-- name: nc3h7
+- name: c3h7
   composition: {C: 3, H: 7}
   thermo:
     model: NASA7
@@ -548,7 +569,7 @@ species:
     well-depth: 355.0
     rotational-relaxation: 1.0
   note: 4/7/97therm
-- name: pc4h9
+- name: c4h9
   composition: {C: 4, H: 9}
   thermo:
     model: NASA7
@@ -1583,17 +1604,17 @@ reactions:
   rate-constant: {A: 1.024e+10, b: 0.0, Ea: -2.1869E+03}
 - equation: c2h4 + oh => c2h3 + h2o  # Reaction 24
   rate-constant: {A: 2.048e+13, b: 0.0, Ea: 5.9512E+03}
-- equation: c2h3 + o2 => ch2o + cho  # Reaction 25
+- equation: c2h3 + o2 => ch2o + hco  # Reaction 25
   rate-constant: {A: 1.700e+29, b: -5.3, Ea: 6.5010E+03}
-- equation: ch2o + oh => cho + h2o  # Reaction 26
+- equation: ch2o + oh => hco + h2o  # Reaction 26
   rate-constant: {A: 3.433e+09, b: 1.18, Ea: -4.5411E+02}
-- equation: cho + o2 => co + ho2  # Reaction 27
+- equation: hco + o2 => co + ho2  # Reaction 27
   rate-constant: {A: 3.011e+12, b: 0.0, Ea: 0.0000E+00}
 - equation: co + oh => co2 + h  # Reaction 28
   rate-constant: {A: 4.400e+06, b: 1.5, Ea: -7.4092E+02}
-- equation: 2ho2 => h2o2 + o2  # Reaction 29
+- equation: 2 ho2 => h2o2 + o2  # Reaction 29
   rate-constant: {A: 1.867e+12, b: 0.0, Ea: 1.5392E+03}
-- equation: h2o2 (+ M) => 2oh (+ M)  # Reaction 30
+- equation: h2o2 (+ M) => 2 oh (+ M)  # Reaction 30
   type: falloff
   low-P-rate-constant: {A: 1.200e+17, b: 0.0, Ea: 4.5507E+04}
   high-P-rate-constant: {A: 3.000e+14, b: 0.0, Ea: 4.8494E+04}
