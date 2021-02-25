@@ -1,0 +1,4 @@
+# Detailed mechanisms for compounds containing Nitrogen
+
++ **Nakamura** Hisashi Nakamura, Susumu Hasegawa, Takuya Tezuka, "Kinetic modeling of ammonia/air weak flames in a micro flow reactor with a controlled temperature profile" Combustion and Flame 185 (2017) 16-27  http://dx.doi.org/10.1016/j.combustflame.2017.06.021
++ **Shrestha** Krishna Prasad Shrestha, Charles Lhuillier, Amanda Alves Barbosa, Pierre Brequigny, Francesco Contino, Christine Mounaïm-Rousselle, Lars Seidel, Fabian Mauss, "An experimental and modeling study of ammonia with enriched oxygen content and ammonia/hydrogen laminar flame speed at elevated pressure and temperature," Proc. Combust. Inst. 38, 2020, https://doi.org/10.1016/j.proci.2020.06.197
