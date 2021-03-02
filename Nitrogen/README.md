@@ -2,3 +2,5 @@
 
 + **Nakamura** Hisashi Nakamura, Susumu Hasegawa, Takuya Tezuka, "Kinetic modeling of ammonia/air weak flames in a micro flow reactor with a controlled temperature profile" Combustion and Flame 185 (2017) 16-27  http://dx.doi.org/10.1016/j.combustflame.2017.06.021
 + **Shrestha** Krishna Prasad Shrestha, Charles Lhuillier, Amanda Alves Barbosa, Pierre Brequigny, Francesco Contino, Christine Mounaïm-Rousselle, Lars Seidel, Fabian Mauss, "An experimental and modeling study of ammonia with enriched oxygen content and ammonia/hydrogen laminar flame speed at elevated pressure and temperature," Proc. Combust. Inst. 38, 2020, https://doi.org/10.1016/j.proci.2020.06.197
++ **Fuller-2019** Mark E. Fuller, C. Franklin Goldsmith, "A shock tube laser schlieren study of the pyrolysis of isopropyl nitrate," The Journal of Physical Chemistry A 123 (2019) 5866-5876, https://doi.org/10.1021/acs.jpca.9b03325
++ **Fuller-2021** Mark E. Fuller, Philipp Morsch, C. Franklin Goldsmith, K. Alexander Heufer, "The impact of NO<sub>x</sub> addition on the ignition behavior of n-pentane," Submitted. https://doi.org/10.26434/chemrxiv.13720105

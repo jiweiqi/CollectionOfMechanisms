@@ -1,0 +1,184 @@
+Thermo entry
+"""
+!
+CH3CH2NH2  Et-amin  T 7/11C  2.H  7.N  1.   0.G   200.000  6000.000 1000.        1
+ 6.32493839E+00 1.76575862E-02-6.17090139E-06 9.77516780E-10-5.77372896E-14    2
+-9.00803453E+03-9.89967541E+00 3.89535332E+00 5.25551488E-03 5.18067952E-05    3
+-7.09274284E-08 2.87011677E-11-7.47885738E+03 7.07511548E+00-5.75277292E+03    4
+"""
+
+required slight reforming, but no changes to values.
+
+Conversion to Cantera formats required the "permissive" option to account for duplicate thermo and transport  entries
+
+Additional notes/errors from converter log:
+
+################################################################################
+Wrote CTI mechanism file to 'Glarborg.cti'.
+Mechanism contains 151 species and 1397 reactions.
+Validating mechanism...CanteraWarning: NasaPoly2::validate: 
+For species HOCHO, discontinuity in h/RT detected at Tmid = 1000.0
+	Value computed using low-temperature polynomial:  -40.36035916666667
+	Value computed using high-temperature polynomial: -38.16786118416666
+
+FAILED.
+
+***********************************************************************
+CanteraError thrown by Plog::validate:
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 101.33, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1013.3, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 10133, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+05, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+06, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+07, T = 10000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 200.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 500.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 1000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 2000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 5000.0
+
+Invalid rate coefficient for reaction 'C2H3 + CH2O <=> C2H4 + HCO'
+at P = 1.0132e+08, T = 10000.0
+***********************************************************************
+
+
+################################################################################
+Wrote YAML mechanism file to 'Glarborg.yaml'.
+Mechanism contains 151 species and 1397 reactions.
+Validating mechanism...
+CanteraWarning: NasaPoly2::validate: 
+For species HOCHO, discontinuity in h/RT detected at Tmid = 1000.0
+	Value computed using low-temperature polynomial:  -40.36035916666667
+	Value computed using high-temperature polynomial: -38.16786118416666
+
+FAILED
+
+***********************************************************************
+InputFileError thrown by Kinetics::checkDuplicates:
+Error on line 5070 of ./Glarborg.yaml:
+No duplicate found for declared duplicate reaction number 285 (C2H3 + CH2O <=> C2H4 + HCO)
+|  Line |
+|  5065 |   - {P: 3.16 atm, A: 1.5e+14, b: -1.26, Ea: 988.0}
+|  5066 |   - {P: 10.0 atm, A: 5.0e+13, b: -1.11, Ea: 1409.0}
+|  5067 |   - {P: 31.6 atm, A: 1.4e+70, b: -20.11, Ea: 1.543e+04}
+|  5068 |   - {P: 100.0 atm, A: 9.2e+08, b: 0.25, Ea: 855.0}
+|  5069 |   note: 1 atm
+>  5070 > - equation: C2H3 + CH2O <=> C2H4 + HCO  # Reaction 286
+            ^
+|  5071 |   duplicate: true
+|  5072 |   type: pressure-dependent-Arrhenius
+|  5073 |   rate-constants:
+***********************************************************************
+
