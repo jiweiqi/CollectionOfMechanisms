@@ -36,7 +36,9 @@ Other collections:
 
 * [Cefac Cantera Manual](https://www.cerfacs.fr/cantera/mechanisms/meth.php#)
 * [Explosion Dynamics Laboratory of CalTech](https://shepherd.caltech.edu/EDL/PublicResources/sdt/cti_mech.html)
+* [ZhangYanTJU/chemicalMechanisms](https://github.com/ZhangYanTJU/chemicalMechanisms)
 
 ## Useful links
 
-[Useful tips for converting chemkin mechanisms to cti mechanisms](https://chemicalkinetics.wordpress.com/2013/11/15/my-procedure-for-converting-chemkin-mechanisms-to-cantera-cti-mechanisms/)
+* [Useful tips for converting chemkin mechanisms to cti mechanisms](https://chemicalkinetics.wordpress.com/2013/11/15/my-procedure-for-converting-chemkin-mechanisms-to-cantera-cti-mechanisms/)
+* [fitData_Cantera: fit thermo file to a uniform common T](https://github.com/ZhangYanTJU/fitData_Cantera)
