@@ -14,9 +14,9 @@ description: |-
   Dept. of Thermo and Fluid Dynamics, Chalmers University of Technology, Goteborg, Sweden, 1998.
 
 generator: ck2yaml
-input-files: [mech_42s168r.dat, therm.dat]
+input-files: [mech_41s168r.dat, therm.dat, tran.dat]
 cantera-version: 2.5.0a4
-date: Wed, 10 Mar 2021 18:50:33 -0500
+date: Fri, 19 Mar 2021 14:55:11 -0400
 
 units: {length: cm, time: s, quantity: mol, activation-energy: cal/mol}
 
@@ -29,6 +29,7 @@ phases:
     C7H15O2, C7H14O2H, C7H14O2HO2, C7KET12, C5H11CHO, C5H11CO, C5H11, C4H9,
     C3H7, C3H6, C3H5, C3H4, C2H3, C2H5, C2H6, NO, N]
   kinetics: gas
+  transport: mixture-averaged
   state: {T: 300.0, P: 1 atm}
 
 species:
@@ -42,6 +43,12 @@ species:
       -2.56586565e+04, 35.3732912]
     - [22.2148969, 0.034767575, -1.18407129e-05, 1.83298478e-09, -1.06130266e-13,
       -3.42760081e+04, -92.3040196]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 459.6
+    diameter: 6.253
+    rotational-relaxation: 1.0
 - name: O2
   composition: {O: 2}
   thermo:
@@ -52,6 +59,13 @@ species:
       -1005.249, 6.034738]
     - [3.697578, 6.135197e-04, -1.258842e-07, 1.775281e-11, -1.136435e-15,
       -1233.93, 3.189166]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    polarizability: 1.6
+    rotational-relaxation: 3.8
 - name: N2
   composition: {N: 2}
   thermo:
@@ -62,6 +76,13 @@ species:
       -1020.9, 3.950372]
     - [2.92664, 1.487977e-03, -5.684761e-07, 1.009704e-10, -6.753351e-15,
       -922.7977, 5.980528]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    polarizability: 1.76
+    rotational-relaxation: 4.0
 - name: CO2
   composition: {C: 1, O: 2}
   thermo:
@@ -72,6 +93,13 @@ species:
       -4.837314e+04, 10.18849]
     - [4.453623, 3.140169e-03, -1.278411e-06, 2.393997e-10, -1.669033e-14,
       -4.896696e+04, -0.9553959]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 244.0
+    diameter: 3.763
+    polarizability: 2.65
+    rotational-relaxation: 2.1
 - name: H2O
   composition: {H: 2, O: 1}
   thermo:
@@ -82,6 +110,13 @@ species:
       -3.020811e+04, 2.590233]
     - [2.672146, 3.056293e-03, -8.73026e-07, 1.200996e-10, -6.391618e-15,
       -2.989921e+04, 6.862817]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    rotational-relaxation: 4.0
 - name: CO
   composition: {C: 1, O: 1}
   thermo:
@@ -92,6 +127,13 @@ species:
       -1.431054e+04, 4.848897]
     - [3.025078, 1.442689e-03, -5.630828e-07, 1.018581e-10, -6.910952e-15,
       -1.426835e+04, 6.108218]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 98.1
+    diameter: 3.65
+    polarizability: 1.95
+    rotational-relaxation: 1.8
 - name: H2
   composition: {H: 2}
   thermo:
@@ -102,6 +144,13 @@ species:
       -1012.521, -3.294094]
     - [2.991423, 7.000644e-04, -5.633829e-08, -9.231578e-12, 1.582752e-15,
       -835.034, -1.35511]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    polarizability: 0.79
+    rotational-relaxation: 280.0
 - name: CH4
   composition: {C: 1, H: 4}
   thermo:
@@ -112,6 +161,13 @@ species:
       -9825.229, 13.72219]
     - [1.683479, 0.01023724, -3.875129e-06, 6.785585e-10, -4.503423e-14,
       -1.008079e+04, 9.623395]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 141.4
+    diameter: 3.746
+    polarizability: 2.6
+    rotational-relaxation: 13.0
 - name: C2H2
   composition: {C: 2, H: 2}
   thermo:
@@ -122,6 +178,12 @@ species:
       2.612444e+04, 8.805378]
     - [4.43677, 5.376039e-03, -1.912817e-06, 3.286379e-10, -2.15671e-14,
       2.566766e+04, -2.800338]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 265.3
+    diameter: 3.721
+    rotational-relaxation: 2.5
 - name: C2H4
   composition: {C: 2, H: 4}
   thermo:
@@ -132,6 +194,12 @@ species:
       5573.046, 24.21149]
     - [3.528419, 0.01148518, -4.418385e-06, 7.844601e-10, -5.266848e-14,
       4428.289, 2.230389]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 238.4
+    diameter: 3.496
+    rotational-relaxation: 1.5
 - name: H2O2
   composition: {H: 2, O: 2}
   thermo:
@@ -142,6 +210,12 @@ species:
       -1.766315e+04, 6.785363]
     - [4.573167, 4.336136e-03, -1.474689e-06, 2.348904e-10, -1.431654e-14,
       -1.800696e+04, 0.501137]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    rotational-relaxation: 3.8
 - name: HO2
   composition: {H: 1, O: 2}
   thermo:
@@ -152,6 +226,12 @@ species:
       176.2274, 9.222724]
     - [4.072191, 2.131296e-03, -5.308145e-07, 6.112269e-11, -2.841165e-15,
       -157.9727, 3.476029]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    rotational-relaxation: 1.0
 - name: OH
   composition: {O: 1, H: 1}
   thermo:
@@ -162,6 +242,11 @@ species:
       3606.782, 1.35886]
     - [2.88273, 1.013974e-03, -2.276877e-07, 2.174684e-11, -5.126305e-16,
       3886.888, 5.595712]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.75
 - name: H
   composition: {H: 1}
   thermo:
@@ -170,6 +255,11 @@ species:
     data:
     - [2.5, 0.0, 0.0, 0.0, 0.0, 2.547163e+04, -0.4601176]
     - [2.5, 0.0, 0.0, 0.0, 0.0, 2.547163e+04, -0.4601176]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 145.0
+    diameter: 2.05
 - name: O
   composition: {O: 1}
   thermo:
@@ -180,6 +270,11 @@ species:
       2.914764e+04, 2.963995]
     - [2.54206, -2.755062e-05, -3.102803e-09, 4.551067e-12, -4.368052e-16,
       2.92308e+04, 4.920308]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 80.0
+    diameter: 2.75
 - name: CH3
   composition: {C: 1, H: 3}
   thermo:
@@ -190,6 +285,11 @@ species:
       6.789794]
     - [2.844052, 6.137974e-03, -2.230345e-06, 3.785161e-10, -2.452159e-14,
       1.643781e+04, 5.452697]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 144.0
+    diameter: 3.8
 - name: CH3O
   composition: {C: 1, H: 3, O: 1}
   thermo:
@@ -200,6 +300,13 @@ species:
       978.6011, 13.15218]
     - [3.7708, 7.871497e-03, -2.656384e-06, 3.944431e-10, -2.112616e-14,
       127.8325, 2.929575]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 417.0
+    diameter: 3.69
+    dipole: 1.7
+    rotational-relaxation: 2.0
 - name: CH2
   composition: {C: 1, H: 2}
   thermo:
@@ -210,6 +317,11 @@ species:
       4.536791e+04, 1.712578]
     - [3.636408, 1.933057e-03, -1.687016e-07, -1.009899e-10, 1.808256e-14,
       4.534134e+04, 2.156561]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 144.0
+    diameter: 3.8
 - name: CH2O
   composition: {C: 1, H: 2, O: 1}
   thermo:
@@ -220,6 +332,12 @@ species:
       -1.48654e+04, 13.78482]
     - [2.995606, 6.681321e-03, -2.628955e-06, 4.737153e-10, -3.212517e-14,
       -1.532037e+04, 6.912572]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    rotational-relaxation: 2.0
 - name: CH3O2
   composition: {C: 1, H: 3, O: 2}
   thermo:
@@ -230,6 +348,12 @@ species:
       473.129653, 6.34599067]
     - [5.95787891, 7.90728626e-03, -2.68246234e-06, 4.13891337e-10, -2.3900733e-14,
       -378.224468, -3.53695139]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.8
+    diameter: 3.626
+    rotational-relaxation: 1.0
 - name: CH4O2
   composition: {C: 1, H: 4, O: 2}
   thermo:
@@ -240,6 +364,12 @@ species:
       -1.83982011e+04, 6.52443362]
     - [6.86907934, 0.0100840883, -3.66515947e-06, 5.96302681e-10, -3.58894156e-14,
       -1.98402231e+04, -12.4951986]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.8
+    diameter: 3.626
+    rotational-relaxation: 1.0
 - name: HCO
   composition: {H: 1, C: 1, O: 1}
   thermo:
@@ -250,6 +380,11 @@ species:
       4159.922, 8.983614]
     - [3.557271, 3.345573e-03, -1.335006e-06, 2.470573e-10, -1.713851e-14,
       3916.324, 5.552299]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
 - name: C7H15-1
   composition: {C: 7, H: 15}
   thermo:
@@ -260,6 +395,12 @@ species:
       -1045.90223, 34.6564011]
     - [21.7940709, 0.0326280243, -1.11138244e-05, 1.72067148e-09, -9.96366999e-14,
       -9209.38221, -86.4954311]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 459.6
+    diameter: 6.253
+    rotational-relaxation: 1.0
 - name: C7H15-2
   composition: {C: 7, H: 15}
   thermo:
@@ -270,6 +411,12 @@ species:
       -2356.05303, 33.7321506]
     - [21.6368842, 0.0323324804, -1.09273807e-05, 1.6835706e-09, -9.71774091e-14,
       -1.05873616e+04, -85.2209653]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 459.6
+    diameter: 6.253
+    rotational-relaxation: 1.0
 - name: C7H15O2
   composition: {C: 7, H: 15, O: 2}
   thermo:
@@ -280,6 +427,14 @@ species:
       -1.99237961e+04, 25.3067342]
     - [24.9023689, 0.035071692, -1.20440306e-05, 1.87464822e-09, -1.08947791e-13,
       -2.8297605e+04, -97.3923542]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 561.0
+    diameter: 6.317
+    dipole: 1.7
+    rotational-relaxation: 1.0
+    note: WJP
 - name: C7H14O2H
   composition: {C: 7, H: 15, O: 2}
   thermo:
@@ -290,6 +445,14 @@ species:
       -1.36530733e+04, 27.3754005]
     - [27.0028807, 0.0322272216, -1.09366516e-05, 1.68977918e-09, -9.77321946e-14,
       -2.27229231e+04, -106.33217]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 561.0
+    diameter: 6.317
+    dipole: 1.7
+    rotational-relaxation: 1.0
+    note: WJP
 - name: C7H14O2HO2
   composition: {C: 7, H: 15, O: 4}
   thermo:
@@ -300,6 +463,14 @@ species:
       -3.32051631e+04, 22.591203]
     - [32.3937788, 0.0333911097, -1.15672104e-05, 1.81146023e-09, -1.05739941e-13,
       -4.36321048e+04, -132.597311]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 600.6
+    diameter: 7.229
+    dipole: 1.8
+    rotational-relaxation: 1.0
+    note: NC10H22O WJP
 - name: C7KET12
   composition: {C: 7, H: 14, O: 3}
   thermo:
@@ -310,6 +481,14 @@ species:
       -4.68054419e+04, 33.3331449]
     - [29.7472906, 0.0306622294, -1.0556359e-05, 1.64627343e-09, -9.58171675e-14,
       -5.66856828e+04, -122.43249]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 581.3
+    diameter: 6.506
+    dipole: 2.0
+    rotational-relaxation: 1.0
+    note: 1C8H17OH WJP
 - name: C5H11CHO
   composition: {C: 6, H: 12, O: 1}
   thermo:
@@ -320,6 +499,12 @@ species:
       -3.28740986e+04, 24.8343934]
     - [19.8891043, 0.027186934, -9.27391515e-06, 1.43744158e-09, -8.33090761e-14,
       -3.97523444e+04, -76.0741671]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 537.467
+    diameter: 5.643
+    note: FLAMEMASTER
 - name: C5H11CO
   composition: {C: 6, H: 11, O: 1}
   thermo:
@@ -330,6 +515,14 @@ species:
       -1.43451172e+04, 22.3128045]
     - [19.4783812, 0.0250466029, -8.54861346e-06, 1.32557944e-09, -7.68503296e-14,
       -2.07923937e+04, -72.1995578]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 541.5
+    diameter: 5.674
+    dipole: 1.8
+    rotational-relaxation: 1.0
+    note: 1C6H13OH WJP
 - name: C5H11
   composition: {C: 5, H: 11}
   thermo:
@@ -340,6 +533,14 @@ species:
       -2604.20265, 14.2591121]
     - [11.3324106, 0.0303659897, -1.1393448e-05, 1.99539733e-09, -1.32825012e-13,
       -5952.99959, -31.3564905]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 523.2
+    diameter: 5.664
+    dipole: 1.7
+    rotational-relaxation: 1.0
+    note: WJP
 - name: C4H9
   composition: {C: 4, H: 9}
   thermo:
@@ -350,6 +551,12 @@ species:
       4740.11588, 11.1849382]
     - [9.43040607, 0.0234271349, -8.53599182e-06, 1.39748355e-09, -8.44057456e-14,
       2142.14862, -24.2207994]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 352.0
+    diameter: 5.24
+    rotational-relaxation: 1.0
 - name: C3H7
   composition: {C: 3, H: 7}
   thermo:
@@ -360,6 +567,12 @@ species:
       1.0631863e+04, 21.122559]
     - [7.7026987, 0.016044203, -5.283322e-06, 7.629859e-10, -3.9392284e-14,
       8298.4336, -15.48018]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 303.4
+    diameter: 4.81
+    rotational-relaxation: 1.0
 - name: C3H6
   composition: {C: 3, H: 6}
   thermo:
@@ -370,6 +583,12 @@ species:
       1066.88164, 21.9003736]
     - [8.01595958, 0.0137023634, -4.66249733e-06, 7.21254402e-10, -4.17370126e-14,
       -1878.21271, -20.0160668]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 307.8
+    diameter: 4.14
+    rotational-relaxation: 1.0
 - name: C3H5
   composition: {C: 3, H: 5}
   thermo:
@@ -380,6 +599,12 @@ species:
       1.86261218e+04, 7.82822499]
     - [6.54761132, 0.0133152246, -4.783331e-06, 7.71949814e-10, -4.61930808e-14,
       1.72714707e+04, -9.27486841]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 316.0
+    diameter: 4.22
+    rotational-relaxation: 1.0
 - name: C3H4
   composition: {C: 3, H: 4}
   thermo:
@@ -390,6 +615,12 @@ species:
       2.15415642e+04, 10.2503319]
     - [6.31694869, 0.0111336262, -3.96289018e-06, 6.35633775e-10, -3.78749885e-14,
       2.01174617e+04, -10.9718862]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 324.8
+    diameter: 4.29
+    rotational-relaxation: 1.0
 - name: C2H3
   composition: {C: 2, H: 3}
   thermo:
@@ -400,6 +631,12 @@ species:
       3.335225e+04, 11.5562]
     - [5.933468, 4.017746e-03, -3.96674e-07, -1.441267e-10, 2.378644e-14,
       3.185435e+04, -8.530313]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 265.3
+    diameter: 3.721
+    rotational-relaxation: 1.0
 - name: C2H5
   composition: {C: 2, H: 5}
   thermo:
@@ -410,6 +647,12 @@ species:
       1.28704e+04, 12.1382]
     - [7.19048, 6.484077e-03, -6.428065e-07, -2.347879e-10, 3.880877e-14,
       1.067455e+04, -14.78089]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 247.5
+    diameter: 4.35
+    rotational-relaxation: 1.5
 - name: C2H6
   composition: {C: 2, H: 6}
   thermo:
@@ -420,6 +663,12 @@ species:
       -1.123918e+04, 14.43229]
     - [4.825938, 0.01384043, -4.557259e-06, 6.724967e-10, -3.598161e-14,
       -1.271779e+04, -5.239507]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 247.5
+    diameter: 4.35
+    rotational-relaxation: 1.5
 - name: NO
   composition: {N: 1, O: 1}
   thermo:
@@ -430,6 +679,13 @@ species:
       9817.961, 5.82959]
     - [3.245435, 1.269138e-03, -5.01589e-07, 9.169283e-11, -6.275419e-15,
       9800.84, 6.417294]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    polarizability: 1.76
+    rotational-relaxation: 4.0
 - name: N
   composition: {N: 1}
   thermo:
@@ -440,6 +696,11 @@ species:
       5.60989e+04, 4.167566]
     - [2.450268, 1.066146e-04, -7.465337e-08, 1.879652e-11, -1.025984e-15,
       5.611604e+04, 4.448758]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 71.4
+    diameter: 3.298
 
 reactions:
 - equation: C7H16 + H <=> C7H15-1 + H2  # Reaction 1
