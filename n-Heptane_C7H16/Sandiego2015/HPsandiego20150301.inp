@@ -1,0 +1,50 @@
+ELEMENTS
+N  AR C  H  O  
+END
+SPECIES
+N2       AR       CH4     C2H2     C2H3     H        C2H4     H2       
+OH       HCO      C3H5    CH3      H2O      C3H3     C3H4     C3H6     
+C2H5     O2       HO2     H2O2     C4H6     C4H8     C5H10
+N-C3H7   CH2O     CO      CH3CHO
+C7H16    NC7H15   C7H14   NC7-QOOH NC7-OQOOH        
+END
+REACTIONS
+!! New n-Heptane SD mech (from previous SD mech) and modifications for low-T ignition
+C7H16<=>CH3+2C2H4+C2H5                   1.000e+18    0.000  85325.05 
+C7H16+O2<=>HO2+NC7H15                    0.2045E+08   2.000  40722.49 
+C7H16+H<=>H2+NC7H15                      0.2888E+08   2.000   3950.57 
+C7H16+OH<=>H2O+NC7H15                    0.4793E+07   2.000  -2259.83 
+C7H16+HO2<=>H2O2+NC7H15                  0.6465E+06   2.000  11887.73 
+NC7H15<=>CH3+2C3H6                       5.6100E+12   0.000  30000.00 
+NC7H15<=>C3H6+C2H5+C2H4                  1.4190E+13   0.000  30000.00 
+NC7H15<=>C4H8+N-C3H7                     6.6000E+12   0.000  30000.00 
+NC7H15<=>C5H10+C2H5                      5.2800E+12   0.000  30000.00 
+C5H10<=>C3H5+C2H5                        1.000e+16    0.000  72896.75 
+C5H10<=>C3H6+C2H4                        3.160e+12    0.000  57122.37 
+C5H10+OH<=>H2O+C3H6+C2H3                 7.080e+07    1.900    167.30 
+C5H10+H<=>H2+C3H6+C2H3                   1.300e+06    2.400   4469.41 
+C5H10+H<=>2C2H4+CH3                      7.230e+12    0.000   1290.63 
+C5H10+H<=>C3H6+C2H5                      7.230e+12    0.000   1290.63 
+C5H10+H<=>H2+C2H4+C3H5                   6.600e+05    2.540   6763.86 
+C5H10+H<=>H2+C4H6+CH3                    1.150e+05    2.500   2485.66 
+C4H8<=>C3H5+CH3                          1.000e+16    0.000  72896.75 
+C4H8+H<=>C2H4+C2H5                       7.230e+12    0.000   1290.63 
+C4H8+H<=>C3H6+CH3                        7.230e+12    0.000   1290.63 
+C4H8+H<=>H2+C2H3+C2H4                    6.600e+05    2.540   6763.86 
+C4H8+OH<=>H2O+C4H6+H                     2.080e+06    2.000   -286.81 
+C4H6<=>C2H2+C2H3+H                       1.580e+16    0.000 109995.22 
+C4H6+H<=>C2H3+C2H4                       5.000e+11    0.000      0.00 
+C4H6+H<=>H2+C2H2+C2H3                    6.300e+10    0.700   6001.43 
+C4H6+OH<=>HCO+H+C3H5                     5.000e+12    0.000      0.00 
+C4H6+CH3<=>CH4+C2H2+C2H3                 7.000e+13    0.000  18413.00 
+C3H3+CH3<=>C4H6                          5.000e+12    0.000      0.00 
+2C2H3<=>C4H6                             1.260e+13    0.000      0.00 
+
+! n-Heptane low Temperaure ignition reactions:
+NC7H15+O2<=>C7H14+HO2                    5.000E+11    0.00    3500.00 
+NC7H15+O2<=>NC7-QOOH                     2.000E+12    0.00       0.00 
+NC7-QOOH<=>HO2+C7H14                     2.000E+12    0.00   24000.00
+NC7-QOOH+O2<=>NC7-OQOOH+OH               3.500E+07    0.00  -16600.00
+NC7-OQOOH<=>OH+CH2O+CO+C2H4+N-C3H7       4.000E+13    0.00   39400.00
+C7H14+OH<=>CH3CHO+C2H5+C3H6              1.000E+13    0.00       0.00
+END
