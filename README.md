@@ -1,8 +1,10 @@
 # CollectionOfMechanisms
 
-This repo is a collection of combustion reaction mechanisms. This repo also tries to include a converted Cantera `XML` and `YAML` based mechanism. Therefore, cantera users can import those mechanism out of the shelf.
+This repo is a collection of combustion reaction mechanisms.
+This repo also tries to include a converted Cantera `YAML` format mechanism to
+allow Cantera users to avoid the effort of repeatedly converting mechanisms.
 
-Below are the proposed data organization structure. See the demo folder for DME_CH3OCH3.
+Below is the proposed data organization structure.
 
 ```
 Fuel Name
@@ -13,10 +15,8 @@ Fuel Name
 │   │   chem.inp (chemkin format)
 │   │   /thermo.dat
 │   │   /tran.dat
-│   │   /chem.xml (cantera format)
 │   │   /chem.yaml (cantera format)
-│   │   /chem.cti (cantera format, optionally)
-│   │   /README.md: link to the origional paper/website
+│   │   /README.md: link to the original paper/website and any relevant comments (e.g. on mechanism conversion)
 |
 ```
 
@@ -40,5 +40,5 @@ Other collections:
 
 ## Useful links
 
-* [Useful tips for converting chemkin mechanisms to cti mechanisms](https://chemicalkinetics.wordpress.com/2013/11/15/my-procedure-for-converting-chemkin-mechanisms-to-cantera-cti-mechanisms/)
+* [Converting Chemkin-format files](https://cantera.org/tutorials/ck2yaml-tutorial.html)
 * [fitData_Cantera: fit thermo file to a uniform common T](https://github.com/ZhangYanTJU/fitData_Cantera)
