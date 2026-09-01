@@ -1,0 +1,35 @@
+#FORMULA           DESCRIPTION                                              NAME 
+AR1                argon                                                    AR                
+N2                 nitrogen                                                 N2                
+HE1                helium                                                   HE                
+H2                 hydrogen                                                 H2                
+H1                 hydrogen_atom                                            H                 
+O2                 oxygen                                                   O2                
+O1                 oxygen_atom                                              O                 
+H2O1               water                                                    H2O               
+H1O1               hydroxyl radical                                         OH        
+H1O1               excited hydroxyl radical                                 OHV
+H2O2               hydrogen peroxide                                        H2O2              
+H1O2               hydroperoxyl radical                                     HO2               
+N1O1               nitric-oxide                                             NO                
+N2O1               dinitrogenmonoxide                                       N2O               
+N1O2               nitric-dioxide                                           NO2               
+H1N1O1             nitroxyl                                                 HNO               
+H1N2O1             cis-HNNO                                                 cHNNO
+H1N2O1             trans-HNNO                                               tHNNO
+H1N1O2             nitryl hydride                                           HNO2              
+H1N1O2             nitrous acid                                             HONO              
+H1N1O3             nitric acid                                              HONO2             
+H2N2               diazene                                                  N2H2              
+H2N2               isodiazene                                               H2NN              
+H3N1O1             hydroxylamine                                            NH2OH             
+H2N1O1             hydroxyamidogen                                          HNOH              
+H3N1               ammonia                                                  NH3               
+H4N2               hydrazine                                                N2H4              
+N1                 nitrogen atom                                            N                 
+N1O3               nitrate Radical                                          NO3               
+H1N1               imidogen                                                 NH                
+H1N2               dinitrogen monohydride                                   NNH               
+H2N1               amino radical                                            NH2               
+H2N1O1             nitroxide radical                                        H2NO              
+H3N2               hydrazinyl radical                                       N2H3              
